@@ -5,16 +5,51 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfac9320-9479-4b23-9251-1afe4f7afd31" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/BroilerFarmApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/resources/application.properties" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/BaseEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/Employee.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/enums/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/slaughterhouse/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/slaughterhouse/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/BroilerFarmApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/BroilerFarmApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/broilerfarm/BroilerFarmApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slaughterhouse/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/slaughterhouse/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slaughterhouse/target/classes/com/example/broilerfarm/BroilerFarmApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/slaughterhouse/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/slaughterhouse/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Enum" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -40,6 +75,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.BroilerFarmApplication.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
@@ -114,6 +150,8 @@
       <workItem from="1761982858499" duration="320000" />
       <workItem from="1761983198071" duration="57000" />
       <workItem from="1761983302791" duration="3795000" />
+      <workItem from="1762002649806" duration="650000" />
+      <workItem from="1762003327359" duration="4719000" />
     </task>
     <servers />
   </component>
