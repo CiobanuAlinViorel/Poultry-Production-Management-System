@@ -2,7 +2,7 @@ package com.example.broilerfarm.domain.entities;
 
 import com.example.broilerfarm.domain.enums.ConsumableType;
 import com.example.broilerfarm.domain.enums.UnitOfMeasure;
-import com.example.shared.domain.BaseEntity;
+import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/broiler-farm/broiler-farm.iml" filepath="$PROJECT_DIR$/broiler-farm/broiler-farm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shared-kernel/shared-kernel.iml" filepath="$PROJECT_DIR$/shared-kernel/shared-kernel.iml" />
     </modules>
   </component>
 </project>

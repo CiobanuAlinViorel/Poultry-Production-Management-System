@@ -5,60 +5,95 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfac9320-9479-4b23-9251-1afe4f7afd31" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/broiler-farm.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/BroilerFarm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksLot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksReception.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksReceptionLine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsReceptionLine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/Consumable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumableReception.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumableStock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumptionSheet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumptionSheetLine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/DeliveryNotice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/DeliveryNoticeLine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/FarmEmployee.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/MortalitySheet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ObservationSheet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/PoultryHouse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/TreatmentSheet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/TreatmentSheetLine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/Warehouse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/AdministrationMethod.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/ApprovalStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/ChicksLotStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/ConsumableType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/ConsumptionSheetStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/DataSource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/DisposalMethod.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/MortalitySheetStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/ObservationSheetStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/PoultryHouseStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/PoultryHouseType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/QualityGrade.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/QualityStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/ReceptionStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/StockStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/TreatmentStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/UnitOfMeasure.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/enums/WarehouseType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/AccountDisabledException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/AuthenticationResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/AuthenticationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/BCryptPasswordEncoderImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/InvalidPasswordException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/JwtTokenProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/PasswordEncoder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/FarmUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/BroilerFarmRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksLotRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksReceptionLineRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksReceptionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsReceptionLineRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumableReceptionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumableRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumableStockRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumptionSheetLineRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumptionSheetRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/DeliveryNoticeLineRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/DeliveryNoticeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/FarmEmployeeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/MortalitySheetRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ObservationSheetRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/PoultryHouseRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/TreatmentSheetLineRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/TreatmentSheetRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/WarehouseRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/shared-kernel.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/SharedKernelApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/Session.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/AccountExpiredException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/AccountLockedException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/AccountSecurityException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/EmailAlreadyExistsException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/InvalidCredentialsException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/InvalidEmailException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/InvalidTokenException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/RegistrationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/SessionException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/UserNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/UsernameAlreadyExistsException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/repository/EmployeeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/repository/SessionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/service/AccountSecurityDomainService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/service/AuthenticationDomainService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/service/PasswordManagementDomainService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/service/SessionManagementDomainService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/service/TokenGenerationDomainService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/valueobject/Email.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/valueobject/JwtToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/valueobject/Password.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/valueobject/PasswordResetToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/valueobject/RefreshToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/infrastructure/config/PasswordEncoderConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/infrastructure/service/PasswordEncoderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/infrastructure/service/TokenBlacklistService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/infrastructure/service/TokenCryptoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/BroilerFarm.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/BroilerFarm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksLot.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksLot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksReception.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksReception.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksReceptionLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksReceptionLine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsReceptionLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsReceptionLine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/Consumable.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/Consumable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumableReception.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumableReception.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumableStock.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumableStock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumptionSheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumptionSheet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumptionSheetLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumptionSheetLine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/DeliveryNotice.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/DeliveryNotice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/DeliveryNoticeLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/DeliveryNoticeLine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/FarmEmployee.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/FarmEmployee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/MortalitySheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/MortalitySheet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ObservationSheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ObservationSheet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/PoultryHouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/PoultryHouse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/TreatmentSheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/TreatmentSheet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/TreatmentSheetLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/TreatmentSheetLine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/Warehouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/Warehouse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared-kernel/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/BaseEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/BaseEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/enums/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/enums/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/AccountDisabledException.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/AccountDisabledException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/AuthenticationResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/AuthenticationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/BCryptPasswordEncoderImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/InvalidPasswordException.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/exception/InvalidPasswordException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/JwtTokenProvider.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/PasswordEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/repository/PasswordEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/security/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/BaseEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/slaughterhouse/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/slaughterhouse/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +106,7 @@
         <option value="Enum" />
         <option value="Exception" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -89,50 +125,74 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven.main-backend [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.main-backend [compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.main-backend [install].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.main-backend [validate].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.shared-kernel [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.shared-kernel [compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.shared-kernel [install].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.BroilerFarmApplication.executor&quot;: &quot;Run&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/alinv/Documents/Cursuri/M-year1/Multi-tiered Software Development/Lab/Project/PoultryProdManagement/backend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.main-backend [clean].executor": "Run",
+    "Maven.main-backend [compile].executor": "Run",
+    "Maven.main-backend [install].executor": "Run",
+    "Maven.main-backend [validate].executor": "Run",
+    "Maven.shared-kernel [clean].executor": "Run",
+    "Maven.shared-kernel [compile].executor": "Run",
+    "Maven.shared-kernel [install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.BroilerFarmApplication.executor": "Run",
+    "Spring Boot.SlaughterhouseApplication (1).executor": "Run",
+    "Spring Boot.SlaughterhouseApplication.executor": "Run",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/alinv/Documents/Cursuri/M-year1/Multi-tiered Software Development/Lab/Project/PoultryProdManagement/backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "run.configurations.included.in.services": "true",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.example.shared.security" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.BroilerFarmApplication">
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="SlaughterhouseApplication (1)" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.SlaughterhouseApplication (1)">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="backend" />
       <method v="2">
@@ -154,18 +214,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SlaughterhouseApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <configuration name="SlaughterhouseApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="slaughterhouse" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.broilerfarm.SlaughterhouseApplication" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.slaughterhouse.SlaughterhouseApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.slaughterhouse.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Spring Boot.SlaughterhouseApplication" />
       <item itemvalue="Spring Boot.BroilerFarmApplication" />
+      <item itemvalue="Spring Boot.SlaughterhouseApplication (1)" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.SlaughterhouseApplication (1)" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -190,6 +261,11 @@
       <workItem from="1762003327359" duration="4719000" />
       <workItem from="1762010816892" duration="12599000" />
       <workItem from="1762075990040" duration="3734000" />
+      <workItem from="1762079864954" duration="4000" />
+      <workItem from="1762084005050" duration="11886000" />
+      <workItem from="1762200388830" duration="3170000" />
+      <workItem from="1762242876481" duration="2661000" />
+      <workItem from="1762248659893" duration="306000" />
     </task>
     <servers />
   </component>

@@ -15,6 +15,10 @@
     <artifactId>shared-kernel</artifactId>
     <name>Shared Kernel</name>
 
+    <properties>
+        <jjwt.version>0.11.5</jjwt.version> <!-- ✅ Folosește 0.11.5 pentru compatibilitate -->
+    </properties>
+
     <dependencies>
         <!-- Lombok -->
         <dependency>
@@ -29,7 +33,7 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-        <!-- MapStruct (versiunea vine din parent dependencyManagement) -->
+        <!-- MapStruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
@@ -74,9 +78,24 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
+
+        <!-- ✅ JWT Dependencies COMPLETE -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
@@ -107,5 +126,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
