@@ -1,15 +1,16 @@
 package com.example.slaughterhouse.domain.entities;
 
+import com.example.shared.domain.entity.BaseEntity;
 import com.example.slaughterhouse.domain.enums.ReceptionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,15 +21,10 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "delivery_notices")
-@EntityListeners(AuditingEntityListener.class)
-public class DeliveryNotice {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notice_id")
-    private Long noticeId;
+public class DeliveryNotice extends BaseEntity {
 
     @Column(name = "external_system_id", nullable = false, unique = true, length = 100)
     private String externalSystemId; // ID from Farm Management System
@@ -71,7 +67,7 @@ public class DeliveryNotice {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "received_by")
-    private Employee receivedBy;
+    private SlaughterhouseUser receivedBy;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "reception_status", nullable = false, length = 50)
@@ -91,7 +87,7 @@ public class DeliveryNotice {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", updatable = false)
-    private Employee createdBy;
+    private SlaughterhouseUser createdBy;
 
     @LastModifiedDate
     @Column(name = "updated_at")
@@ -100,7 +96,7 @@ public class DeliveryNotice {
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    private Employee updatedBy;
+    private SlaughterhouseUser updatedBy;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
@@ -109,25 +105,13 @@ public class DeliveryNotice {
     @Column(name = "version")
     private Integer version;
 
-    @PrePersist
-    protected void onCreate() {
-        if (isActive == null) {
-            isActive = true;
-        }
-        if (receptionStatus == null) {
-            receptionStatus = ReceptionStatus.PENDING;
-        }
-        if (sourceSystem == null) {
-            sourceSystem = "FARM_MANAGEMENT";
-        }
-    }
 
     // Business methods
     public Boolean isReceived() {
         return receptionStatus == ReceptionStatus.RECEIVED;
     }
 
-    public void markAsReceived(Employee employee) {
+    public void markAsReceived(SlaughterhouseUser employee) {
         this.receivedDate = LocalDate.now();
         this.receivedBy = employee;
         this.receptionStatus = ReceptionStatus.RECEIVED;

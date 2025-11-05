@@ -1,5 +1,6 @@
 package com.example.slaughterhouse.domain.entities;
 
+import com.example.shared.domain.entity.BaseEntity;
 import com.example.slaughterhouse.domain.enums.LotStatus;
 import com.example.slaughterhouse.domain.valueobjects.HealthStatus;
 import com.example.slaughterhouse.domain.valueobjects.QualityGrade;
@@ -7,6 +8,7 @@ import com.example.slaughterhouse.domain.valueobjects.Weight;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,18 +24,15 @@ import java.util.List;
 /**
  * Represents a lot of chickens received for slaughter processing
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "slaughter_lots")
 @EntityListeners(AuditingEntityListener.class)
-public class SlaughterLot {
+public class SlaughterLot extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lot_id")
-    private Long lotId;
 
     @Column(name = "lot_number", nullable = false, unique = true, length = 50)
     private String lotNumber;
@@ -89,7 +88,10 @@ public class SlaughterLot {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
-    private Employee manager;
+    private SlaughterhouseEmployee manager;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
 
     @OneToOne(mappedBy = "slaughterLot", cascade = CascadeType.ALL, orphanRemoval = true)
     private ChickenReception chickenReception;
@@ -109,49 +111,14 @@ public class SlaughterLot {
     @OneToOne(mappedBy = "slaughterLot", cascade = CascadeType.ALL, orphanRemoval = true)
     private WasteReport wasteReport;
 
-    // Audit fields
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @CreatedBy
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", updatable = false)
-    private Employee createdBy;
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @LastModifiedBy
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_by")
-    private Employee updatedBy;
-
-    @Column(name = "is_active", nullable = false)
-    private Boolean isActive = true;
-
-    @Version
-    @Column(name = "version")
-    private Integer version;
-
-    @PrePersist
-    protected void onCreate() {
-        if (isActive == null) {
-            isActive = true;
-        }
-        if (status == null) {
-            status = LotStatus.RECEIVED;
-        }
-    }
-
-    // Business methods
+    // Business methods (no need for audit fields - inherited from BaseEntity!)
     public void updateCurrentQuantity(Integer quantity) {
         this.currentQuantity = quantity;
     }
 
     public void calculateTotalWeight() {
-        if (averageWeight != null && currentQuantity != null) {
+        if (averageWeight != null && averageWeight.getValue() != null &&
+                currentQuantity != null && averageWeight.getUnit() != null) {
             Float totalValue = averageWeight.getValue() * currentQuantity;
             this.totalWeight = Weight.of(totalValue, averageWeight.getUnit());
         }
@@ -165,4 +132,5 @@ public class SlaughterLot {
         if (totalChickens == 0) return 0f;
         return (float) calculateMortality() / totalChickens * 100;
     }
+
 }

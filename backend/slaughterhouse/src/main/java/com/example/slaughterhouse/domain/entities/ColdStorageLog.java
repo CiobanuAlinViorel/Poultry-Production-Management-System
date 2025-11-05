@@ -1,16 +1,18 @@
 package com.example.slaughterhouse.domain.entities;
 
+import com.example.shared.domain.entity.BaseEntity;
+
 import com.example.slaughterhouse.domain.enums.StorageStatus;
 import com.example.slaughterhouse.domain.valueobjects.Temperature;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,15 +24,10 @@ import java.time.temporal.ChronoUnit;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "cold_storage_logs")
-@EntityListeners(AuditingEntityListener.class)
-public class ColdStorageLog {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "log_id")
-    private Long logId;
+public class ColdStorageLog extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "package_id", nullable = false)
@@ -77,7 +74,7 @@ public class ColdStorageLog {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", updatable = false)
-    private Employee createdBy;
+    private SlaughterhouseUser createdBy;
 
     @LastModifiedDate
     @Column(name = "updated_at")
@@ -86,7 +83,7 @@ public class ColdStorageLog {
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    private Employee updatedBy;
+    private SlaughterhouseUser updatedBy;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
@@ -95,21 +92,6 @@ public class ColdStorageLog {
     @Column(name = "version")
     private Integer version;
 
-    @PrePersist
-    protected void onCreate() {
-        if (isActive == null) {
-            isActive = true;
-        }
-        if (status == null) {
-            status = StorageStatus.STORED;
-        }
-        if (entryTime == null) {
-            entryTime = LocalDateTime.now();
-        }
-        if (entryDate == null) {
-            entryDate = LocalDate.now();
-        }
-    }
 
     // Business methods
     public Long calculateStorageDuration() {

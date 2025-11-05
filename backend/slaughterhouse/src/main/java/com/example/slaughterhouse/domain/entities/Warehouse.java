@@ -1,18 +1,19 @@
 package com.example.slaughterhouse.domain.entities;
 
-import com.example.slaughterhouse.domain.enums.WarehouseType;
+import com.example.shared.domain.entity.BaseWarehouse;
 import com.example.slaughterhouse.domain.valueobjects.Address;
 import com.example.slaughterhouse.domain.valueobjects.Temperature;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,21 +24,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "warehouses")
-@EntityListeners(AuditingEntityListener.class)
-public class Warehouse {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "warehouse_id")
-    private Long warehouseId;
-
-    @Column(name = "warehouse_name", nullable = false, length = 200)
-    private String warehouseName;
-
-    @Column(name = "warehouse_code", nullable = false, unique = true, length = 50)
-    private String warehouseCode;
+public class Warehouse extends BaseWarehouse {
 
     @Column(name = "location", length = 200)
     private String location;
@@ -51,11 +41,6 @@ public class Warehouse {
     })
     private Address address;
 
-    @Column(name = "total_capacity", nullable = false)
-    private Float totalCapacity; // in cubic meters or pallets
-
-    @Column(name = "current_occupancy", nullable = false)
-    private Float currentOccupancy = 0f;
 
     @Embedded
     @AttributeOverrides({
@@ -66,11 +51,8 @@ public class Warehouse {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
-    private Employee manager;
+    private SlaughterhouseUser manager;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "warehouse_type", nullable = false, length = 50)
-    private WarehouseType warehouseType;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
@@ -86,7 +68,7 @@ public class Warehouse {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", updatable = false)
-    private Employee createdBy;
+    private SlaughterhouseUser createdBy;
 
     @LastModifiedDate
     @Column(name = "updated_at")
@@ -95,44 +77,21 @@ public class Warehouse {
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    private Employee updatedBy;
+    private SlaughterhouseUser updatedBy;
 
     @Version
     @Column(name = "version")
     private Integer version;
 
-    @PrePersist
-    protected void onCreate() {
-        if (isActive == null) {
-            isActive = true;
-        }
-        if (currentOccupancy == null) {
-            currentOccupancy = 0f;
-        }
-    }
-
-    // Business methods
-    public Float getAvailableSpace() {
-        return totalCapacity - currentOccupancy;
-    }
-
-    public Float getOccupancyPercentage() {
-        if (totalCapacity == 0) return 0f;
-        return (currentOccupancy / totalCapacity) * 100;
-    }
-
-    public Boolean hasCapacity(Float requiredSpace) {
-        return getAvailableSpace() >= requiredSpace;
-    }
 
     public Boolean isOverCapacity() {
-        return currentOccupancy > totalCapacity;
+        return currentOccupancy.compareTo(capacity) > 0;
     }
 
-    public void updateOccupancy(Float delta) {
-        this.currentOccupancy += delta;
-        if (this.currentOccupancy < 0) {
-            this.currentOccupancy = 0f;
+    public void updateOccupancy(BigDecimal delta) {
+        this.currentOccupancy =  this.currentOccupancy.add(delta);
+        if (this.currentOccupancy.compareTo(BigDecimal.ZERO) > 0) {
+            this.currentOccupancy = this.currentOccupancy.add(BigDecimal.ZERO);
         }
     }
 }

@@ -1,14 +1,16 @@
 package com.example.slaughterhouse.domain.entities;
 
+import com.example.shared.domain.entity.BaseEntity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,17 +21,12 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "daily_stats", uniqueConstraints = {
         @UniqueConstraint(columnNames = "record_date")
 })
-@EntityListeners(AuditingEntityListener.class)
-public class DailyStats {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "stats_id")
-    private Long statsId;
+public class DailyStats extends BaseEntity {
 
     @Column(name = "record_date", nullable = false, unique = true)
     private LocalDate recordDate;
@@ -66,7 +63,7 @@ public class DailyStats {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
-    private Employee manager;
+    private SlaughterhouseUser manager;
 
     // Audit fields
     @CreatedDate
@@ -76,7 +73,7 @@ public class DailyStats {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", updatable = false)
-    private Employee createdBy;
+    private SlaughterhouseUser createdBy;
 
     @LastModifiedDate
     @Column(name = "updated_at")
@@ -85,7 +82,7 @@ public class DailyStats {
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    private Employee updatedBy;
+    private SlaughterhouseUser updatedBy;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
@@ -94,15 +91,6 @@ public class DailyStats {
     @Column(name = "version")
     private Integer version;
 
-    @PrePersist
-    protected void onCreate() {
-        if (isActive == null) {
-            isActive = true;
-        }
-        if (recordDate == null) {
-            recordDate = LocalDate.now();
-        }
-    }
 
     // Business methods
     public void calculateYieldPercentage() {

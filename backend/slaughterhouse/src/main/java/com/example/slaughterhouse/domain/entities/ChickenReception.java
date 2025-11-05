@@ -1,14 +1,16 @@
 package com.example.slaughterhouse.domain.entities;
 
+
+import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,21 +21,16 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "chicken_receptions")
-@EntityListeners(AuditingEntityListener.class)
-public class ChickenReception {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reception_id")
-    private Long receptionId;
+public class ChickenReception extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "slaughter_lot_id", nullable = false)
     private SlaughterLot slaughterLot;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_notice_id")
     private DeliveryNotice deliveryNotice;
 
@@ -45,7 +42,7 @@ public class ChickenReception {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "received_by", nullable = false)
-    private Employee receivedBy;
+    private SlaughterhouseUser receivedBy;
 
     @Column(name = "quantity_received", nullable = false)
     private Integer quantityReceived;
@@ -76,7 +73,7 @@ public class ChickenReception {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", updatable = false)
-    private Employee createdBy;
+    private SlaughterhouseUser createdBy;
 
     @LastModifiedDate
     @Column(name = "updated_at")
@@ -85,7 +82,7 @@ public class ChickenReception {
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    private Employee updatedBy;
+    private SlaughterhouseUser updatedBy;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
@@ -94,18 +91,6 @@ public class ChickenReception {
     @Column(name = "version")
     private Integer version;
 
-    @PrePersist
-    protected void onCreate() {
-        if (isActive == null) {
-            isActive = true;
-        }
-        if (receptionTime == null) {
-            receptionTime = LocalDateTime.now();
-        }
-        if (animalWelfareCheck == null) {
-            animalWelfareCheck = false;
-        }
-    }
 
     // Business methods
     public Float calculateMortalityRate() {

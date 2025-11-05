@@ -1,7 +1,7 @@
 package com.example.broilerfarm.infrastructure.persistence.repositories;
 
 import com.example.broilerfarm.domain.entities.Warehouse;
-import com.example.broilerfarm.domain.enums.WarehouseType;
+import com.example.shared.domain.enums.WarehouseType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

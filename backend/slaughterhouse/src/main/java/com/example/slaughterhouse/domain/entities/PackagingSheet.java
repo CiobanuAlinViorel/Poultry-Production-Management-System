@@ -1,16 +1,17 @@
 package com.example.slaughterhouse.domain.entities;
 
+import com.example.shared.domain.entity.BaseEntity;
 import com.example.slaughterhouse.domain.enums.PackagingStatus;
 import com.example.slaughterhouse.domain.valueobjects.Weight;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,15 +24,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "packaging_sheets")
-@EntityListeners(AuditingEntityListener.class)
-public class PackagingSheet {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sheet_id")
-    private Long sheetId;
+public class PackagingSheet extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "slaughter_lot_id", nullable = false)
@@ -42,7 +38,7 @@ public class PackagingSheet {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "packaging_employee_id", nullable = false)
-    private Employee packagingEmployee;
+    private SlaughterhouseUser packagingEmployee;
 
     @Column(name = "total_products")
     private Integer totalProducts;
@@ -75,7 +71,7 @@ public class PackagingSheet {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", updatable = false)
-    private Employee createdBy;
+    private SlaughterhouseUser createdBy;
 
     @LastModifiedDate
     @Column(name = "updated_at")
@@ -84,7 +80,7 @@ public class PackagingSheet {
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    private Employee updatedBy;
+    private SlaughterhouseUser updatedBy;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
@@ -93,18 +89,6 @@ public class PackagingSheet {
     @Column(name = "version")
     private Integer version;
 
-    @PrePersist
-    protected void onCreate() {
-        if (isActive == null) {
-            isActive = true;
-        }
-        if (status == null) {
-            status = PackagingStatus.IN_PROGRESS;
-        }
-        if (packagingDate == null) {
-            packagingDate = LocalDate.now();
-        }
-    }
 
     // Business methods
     public void calculateTotals() {

@@ -1,5 +1,7 @@
 package com.example.slaughterhouse.domain.entities;
 
+
+import com.example.shared.domain.entity.BaseEntity;
 import com.example.slaughterhouse.domain.enums.DisposalMethod;
 import com.example.slaughterhouse.domain.enums.WasteCategory;
 import com.example.slaughterhouse.domain.valueobjects.DateRange;
@@ -7,12 +9,12 @@ import com.example.slaughterhouse.domain.valueobjects.Weight;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,15 +25,10 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "waste_reports")
-@EntityListeners(AuditingEntityListener.class)
-public class WasteReport {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "waste_report_id")
-    private Long wasteReportId;
+public class WasteReport extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "slaughter_lot_id", nullable = false, unique = true)
@@ -76,7 +73,7 @@ public class WasteReport {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", updatable = false)
-    private Employee createdBy;
+    private SlaughterhouseUser createdBy;
 
     @LastModifiedDate
     @Column(name = "updated_at")
@@ -85,7 +82,7 @@ public class WasteReport {
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    private Employee updatedBy;
+    private SlaughterhouseUser updatedBy;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
@@ -93,16 +90,6 @@ public class WasteReport {
     @Version
     @Column(name = "version")
     private Integer version;
-
-    @PrePersist
-    protected void onCreate() {
-        if (isActive == null) {
-            isActive = true;
-        }
-        if (reportDate == null) {
-            reportDate = LocalDate.now();
-        }
-    }
 
     // Business methods
     public Float calculateWastePercentage(Float totalProcessedWeight) {

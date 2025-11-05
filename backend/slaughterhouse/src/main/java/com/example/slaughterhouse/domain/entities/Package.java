@@ -1,5 +1,8 @@
 package com.example.slaughterhouse.domain.entities;
 
+
+import com.example.shared.domain.entity.BaseEntity;
+
 import com.example.slaughterhouse.domain.enums.PackageStatus;
 import com.example.slaughterhouse.domain.enums.PackageType;
 import com.example.slaughterhouse.domain.valueobjects.PackageCode;
@@ -7,12 +10,12 @@ import com.example.slaughterhouse.domain.valueobjects.Weight;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,15 +28,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "packages")
-@EntityListeners(AuditingEntityListener.class)
-public class Package {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "package_id")
-    private Long packageId;
+public class Package extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "packaging_sheet_id", nullable = false)
@@ -87,7 +85,7 @@ public class Package {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", updatable = false)
-    private Employee createdBy;
+    private SlaughterhouseUser createdBy;
 
     @LastModifiedDate
     @Column(name = "updated_at")
@@ -96,7 +94,7 @@ public class Package {
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")
-    private Employee updatedBy;
+    private SlaughterhouseUser updatedBy;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
@@ -104,23 +102,6 @@ public class Package {
     @Version
     @Column(name = "version")
     private Integer version;
-
-    @PrePersist
-    protected void onCreate() {
-        if (isActive == null) {
-            isActive = true;
-        }
-        if (status == null) {
-            status = PackageStatus.PACKAGED;
-        }
-        if (packagingDate == null) {
-            packagingDate = LocalDate.now();
-        }
-        if (expiryDate == null) {
-            // Default expiry: 30 days from packaging
-            expiryDate = packagingDate.plusDays(30);
-        }
-    }
 
     // Business methods
     public Boolean isExpired() {
