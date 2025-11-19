@@ -41,9 +41,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     // ✅ Găsește employees după last name (ignore case)
     List<Employee> findByLastNameIgnoreCase(String lastName);
 
-    // ✅ Căutare employees după nume (first name sau last name conține)
-    @Query("SELECT e FROM Employee e WHERE LOWER(e.firstName) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(e.lastName) LIKE LOWER(CONCAT('%', :name, '%'))")
-    List<Employee> findByNameContainingIgnoreCase(@Param("name") String name);
 
     // ✅ Numără employees după rol
     long countByRole(Role role);
@@ -60,11 +57,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     // ✅ Găsește employees inactivi (folosind inherited field din BaseEntity)
     List<Employee> findByIsActiveFalse();
 
-    // ✅ Găsește toți employees cu datele lor complete (eager loading)
-    @Query("SELECT e FROM Employee e LEFT JOIN User WHERE e.id = :id")
-    Optional<Employee> findByIdWithUser(@Param("id") Long id);
 
-    // ✅ Găsește employees cu paginare și sortare după nume
-    @Query("SELECT e FROM Employee e ORDER BY e.lastName, e.firstName")
-    List<Employee> findAllOrderByName();
+
 }

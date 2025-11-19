@@ -5,6 +5,7 @@ import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +33,6 @@ public class BroilerFarm extends BaseEntity {
     @Column(name = "license_number" ,unique = true, nullable = false)
     private String licenseNumber;
 
-    @OneToOne
-    @JoinColumn(name = "manager_id",unique = true, nullable = false)
-    private FarmEmployee manager;
-
     @OneToMany(mappedBy = "broilerFarm", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<FarmEmployee> employees = new ArrayList<>();
@@ -44,18 +41,6 @@ public class BroilerFarm extends BaseEntity {
     @Builder.Default
     private List<Warehouse> warehouses = new ArrayList<>();
 
-
-    public void setManagerFarm(FarmEmployee manager) {
-        if (this.manager != null) {
-            this.manager.setBroilerFarm(null);
-        }
-
-        this.manager = manager;
-
-        if (manager != null) {
-            this.manager.setBroilerFarm(this);
-        }
-    }
 
     public void addEmployee(FarmEmployee employee) {
         employees.add(employee);
@@ -66,6 +51,8 @@ public class BroilerFarm extends BaseEntity {
         warehouses.add(warehouse);
         warehouse.setFarm(this);
     }
+
+
 
     public void removeEmployee(FarmEmployee employee) {
         employees.remove(employee);
@@ -81,4 +68,12 @@ public class BroilerFarm extends BaseEntity {
         this.licenseNumber = licenseNumber;
     }
 
+    public BroilerFarm(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String farmName, String location, String address, Integer capacity, String licenseNumber) {
+        super(id, createdAt, updatedAt);
+        this.farmName = farmName;
+        this.location = location;
+        this.address = address;
+        this.capacity = capacity;
+        this.licenseNumber = licenseNumber;
+    }
 }

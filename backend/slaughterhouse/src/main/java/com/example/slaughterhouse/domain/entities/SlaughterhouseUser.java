@@ -29,4 +29,8 @@ public class SlaughterhouseUser extends User {
 
     @Column(name = "notes", length = 1000)
     private String notes;
+
+    public void setFullName(String s) {
+
+    }
 }

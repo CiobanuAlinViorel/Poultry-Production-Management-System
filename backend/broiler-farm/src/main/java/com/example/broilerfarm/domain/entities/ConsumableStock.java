@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "consumable_stock")
@@ -155,5 +156,18 @@ public class ConsumableStock extends BaseEntity {
     @Transient
     public boolean isBelowReorderPoint(BigDecimal reorderPoint) {
         return getAvailableQuantity().compareTo(reorderPoint) < 0;
+    }
+
+    public ConsumableStock(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Consumable consumable, Warehouse warehouse, String batchNumber, BigDecimal quantityOnHand, BigDecimal reservedQuantity, LocalDate manufacturingDate, LocalDate lastRestockDate, LocalDate expirationDate, StockStatus status) {
+        super(id, createdAt, updatedAt);
+        this.consumable = consumable;
+        this.warehouse = warehouse;
+        this.batchNumber = batchNumber;
+        this.quantityOnHand = quantityOnHand;
+        this.reservedQuantity = reservedQuantity;
+        this.manufacturingDate = manufacturingDate;
+        this.lastRestockDate = lastRestockDate;
+        this.expirationDate = expirationDate;
+        this.status = status;
     }
 }

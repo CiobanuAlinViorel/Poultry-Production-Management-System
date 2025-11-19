@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "cons_reception_line")
@@ -119,5 +120,18 @@ public class ConsReceptionLine extends BaseEntity {
         }
         LocalDate thresholdDate = LocalDate.now().plusDays(daysThreshold);
         return expirationDate.isBefore(thresholdDate) || expirationDate.isEqual(thresholdDate);
+    }
+
+    public ConsReceptionLine(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, ConsumableReception reception, Consumable consumable, BigDecimal quantityReceived, BigDecimal unitPrice, String batchNumber, LocalDate manufacturingDate, LocalDate expirationDate, String storageLocation, QualityStatus qualityStatus) {
+        super(id, createdAt, updatedAt);
+        this.reception = reception;
+        this.consumable = consumable;
+        this.quantityReceived = quantityReceived;
+        this.unitPrice = unitPrice;
+        this.batchNumber = batchNumber;
+        this.manufacturingDate = manufacturingDate;
+        this.expirationDate = expirationDate;
+        this.storageLocation = storageLocation;
+        this.qualityStatus = qualityStatus;
     }
 }

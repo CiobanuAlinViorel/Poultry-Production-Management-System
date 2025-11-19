@@ -8,6 +8,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,5 +144,13 @@ public class ConsumptionSheet extends BaseEntity {
     @Transient
     public boolean isBelowMinimumConsumption(BigDecimal minPerBird) {
         return getAverageFeedPerBird().compareTo(minPerBird) < 0;
+    }
+
+    public ConsumptionSheet(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, ChicksLot lot, LocalDate sheetDate, Integer birdsAlive, ConsumptionSheetStatus status) {
+        super(id, createdAt, updatedAt);
+        this.lot = lot;
+        this.sheetDate = sheetDate;
+        this.birdsAlive = birdsAlive;
+        this.status = status;
     }
 }

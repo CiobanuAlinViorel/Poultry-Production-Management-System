@@ -219,4 +219,21 @@ public class DeliveryNotice extends BaseEntity {
     public boolean hasMultipleLots() {
         return deliveryLines.size() > 1;
     }
+
+    public DeliveryNotice(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime scheduledDate, BroilerFarm farm, String destination, FarmEmployee transportManager, String vehicleInfo, LocalDateTime loadingTime, String handlingRequirements, ApprovalStatus approvalStatus, FarmEmployee approvedBy, DataSource dataSource, String slaughterhouseDock, LocalDateTime transmissionTimestamp, String specialInstructions) {
+        super(id, createdAt, updatedAt);
+        this.scheduledDate = scheduledDate;
+        this.farm = farm;
+        this.destination = destination;
+        this.transportManager = transportManager;
+        this.vehicleInfo = vehicleInfo;
+        this.loadingTime = loadingTime;
+        this.handlingRequirements = handlingRequirements;
+        this.approvalStatus = approvalStatus;
+        this.approvedBy = approvedBy;
+        this.dataSource = dataSource;
+        this.slaughterhouseDock = slaughterhouseDock;
+        this.transmissionTimestamp = transmissionTimestamp;
+        this.specialInstructions = specialInstructions;
+    }
 }

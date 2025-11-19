@@ -18,12 +18,12 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
 
     List<Session> findByUser(User user);
 
-    @Query("SELECT s FROM Session s WHERE s.user = :user AND s.isActive = true AND s.expiresAt > :now")
-    List<Session> findActiveSessionsByUser(@Param("user") User user, @Param("now") LocalDateTime now);
-
-    default List<Session> findActiveSessionsByUser(User user) {
-        return findActiveSessionsByUser(user, LocalDateTime.now());
-    }
+//    @Query("SELECT s FROM Session s WHERE s.user = :user AND s.isActive = true AND s.expiresAt > :now")
+//    List<Session> findActiveSessionsByUser(@Param("user") User user, @Param("now") LocalDateTime now);
+//
+//    default List<Session> findActiveSessionsByUser(User user) {
+//        return findActiveSessionsByUser(user, LocalDateTime.now());
+//    }
 
     @Query("SELECT s FROM Session s WHERE s.expiresAt < :now AND s.isActive = true")
     List<Session> findExpiredSessions(@Param("now") LocalDateTime now);

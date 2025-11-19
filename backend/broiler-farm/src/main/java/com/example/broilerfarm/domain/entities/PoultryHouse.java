@@ -6,6 +6,8 @@ import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "poultry_house")
 @Getter
@@ -42,6 +44,17 @@ public class PoultryHouse extends BaseEntity {
     @Column(name = "current_occupancy")
     private Integer currentOccupancy;
 
+    public PoultryHouse(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, BroilerFarm farm, Integer capacity, Integer currentLot, Double area, PoultryHouseType type, String equipmentType, PoultryHouseStatus status, Integer currentOccupancy) {
+        super(id, createdAt, updatedAt);
+        this.farm = farm;
+        this.capacity = capacity;
+        this.currentLot = currentLot;
+        this.area = area;
+        this.type = type;
+        this.equipmentType = equipmentType;
+        this.status = status;
+        this.currentOccupancy = currentOccupancy;
+    }
 }
 
 

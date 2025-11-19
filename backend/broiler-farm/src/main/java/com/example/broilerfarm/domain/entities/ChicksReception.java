@@ -64,8 +64,23 @@ public class ChicksReception extends BaseEntity {
 
     // ✅ AGGREGATE: ChicksReception contain its lines
     @OneToMany(mappedBy = "reception", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
     private List<ChicksReceptionLine> receptionLines = new ArrayList<>();
+
+    public ChicksReception(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String hatcheryDeliveryNoticeId, LocalDateTime receptionDate, BroilerFarm farm, FarmEmployee receivingEmployee, String transportConditions, String truckInfo, String documentReference, ReceptionStatus status, Integer totalQuantityReceived, Integer totalChicksAlive, Integer totalChicksDOA, Integer totalChicksWeak) {
+        super(id, createdAt, updatedAt);
+        this.hatcheryDeliveryNoticeId = hatcheryDeliveryNoticeId;
+        this.receptionDate = receptionDate;
+        this.farm = farm;
+        this.receivingEmployee = receivingEmployee;
+        this.transportConditions = transportConditions;
+        this.truckInfo = truckInfo;
+        this.documentReference = documentReference;
+        this.status = status;
+        this.totalQuantityReceived = totalQuantityReceived;
+        this.totalChicksAlive = totalChicksAlive;
+        this.totalChicksDOA = totalChicksDOA;
+        this.totalChicksWeak = totalChicksWeak;
+    }
 
     // ✅ Business logic for lines management
     public void addReceptionLine(ChicksReceptionLine line) {

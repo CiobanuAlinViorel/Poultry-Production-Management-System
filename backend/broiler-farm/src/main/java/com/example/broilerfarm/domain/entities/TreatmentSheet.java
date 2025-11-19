@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,5 +119,15 @@ public class TreatmentSheet extends BaseEntity {
     @Transient
     public boolean hasActiveWithdrawal() {
         return isInWithdrawalPeriod();
+    }
+
+    public TreatmentSheet(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, ChicksLot lot, FarmEmployee veterinarian, String diagnosis, String treatmentReason, LocalDate treatmentDate, TreatmentStatus status) {
+        super(id, createdAt, updatedAt);
+        this.lot = lot;
+        this.veterinarian = veterinarian;
+        this.diagnosis = diagnosis;
+        this.treatmentReason = treatmentReason;
+        this.treatmentDate = treatmentDate;
+        this.status = status;
     }
 }

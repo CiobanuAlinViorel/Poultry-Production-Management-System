@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Entity
@@ -78,5 +79,20 @@ public class ChicksLot extends BaseEntity {
     @Transient
     public int getDaysInFarm() {
         return (int) ChronoUnit.DAYS.between(this.receptionDate, LocalDate.now());
+    }
+
+    public ChicksLot(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String lotNumber, PoultryHouse house, String hatcherySource, String breed, LocalDate receptionDate, int initialQuantity, int currentQuantity, LocalDate expectedSlaughterDate, LocalDate actualSlaughterDate, ChicksLotStatus status, double expectedMortalityRate) {
+        super(id, createdAt, updatedAt);
+        this.lotNumber = lotNumber;
+        this.house = house;
+        this.hatcherySource = hatcherySource;
+        this.breed = breed;
+        this.receptionDate = receptionDate;
+        this.initialQuantity = initialQuantity;
+        this.currentQuantity = currentQuantity;
+        this.expectedSlaughterDate = expectedSlaughterDate;
+        this.actualSlaughterDate = actualSlaughterDate;
+        this.status = status;
+        this.expectedMortalityRate = expectedMortalityRate;
     }
 }

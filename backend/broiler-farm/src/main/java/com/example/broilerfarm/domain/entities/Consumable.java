@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "consumable")
@@ -79,5 +80,18 @@ public class Consumable extends BaseEntity {
             throw new IllegalArgumentException("Reorder point cannot be negative");
         }
         this.reorderPoint = newReorderPoint;
+    }
+
+    public Consumable(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String name, ConsumableType type, String category, UnitOfMeasure unitOfMeasure, BigDecimal reorderPoint, BigDecimal standardPrice, String supplier, String storageRequirements, Integer shelfLife) {
+        super(id, createdAt, updatedAt);
+        this.name = name;
+        this.type = type;
+        this.category = category;
+        this.unitOfMeasure = unitOfMeasure;
+        this.reorderPoint = reorderPoint;
+        this.standardPrice = standardPrice;
+        this.supplier = supplier;
+        this.storageRequirements = storageRequirements;
+        this.shelfLife = shelfLife;
     }
 }

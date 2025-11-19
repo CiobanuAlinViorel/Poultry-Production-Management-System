@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 
 public class Session extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
 
     @Column(unique = true, nullable = false)
     private String token;
@@ -45,7 +45,7 @@ public class Session extends BaseEntity {
     // Domain Methods
     public static Session createNew(User user, String deviceInfo, String ipAddress) {
         return Session.builder()
-                .user(user)
+               // .user(user)
                 .deviceInfo(deviceInfo)
                 .ipAddress(ipAddress)
                 .createdAt(LocalDateTime.now())

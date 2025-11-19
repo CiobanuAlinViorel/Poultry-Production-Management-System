@@ -8,6 +8,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "observation_sheet")
@@ -275,5 +276,33 @@ public class ObservationSheet extends BaseEntity {
                 .multiply(BigDecimal.valueOf(100));
 
         return coefficientOfVariation.compareTo(maxVariancePercentage) > 0;
+    }
+
+    public ObservationSheet(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, ChicksLot lot, FarmEmployee observer, Integer weekNumber, LocalDate startDate, LocalDate endDate, ObservationSheetStatus status, Integer endingBirdCount, Integer startingBirdCount, Integer totalMortality, BigDecimal averageDailyMortality, Integer totalFeedConsumed, Integer totalWaterConsumed, Integer sampleSize, BigDecimal averageWeight, BigDecimal weightStdDev, BigDecimal maxWeight, BigDecimal minWeight, BigDecimal weightGain, BigDecimal fcr, BigDecimal adg, String healthObservations, String behavioralNotes, String environmentalNotes, String concerns) {
+        super(id, createdAt, updatedAt);
+        this.lot = lot;
+        this.observer = observer;
+        this.weekNumber = weekNumber;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.endingBirdCount = endingBirdCount;
+        this.startingBirdCount = startingBirdCount;
+        this.totalMortality = totalMortality;
+        this.averageDailyMortality = averageDailyMortality;
+        this.totalFeedConsumed = totalFeedConsumed;
+        this.totalWaterConsumed = totalWaterConsumed;
+        this.sampleSize = sampleSize;
+        this.averageWeight = averageWeight;
+        this.weightStdDev = weightStdDev;
+        this.maxWeight = maxWeight;
+        this.minWeight = minWeight;
+        this.weightGain = weightGain;
+        this.fcr = fcr;
+        this.adg = adg;
+        this.healthObservations = healthObservations;
+        this.behavioralNotes = behavioralNotes;
+        this.environmentalNotes = environmentalNotes;
+        this.concerns = concerns;
     }
 }

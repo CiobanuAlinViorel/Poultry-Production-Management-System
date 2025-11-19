@@ -6,7 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -36,4 +36,13 @@ public abstract class Employee extends BaseEntity {
     @Column(name = "hire_date", nullable = false)
     protected LocalDate hireDate;
 
+    public Employee(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String firstName, String lastName, String email, String phone, Role role, LocalDate hireDate) {
+        super(id, createdAt, updatedAt);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
+        this.hireDate = hireDate;
+    }
 }

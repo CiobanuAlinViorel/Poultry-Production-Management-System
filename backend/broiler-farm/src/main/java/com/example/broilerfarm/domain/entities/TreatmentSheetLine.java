@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "treatment_sheet_line")
@@ -118,5 +119,20 @@ public class TreatmentSheetLine extends BaseEntity {
         }
         LocalDate today = LocalDate.now();
         return (int) today.until(getSlaughterAllowedDate(), java.time.temporal.ChronoUnit.DAYS);
+    }
+
+    public TreatmentSheetLine(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, TreatmentSheet treatmentSheet, Consumable medication, BigDecimal dosage, String dosageUnit, AdministrationMethod administrationMethod, Integer duration, LocalDate startDate, LocalDate endDate, Integer withdrawalPeriod, BigDecimal quantityUsed, String batchNumber) {
+        super(id, createdAt, updatedAt);
+        this.treatmentSheet = treatmentSheet;
+        this.medication = medication;
+        this.dosage = dosage;
+        this.dosageUnit = dosageUnit;
+        this.administrationMethod = administrationMethod;
+        this.duration = duration;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.withdrawalPeriod = withdrawalPeriod;
+        this.quantityUsed = quantityUsed;
+        this.batchNumber = batchNumber;
     }
 }

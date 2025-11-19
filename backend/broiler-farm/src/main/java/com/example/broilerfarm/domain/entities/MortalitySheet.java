@@ -9,6 +9,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "mortality_sheet")
@@ -166,5 +167,21 @@ public class MortalitySheet extends BaseEntity {
         // Mortalitate zilnică > 0.5% SAU cumulativ > expected + 2%
         return isHighMortality(BigDecimal.valueOf(0.5)) ||
                 (lot != null && isCumulativeHighMortality(BigDecimal.valueOf(lot.getExpectedMortalityRate())));
+    }
+
+    public MortalitySheet(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, ChicksLot lot, FarmEmployee reportingEmployee, LocalDate sheetDate, Integer totalMortality, Integer cumulativeMortality, MortalitySheetStatus status, String primaryCause, Integer ageInDays, BigDecimal averageWeight, DisposalMethod disposalMethod, String locationNotes, String observations) {
+        super(id, createdAt, updatedAt);
+        this.lot = lot;
+        this.reportingEmployee = reportingEmployee;
+        this.sheetDate = sheetDate;
+        this.totalMortality = totalMortality;
+        this.cumulativeMortality = cumulativeMortality;
+        this.status = status;
+        this.primaryCause = primaryCause;
+        this.ageInDays = ageInDays;
+        this.averageWeight = averageWeight;
+        this.disposalMethod = disposalMethod;
+        this.locationNotes = locationNotes;
+        this.observations = observations;
     }
 }

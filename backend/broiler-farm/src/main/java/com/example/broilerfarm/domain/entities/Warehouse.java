@@ -2,6 +2,7 @@ package com.example.broilerfarm.domain.entities;
 
 import com.example.shared.domain.entity.BaseEntity;
 import com.example.shared.domain.entity.BaseWarehouse;
+import com.example.shared.domain.enums.WarehouseType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -59,5 +60,11 @@ public class Warehouse extends BaseWarehouse {
     @Transient
     public boolean isNearCapacity(BigDecimal threshold) {
         return getOccupancyPercentage().compareTo(threshold) >= 0;
+    }
+
+    public Warehouse(String warehouseName, String warehouseCode, WarehouseType type, BigDecimal capacity, BigDecimal currentOccupancy, BroilerFarm farm, FarmEmployee responsibleEmployee) {
+        super(warehouseName, warehouseCode, type, capacity, currentOccupancy);
+        this.farm = farm;
+        this.responsibleEmployee = responsibleEmployee;
     }
 }

@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,5 +166,17 @@ public class ConsumableReception extends BaseEntity {
     public boolean hasRejectedItems() {
         return receptionLines.stream()
                 .anyMatch(line -> !line.isAccepted());
+    }
+
+    public ConsumableReception(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String purchaseOrderRef, String supplier, Warehouse receivingWarehouse, LocalDate receptionDate, BigDecimal totalAmount, FarmEmployee receivingEmployee, ApprovalStatus approvalStatus, String notes) {
+        super(id, createdAt, updatedAt);
+        this.purchaseOrderRef = purchaseOrderRef;
+        this.supplier = supplier;
+        this.receivingWarehouse = receivingWarehouse;
+        this.receptionDate = receptionDate;
+        this.totalAmount = totalAmount;
+        this.receivingEmployee = receivingEmployee;
+        this.approvalStatus = approvalStatus;
+        this.notes = notes;
     }
 }

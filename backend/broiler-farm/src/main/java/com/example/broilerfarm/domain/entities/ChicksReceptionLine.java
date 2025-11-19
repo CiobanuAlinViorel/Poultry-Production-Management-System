@@ -5,6 +5,8 @@ import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "chicks_reception_line")
 @Getter
@@ -103,5 +105,18 @@ public class ChicksReceptionLine extends BaseEntity {
             return 0.0;
         }
         return (chicksDOA * 100.0) / quantity;
+    }
+
+    public ChicksReceptionLine(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, ChicksReception reception, PoultryHouse poultryHouse, ChicksLot createdLot, Integer quantity, Integer chicksAlive, Integer chicksDOA, Integer chicksWeak, QualityGrade qualityGrade, String notes) {
+        super(id, createdAt, updatedAt);
+        this.reception = reception;
+        this.poultryHouse = poultryHouse;
+        this.createdLot = createdLot;
+        this.quantity = quantity;
+        this.chicksAlive = chicksAlive;
+        this.chicksDOA = chicksDOA;
+        this.chicksWeak = chicksWeak;
+        this.qualityGrade = qualityGrade;
+        this.notes = notes;
     }
 }

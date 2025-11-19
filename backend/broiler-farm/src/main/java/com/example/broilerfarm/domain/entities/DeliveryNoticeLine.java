@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "delivery_notice_line")
@@ -153,5 +154,19 @@ public class DeliveryNoticeLine extends BaseEntity {
             return null;
         }
         return actualAverageWeight.subtract(averageWeight);
+    }
+
+
+    public DeliveryNoticeLine(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, DeliveryNotice deliveryNotice, ChicksLot lot, Integer estimatedQuantity, BigDecimal averageWeight, QualityGrade qualityGrade, String specialInstructions, String loadingBay, Integer actualQuantityDelivered, BigDecimal actualAverageWeight) {
+        super(id, createdAt, updatedAt);
+        this.deliveryNotice = deliveryNotice;
+        this.lot = lot;
+        this.estimatedQuantity = estimatedQuantity;
+        this.averageWeight = averageWeight;
+        this.qualityGrade = qualityGrade;
+        this.specialInstructions = specialInstructions;
+        this.loadingBay = loadingBay;
+        this.actualQuantityDelivered = actualQuantityDelivered;
+        this.actualAverageWeight = actualAverageWeight;
     }
 }

@@ -175,4 +175,22 @@ public abstract class User extends BaseEntity {
     public boolean isAccountExpired() {
         return  Boolean.TRUE.equals(accountLocked);
     }
+
+    public User(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime resetTokenExpiry, String passwordResetToken, LocalDate passwordLastChanged, String passwordChangeReason, Boolean mustChangePassword, LocalDateTime lastLoginDate, LocalDateTime lastLoginAttempt, Integer failedLoginAttempts, String lockReason, Boolean accountLocked, Boolean isActive, String passwordHash, String email, String username) {
+        super(id, createdAt, updatedAt);
+        this.resetTokenExpiry = resetTokenExpiry;
+        this.passwordResetToken = passwordResetToken;
+        this.passwordLastChanged = passwordLastChanged;
+        this.passwordChangeReason = passwordChangeReason;
+        this.mustChangePassword = mustChangePassword;
+        this.lastLoginDate = lastLoginDate;
+        this.lastLoginAttempt = lastLoginAttempt;
+        this.failedLoginAttempts = failedLoginAttempts;
+        this.lockReason = lockReason;
+        this.accountLocked = accountLocked;
+        this.isActive = isActive;
+        this.passwordHash = passwordHash;
+        this.email = email;
+        this.username = username;
+    }
 }

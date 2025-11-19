@@ -15,12 +15,12 @@ public class SessionManagementDomainService {
 
     private final SessionRepository sessionRepository;
 
-    public Session createUserSession(User user, String deviceInfo, String ipAddress) {
-        invalidateExistingSessions(user);
-
-        Session session = Session.createNew(user, deviceInfo, ipAddress);
-        return sessionRepository.save(session);
-    }
+//    public Session createUserSession(User user, String deviceInfo, String ipAddress) {
+//        invalidateExistingSessions(user);
+//
+//        Session session = Session.createNew(user, deviceInfo, ipAddress);
+//        return sessionRepository.save(session);
+//    }
 
     public void invalidateUserSession(String sessionToken) {
         Session session = sessionRepository.findByToken(sessionToken)
@@ -30,11 +30,11 @@ public class SessionManagementDomainService {
         sessionRepository.save(session);
     }
 
-    public void invalidateAllUserSessions(User user) {
-        List<Session> activeSessions = sessionRepository.findActiveSessionsByUser(user);
-        activeSessions.forEach(Session::invalidate);
-        sessionRepository.saveAll(activeSessions);
-    }
+//    public void invalidateAllUserSessions(User user) {
+//        List<Session> activeSessions = sessionRepository.findActiveSessionsByUser(user);
+//        activeSessions.forEach(Session::invalidate);
+//        sessionRepository.saveAll(activeSessions);
+//    }
 
     public void refreshSession(String sessionToken) {
         Session session = sessionRepository.findByToken(sessionToken)
@@ -50,11 +50,11 @@ public class SessionManagementDomainService {
                 .orElse(false);
     }
 
-    private void invalidateExistingSessions(User user) {
-        List<Session> existingSessions = sessionRepository.findActiveSessionsByUser(user);
-        if (!existingSessions.isEmpty()) {
-            existingSessions.forEach(Session::invalidate);
-            sessionRepository.saveAll(existingSessions);
-        }
-    }
+//    private void invalidateExistingSessions(User user) {
+//        List<Session> existingSessions = sessionRepository.findActiveSessionsByUser(user);
+//        if (!existingSessions.isEmpty()) {
+//            existingSessions.forEach(Session::invalidate);
+//            sessionRepository.saveAll(existingSessions);
+//        }
+//    }
 }
