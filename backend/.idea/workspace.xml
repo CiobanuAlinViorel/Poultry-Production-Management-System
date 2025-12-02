@@ -5,118 +5,79 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfac9320-9479-4b23-9251-1afe4f7afd31" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/test/java/com/example/broilerfarm/services/TestChicksLotFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/broiler-farm/src/test/java/com/example/broilerfarm/services/TestStockManagementService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/ChicksReceptionApplicationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/IChickReceptionApplicationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/BroilerFarmDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/ChickReceptionDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/ChicksLotDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/ChicksReceptionLineDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/ConsReceptionLineDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/ConsumableDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/ConsumableReceptionDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/ConsumableStockDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/ConsumptionSheetDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/ConsumptionSheetLineDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/DeliveryNoticeDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/DeliveryNoticeLineDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/FarmEmployeeDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/MortalitySheetDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/ObservationSheetDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/PoultryHouseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/TreatmentSheetDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/TreatmentSheetLineDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/dto/WarehouseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/rest/BroilerFarmRESTService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/rest/ChicksReceptionRESTService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/application/rest/PoultryHouseRESTService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/BroilerFarmTransformationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/ChicksReceptionServiceImplementation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/ChicksReceptionTransformationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/DeliveryNoticeServiceImplementation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/DeliveryNoticeTransformationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/IChickReceptionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/IDeliveryNoticeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/ITreatmentSheetService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/PoultryHouseTransformationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/TreatmentSheetServiceImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/BroilerFarm.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/BroilerFarm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksLot.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksLot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksReception.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksReception.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksReceptionLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ChicksReceptionLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsReceptionLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsReceptionLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/Consumable.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/Consumable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumableReception.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumableReception.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumableStock.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumableStock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumptionSheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumptionSheet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumptionSheetLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ConsumptionSheetLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/DeliveryNotice.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/DeliveryNotice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/DeliveryNoticeLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/DeliveryNoticeLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/FarmEmployee.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/FarmEmployee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/FarmUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/FarmUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/MortalitySheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/MortalitySheet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ObservationSheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/ObservationSheet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/PoultryHouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/PoultryHouse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/TreatmentSheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/TreatmentSheet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/TreatmentSheetLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/TreatmentSheetLine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/Warehouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/entities/Warehouse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/services/ChicksLotFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/ChicksLotFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/services/DeliveryEligibilityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/DeliveryEligibilityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/services/LotPerformanceCalculatorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/LotPerformanceCalculatorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/services/MortalityAnalysisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/MortalityAnalysisService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/services/ObservationDataAggregationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/ObservationDataAggregationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/services/StockManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/StockManagementService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/domain/services/TreatmentWithdrawalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/services/TreatmentWithdrawalService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/BroilerFarmRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/BroilerFarmRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/BroilerFarm$BroilerFarmBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/BroilerFarm$BroilerFarmBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/BroilerFarm.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/BroilerFarm.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksLot$ChicksLotBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksLot$ChicksLotBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksLot.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksLot.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksReceptionLineRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksReceptionLineRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksReceptionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksReceptionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsReceptionLineRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsReceptionLineRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumableReceptionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumableReceptionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumptionSheetLineRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumptionSheetLineRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumptionSheetRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumptionSheetRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/DeliveryNoticeLineRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/DeliveryNoticeLineRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/DeliveryNoticeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/DeliveryNoticeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/PoultryHouseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/PoultryHouseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/TreatmentSheetLineRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/TreatmentSheetLineRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/TreatmentSheetRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/TreatmentSheetRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/WarehouseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/java/com/example/broilerfarm/infrastructure/persistence/repositories/WarehouseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/src/test/java/com/example/broilerfarm/services/TestChicksLotFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/src/test/java/com/example/broilerfarm/services/TestChicksLotFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksReception$ChicksReceptionBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksReception$ChicksReceptionBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksReception.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksReception.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksReceptionLine$ChicksReceptionLineBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksReceptionLine$ChicksReceptionLineBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksReceptionLine.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ChicksReceptionLine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsReceptionLine$ConsReceptionLineBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsReceptionLine$ConsReceptionLineBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsReceptionLine.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsReceptionLine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/Consumable$ConsumableBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/Consumable$ConsumableBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/Consumable.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/Consumable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumableReception$ConsumableReceptionBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumableReception$ConsumableReceptionBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumableReception.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumableReception.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumableStock$ConsumableStockBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumableStock$ConsumableStockBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumableStock.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumableStock.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumptionSheet$ConsumptionSheetBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumptionSheet$ConsumptionSheetBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumptionSheet.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumptionSheet.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumptionSheetLine$ConsumptionSheetLineBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumptionSheetLine$ConsumptionSheetLineBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumptionSheetLine.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ConsumptionSheetLine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/DeliveryNotice.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/DeliveryNotice.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/DeliveryNoticeLine$DeliveryNoticeLineBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/DeliveryNoticeLine$DeliveryNoticeLineBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/DeliveryNoticeLine.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/DeliveryNoticeLine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/FarmEmployee$FarmEmployeeBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/FarmEmployee$FarmEmployeeBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/FarmEmployee$FarmEmployeeBuilderImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/FarmEmployee$FarmEmployeeBuilderImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/FarmEmployee.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/FarmEmployee.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/FarmUser$FarmUserBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/FarmUser$FarmUserBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/FarmUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/FarmUser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/MortalitySheet$MortalitySheetBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/MortalitySheet$MortalitySheetBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/MortalitySheet.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/MortalitySheet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ObservationSheet$ObservationSheetBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ObservationSheet$ObservationSheetBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ObservationSheet.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/ObservationSheet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/PoultryHouse.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/PoultryHouse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/TreatmentSheet$TreatmentSheetBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/TreatmentSheet$TreatmentSheetBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/TreatmentSheet.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/TreatmentSheet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/TreatmentSheetLine$TreatmentSheetLineBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/TreatmentSheetLine$TreatmentSheetLineBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/TreatmentSheetLine.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/TreatmentSheetLine.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/Warehouse$WarehouseBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/Warehouse$WarehouseBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/Warehouse.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/entities/Warehouse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/ChicksLotFactory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/DeliveryEligibilityService$CriterionStatus.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/DeliveryEligibilityService$DeliveryDateOption.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/DeliveryEligibilityService$DeliveryEligibilityAssessment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/DeliveryEligibilityService$DeliveryEligibilityForecast.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/DeliveryEligibilityService$EligibilityCriterion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/DeliveryEligibilityService$QualityRisk.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/DeliveryEligibilityService$QualityRiskAssessment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/DeliveryEligibilityService$RiskLevel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/DeliveryEligibilityService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/LotPerformanceCalculatorService$LotPerformanceSummary.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/LotPerformanceCalculatorService$LotStatistics.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/LotPerformanceCalculatorService$PerformanceAlerts.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/LotPerformanceCalculatorService$PerformanceMetrics.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/LotPerformanceCalculatorService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/MortalityAnalysisService$HighMortalityLot.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/MortalityAnalysisService$MortalityAnalysis.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/MortalityAnalysisService$WeeklyMortalitySummary.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/MortalityAnalysisService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/ObservationDataAggregationService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/StockManagementService$StockAvailability.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/StockManagementService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/TreatmentWithdrawalService$ActiveWithdrawal.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/TreatmentWithdrawalService$DeliveryDateOption.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/TreatmentWithdrawalService$DeliveryEligibilityForecast.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/TreatmentWithdrawalService$DrugInteractionCheck.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/TreatmentWithdrawalService$WithdrawalAnalysis.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/domain/services/TreatmentWithdrawalService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/BroilerFarmRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/BroilerFarmRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/Employee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/Session.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/repository/EmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/repository/EmployeeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/repository/SessionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/repository/SessionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/service/SessionManagementDomainService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/service/SessionManagementDomainService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/Employee.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/Employee.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/Session$SessionBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/Session$SessionBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/Session.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/Session.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/repository/EmployeeRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/repository/EmployeeRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/repository/SessionRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/repository/SessionRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/service/SessionManagementDomainService.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/service/SessionManagementDomainService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksReceptionLineRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksReceptionLineRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksReceptionRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/ChicksReceptionRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/ConsReceptionLineRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/ConsReceptionLineRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumptionSheetLineRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/ConsumptionSheetLineRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/DeliveryNoticeLineRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/DeliveryNoticeLineRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/TreatmentSheetLineRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/TreatmentSheetLineRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/WarehouseRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/broiler-farm/target/classes/com/example/broilerfarm/infrastructure/persistence/repositories/WarehouseRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/BaseWarehouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/src/main/java/com/example/shared/domain/entity/BaseWarehouse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/BaseWarehouse$BaseWarehouseBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/BaseWarehouse$BaseWarehouseBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/BaseWarehouse.class" beforeDir="false" afterPath="$PROJECT_DIR$/shared-kernel/target/classes/com/example/shared/domain/entity/BaseWarehouse.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,6 +97,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;CiobanuAlinViorel&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/AlinV15/Poultry-Production-Management-System.git&quot;,
+    &quot;accountId&quot;: &quot;29596af3-9a77-418f-a4db-9f808491a4ef&quot;
+  }
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -148,51 +121,52 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.BroilerFarmApplication.executor": "Run",
-    "JUnit.ChicksLotFactoryTest.executor": "Run",
-    "JUnit.StockManagementServiceTest.executor": "Run",
-    "JUnit.TestChicksLotFactory.test_chicksLotFactory.executor": "Run",
-    "Maven.main-backend [clean].executor": "Run",
-    "Maven.main-backend [compile].executor": "Run",
-    "Maven.main-backend [install].executor": "Run",
-    "Maven.main-backend [validate].executor": "Run",
-    "Maven.shared-kernel [clean].executor": "Run",
-    "Maven.shared-kernel [compile].executor": "Run",
-    "Maven.shared-kernel [install].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.BroilerFarmApplication.executor": "Run",
-    "Spring Boot.SlaughterhouseApplication (1).executor": "Run",
-    "Spring Boot.SlaughterhouseApplication.executor": "Run",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/alinv/Documents/Cursuri/M-year1/Multi-tiered Software Development/Lab/Project/PoultryProdManagement/backend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.configurations.included.in.services": "true",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.BroilerFarmApplication.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChicksLotFactoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StockManagementServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TestChicksLotFactory.test_chicksLotFactory.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.main-backend [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.main-backend [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.main-backend [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.main-backend [validate].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.shared-kernel [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.shared-kernel [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.shared-kernel [install].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.BroilerFarmApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.SlaughterhouseApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.SlaughterhouseApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/alinv/Documents/Cursuri/M-year1/Multi-tiered Software Development/Lab/Project/PoultryProdManagement/backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.example.shared.security" />
@@ -208,7 +182,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ChicksLotFactoryTest">
+  <component name="RunManager" selected="Application.BroilerFarmApplication">
     <configuration name="BroilerFarmApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.broilerfarm.BroilerFarmApplication" />
       <module name="broiler-farm" />
@@ -311,10 +285,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.BroilerFarmApplication" />
         <item itemvalue="JUnit.ChicksLotFactoryTest" />
         <item itemvalue="JUnit.StockManagementServiceTest" />
         <item itemvalue="JUnit.TestChicksLotFactory.test_chicksLotFactory" />
-        <item itemvalue="Application.BroilerFarmApplication" />
       </list>
     </recent_temporary>
   </component>

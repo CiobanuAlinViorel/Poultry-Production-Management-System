@@ -16,6 +16,7 @@ public interface PoultryHouseRepository extends JpaRepository<PoultryHouse, Long
 
     List<PoultryHouse> findByFarmId(Long farmId);
 
+
     List<PoultryHouse> findByStatus(PoultryHouseStatus status);
 
     List<PoultryHouse> findByType(PoultryHouseType type);

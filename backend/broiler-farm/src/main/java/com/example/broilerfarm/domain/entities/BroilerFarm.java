@@ -76,4 +76,5 @@ public class BroilerFarm extends BaseEntity {
         this.capacity = capacity;
         this.licenseNumber = licenseNumber;
     }
+
 }

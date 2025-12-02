@@ -98,7 +98,6 @@ class ChicksLotFactoryTest {
                 1L,
                 date.atStartOfDay(),
                 date.atStartOfDay(),
-                "H1",
                 date.atStartOfDay(),
                 broilerFarm,
                 farmEmployee,

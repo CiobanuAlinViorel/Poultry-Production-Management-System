@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "warehouse")
@@ -62,8 +63,8 @@ public class Warehouse extends BaseWarehouse {
         return getOccupancyPercentage().compareTo(threshold) >= 0;
     }
 
-    public Warehouse(String warehouseName, String warehouseCode, WarehouseType type, BigDecimal capacity, BigDecimal currentOccupancy, BroilerFarm farm, FarmEmployee responsibleEmployee) {
-        super(warehouseName, warehouseCode, type, capacity, currentOccupancy);
+    public Warehouse(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String warehouseName, WarehouseType type, BigDecimal capacity, BigDecimal currentOccupancy, BroilerFarm farm, FarmEmployee responsibleEmployee) {
+        super(id, createdAt, updatedAt, warehouseName, type, capacity, currentOccupancy);
         this.farm = farm;
         this.responsibleEmployee = responsibleEmployee;
     }

@@ -64,4 +64,6 @@ public interface DeliveryNoticeRepository extends JpaRepository<DeliveryNotice, 
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate
     );
+
+
 }

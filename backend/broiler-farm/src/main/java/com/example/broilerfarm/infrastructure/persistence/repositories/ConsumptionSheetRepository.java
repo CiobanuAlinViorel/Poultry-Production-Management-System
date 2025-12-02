@@ -47,4 +47,6 @@ public interface ConsumptionSheetRepository extends JpaRepository<ConsumptionShe
     List<ConsumptionSheet> findPendingApprovalByFarm(@Param("farmId") Long farmId);
 
     boolean existsByLotIdAndSheetDate(Long lotId, LocalDate date);
+
+
 }

@@ -36,4 +36,6 @@ public interface ConsumableReceptionRepository extends JpaRepository<ConsumableR
     List<ConsumableReception> findBySupplierOrderByDateDesc(@Param("supplier") String supplier);
 
     boolean existsByPurchaseOrderRef(String poRef);
+
+
 }

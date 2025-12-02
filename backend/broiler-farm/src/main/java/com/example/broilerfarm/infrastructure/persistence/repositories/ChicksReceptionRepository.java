@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface ChicksReceptionRepository extends JpaRepository<ChicksReception, Long> {
 
-    Optional<ChicksReception> findByHatcheryDeliveryNoticeId(String noticeId);
+    //Optional<ChicksReception> findByHatcheryDeliveryNoticeId(String noticeId);
 
     List<ChicksReception> findByFarmId(Long farmId);
 
@@ -35,5 +35,5 @@ public interface ChicksReceptionRepository extends JpaRepository<ChicksReception
             "AND cr.receptionDate < :cutoffDate")
     List<ChicksReception> findOldDraftReceptions(@Param("cutoffDate") LocalDateTime cutoffDate);
 
-    boolean existsByHatcheryDeliveryNoticeId(String noticeId);
+    //boolean existsByHatcheryDeliveryNoticeId(String noticeId);
 }

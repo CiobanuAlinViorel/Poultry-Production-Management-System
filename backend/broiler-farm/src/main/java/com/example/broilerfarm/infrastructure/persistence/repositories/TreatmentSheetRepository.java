@@ -62,4 +62,6 @@ public interface TreatmentSheetRepository extends JpaRepository<TreatmentSheet, 
     @Query("SELECT t FROM TreatmentSheet t WHERE t.diagnosis LIKE %:keyword% " +
             "OR t.treatmentReason LIKE %:keyword%")
     List<TreatmentSheet> searchByDiagnosisOrReason(@Param("keyword") String keyword);
+
+
 }

@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,9 +17,6 @@ import java.math.BigDecimal;
 public abstract class BaseWarehouse extends BaseEntity {
     @Column(name = "warehouse_name", nullable = false)
     protected String warehouseName;
-
-    @Column(name = "warehouse_code", unique = true, nullable = false)
-    protected String warehouseCode;
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -49,5 +47,13 @@ public abstract class BaseWarehouse extends BaseEntity {
     @Transient
     public boolean isFull() {
         return this.currentOccupancy.compareTo(this.capacity) >= 0;
+    }
+
+    public BaseWarehouse(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String warehouseName, WarehouseType type, BigDecimal capacity, BigDecimal currentOccupancy) {
+        super(id, createdAt, updatedAt);
+        this.warehouseName = warehouseName;
+        this.type = type;
+        this.capacity = capacity;
+        this.currentOccupancy = currentOccupancy;
     }
 }

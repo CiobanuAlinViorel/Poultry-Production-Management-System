@@ -15,8 +15,6 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
 
     List<Warehouse> findByFarmId(Long farmId);
 
-    Optional<Warehouse> findByWarehouseCode(String warehouseCode);
-
     List<Warehouse> findByType(WarehouseType type);
 
     @Query("SELECT w FROM Warehouse w WHERE w.farm.id = :farmId AND w.type = :type")
@@ -32,5 +30,5 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
             "(w.currentOccupancy / w.capacity) * 100 >= :threshold")
     List<Warehouse> findWarehousesNearCapacity(@Param("threshold") Double threshold);
 
-    boolean existsByWarehouseCode(String warehouseCode);
+
 }

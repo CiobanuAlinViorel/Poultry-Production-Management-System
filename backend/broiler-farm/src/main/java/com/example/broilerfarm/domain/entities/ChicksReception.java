@@ -18,8 +18,6 @@ import java.util.List;
 @Builder
 public class ChicksReception extends BaseEntity {
 
-    @Column(name = "hatchery_delivery_notice_id", nullable = false, unique = true)
-    private String hatcheryDeliveryNoticeId;
 
     @Column(name = "reception_date", nullable = false)
     private LocalDateTime receptionDate;
@@ -66,9 +64,8 @@ public class ChicksReception extends BaseEntity {
     @OneToMany(mappedBy = "reception", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChicksReceptionLine> receptionLines = new ArrayList<>();
 
-    public ChicksReception(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String hatcheryDeliveryNoticeId, LocalDateTime receptionDate, BroilerFarm farm, FarmEmployee receivingEmployee, String transportConditions, String truckInfo, String documentReference, ReceptionStatus status, Integer totalQuantityReceived, Integer totalChicksAlive, Integer totalChicksDOA, Integer totalChicksWeak) {
+    public ChicksReception(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime receptionDate, BroilerFarm farm, FarmEmployee receivingEmployee, String transportConditions, String truckInfo, String documentReference, ReceptionStatus status, Integer totalQuantityReceived, Integer totalChicksAlive, Integer totalChicksDOA, Integer totalChicksWeak) {
         super(id, createdAt, updatedAt);
-        this.hatcheryDeliveryNoticeId = hatcheryDeliveryNoticeId;
         this.receptionDate = receptionDate;
         this.farm = farm;
         this.receivingEmployee = receivingEmployee;
@@ -81,6 +78,7 @@ public class ChicksReception extends BaseEntity {
         this.totalChicksDOA = totalChicksDOA;
         this.totalChicksWeak = totalChicksWeak;
     }
+
 
     // ✅ Business logic for lines management
     public void addReceptionLine(ChicksReceptionLine line) {
@@ -107,8 +105,8 @@ public class ChicksReception extends BaseEntity {
         recalculateTotals();
     }
 
-    // ✅ Recalculates the totals from lines
-    private void recalculateTotals() {
+    // Recalculates the totals from lines
+    public void recalculateTotals() {
         this.totalQuantityReceived = receptionLines.stream()
                 .mapToInt(ChicksReceptionLine::getQuantity)
                 .sum();

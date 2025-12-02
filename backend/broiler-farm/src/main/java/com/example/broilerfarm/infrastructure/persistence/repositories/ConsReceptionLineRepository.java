@@ -12,17 +12,5 @@ import java.util.List;
 @Repository
 public interface ConsReceptionLineRepository extends JpaRepository<ConsReceptionLine, Long> {
 
-    List<ConsReceptionLine> findByReceptionId(Long receptionId);
-
-    List<ConsReceptionLine> findByQualityStatus(QualityStatus status);
-
-    @Query("SELECT crl FROM ConsReceptionLine crl WHERE crl.reception.id = :receptionId " +
-            "AND crl.qualityStatus = :status")
-    List<ConsReceptionLine> findByReceptionIdAndQualityStatus(
-            @Param("receptionId") Long receptionId,
-            @Param("status") QualityStatus status
-    );
-
-    @Query("SELECT crl FROM ConsReceptionLine crl WHERE crl.batchNumber = :batchNumber")
-    List<ConsReceptionLine> findByBatchNumber(@Param("batchNumber") String batchNumber);
+    
 }

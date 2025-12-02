@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class PoultryHouse extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="farm_id", nullable=false)
+    @JoinColumn(name = "farm_id", nullable = false)
     private BroilerFarm farm;
 
     @Column(name = "capacity")
