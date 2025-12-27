@@ -1,6 +1,7 @@
 package com.example.broilerfarm.domain.entities;
 
 import com.example.broilerfarm.domain.enums.ApprovalStatus;
+import com.example.broilerfarm.domain.enums.QualityStatus;
 import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "consumable_reception")
@@ -55,6 +57,11 @@ public class ConsumableReception extends BaseEntity {
     @Builder.Default
     private List<ConsReceptionLine> receptionLines = new ArrayList<>();
 
+
+    public ConsReceptionLine getReceptionLine(int id) {
+        return this.receptionLines.stream().filter(line -> line.getId() == id).findFirst().orElse(null);
+    }
+
     // ✅ Business logic for lines management
     public void addReceptionLine(ConsReceptionLine line) {
         if (line == null) {
@@ -68,6 +75,26 @@ public class ConsumableReception extends BaseEntity {
         receptionLines.add(line);
         line.setReception(this);
         recalculateTotalAmount();
+    }
+
+    public void updateReceptionLine(Long id, BigDecimal quantity, String storageLocation, LocalDate expirationDate, QualityStatus qualityStatus) {
+
+        this.verifyReceptionLineItems( quantity,  storageLocation,  expirationDate,  qualityStatus);
+        if(id == null){
+            throw new IllegalArgumentException("Reception id cannot be null");
+        }
+
+        ConsReceptionLine lineToUpdate = this.receptionLines.stream().filter(line -> Objects.equals(line.getId(), id)).findFirst().orElse(null);
+        if (lineToUpdate == null) {
+            throw new IllegalArgumentException("Reception line with id " + id + " does not exist");
+        }
+        lineToUpdate.setQuantityReceived(quantity);
+        lineToUpdate.setStorageLocation(storageLocation);
+        lineToUpdate.setExpirationDate(expirationDate);
+        lineToUpdate.setQualityStatus(qualityStatus);
+
+        recalculateTotalAmount();
+
     }
 
     public void removeReceptionLine(ConsReceptionLine line) {
@@ -122,6 +149,22 @@ public class ConsumableReception extends BaseEntity {
 
         this.approvalStatus = ApprovalStatus.REJECTED;
         this.notes = (this.notes == null ? "" : this.notes + " | ") + "REJECTED: " + reason;
+    }
+
+    private void verifyReceptionLineItems(BigDecimal quantity, String storageLocation, LocalDate expirationDate, QualityStatus qualityStatus){
+        if(quantity.compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalStateException("Quantity must be greater than zero");
+        }
+        if(storageLocation == null || storageLocation.trim().isEmpty()){
+            throw new IllegalStateException("Storage location is required");
+        }
+        if(expirationDate == null){
+            throw new IllegalStateException("Expiration Date is required");
+        }
+        if(qualityStatus == null){
+            throw new IllegalStateException("Quality Status is required");
+        }
+
     }
 
     // ✅ Validare if is completed

@@ -52,11 +52,10 @@ public class DeliveryEligibilityService {
                 .toList();
 
         ObservationSheet latestObservation = observationSheetRepository
-                .findLatestApprovedByLotId(lot.getId())
+                .findLatestApprovedByLotId(lot.getLotNumber())
                 .orElse(null);
 
         return new DeliveryEligibilityAssessment(
-                lot.getId(),
                 lot.getLotNumber(),
                 isEligible,
                 criteria,
@@ -85,7 +84,6 @@ public class DeliveryEligibilityService {
         List<DeliveryDateOption> dateOptions = generateDeliveryDateOptions(lot, forecastDays);
 
         return new DeliveryEligibilityForecast(
-                lot.getId(),
                 lot.getLotNumber(),
                 currentAssessment,
                 estimatedDate,
@@ -138,7 +136,7 @@ public class DeliveryEligibilityService {
         }
 
         return new QualityRiskAssessment(
-                lot.getId(),
+                lot.getLotNumber(),
                 risks,
                 calculateOverallRiskLevel(risks),
                 generateRiskMitigation(risks)
@@ -192,9 +190,9 @@ public class DeliveryEligibilityService {
     }
 
     private EligibilityCriterion evaluateWithdrawalCriterion(ChicksLot lot) {
-        if (withdrawalService.hasActiveWithdrawalPeriod(lot.getId())) {
-            LocalDate allowedDate = withdrawalService.getEarliestSlaughterDate(lot.getId());
-            int daysRemaining = withdrawalService.analyzeWithdrawalStatus(lot.getId()).daysUntilEligible();
+        if (withdrawalService.hasActiveWithdrawalPeriod(lot.getLotNumber())) {
+            LocalDate allowedDate = withdrawalService.getEarliestSlaughterDate(lot.getLotNumber());
+            int daysRemaining = withdrawalService.analyzeWithdrawalStatus(lot.getLotNumber()).daysUntilEligible();
 
             return new EligibilityCriterion(
                     "WITHDRAWAL_PERIOD",
@@ -233,7 +231,7 @@ public class DeliveryEligibilityService {
     private List<EligibilityCriterion> evaluateObservationCriteria(ChicksLot lot) {
         List<EligibilityCriterion> criteria = new ArrayList<>();
         ObservationSheet latestObservation = observationSheetRepository
-                .findLatestApprovedByLotId(lot.getId())
+                .findLatestApprovedByLotId(lot.getLotNumber())
                 .orElse(null);
 
         if (latestObservation == null) {
@@ -293,7 +291,7 @@ public class DeliveryEligibilityService {
 
     private LocalDate calculateEstimatedEligibilityDate(ChicksLot lot) {
         LocalDate ageDate = lot.getReceptionDate().plusDays(MINIMUM_AGE_DAYS);
-        LocalDate withdrawalDate = withdrawalService.getEarliestSlaughterDate(lot.getId());
+        LocalDate withdrawalDate = withdrawalService.getEarliestSlaughterDate(lot.getLotNumber());
 
         LocalDate maxDate = withdrawalDate != null && withdrawalDate.isAfter(ageDate) ?
                 withdrawalDate : ageDate;
@@ -322,7 +320,7 @@ public class DeliveryEligibilityService {
 
     private boolean isDateEligibleForDelivery(ChicksLot lot, LocalDate date) {
         LocalDate ageDate = lot.getReceptionDate().plusDays(MINIMUM_AGE_DAYS);
-        LocalDate withdrawalDate = withdrawalService.getEarliestSlaughterDate(lot.getId());
+        LocalDate withdrawalDate = withdrawalService.getEarliestSlaughterDate(lot.getLotNumber());
 
         boolean ageOk = !date.isBefore(ageDate);
         boolean withdrawalOk = withdrawalDate == null || !date.isBefore(withdrawalDate);
@@ -333,7 +331,7 @@ public class DeliveryEligibilityService {
     private String generateDateRecommendation(ChicksLot lot, LocalDate date) {
         if (!isDateEligibleForDelivery(lot, date)) {
             LocalDate ageDate = lot.getReceptionDate().plusDays(MINIMUM_AGE_DAYS);
-            LocalDate withdrawalDate = withdrawalService.getEarliestSlaughterDate(lot.getId());
+            LocalDate withdrawalDate = withdrawalService.getEarliestSlaughterDate(lot.getLotNumber());
 
             if (date.isBefore(ageDate)) {
                 return "Wait for minimum age requirement";
@@ -376,7 +374,6 @@ public class DeliveryEligibilityService {
 
     // DTO-uri pentru Domain Service
     public record DeliveryEligibilityAssessment(
-            Long lotId,
             String lotNumber,
             boolean isEligible,
             List<EligibilityCriterion> criteria,
@@ -399,7 +396,6 @@ public class DeliveryEligibilityService {
     }
 
     public record DeliveryEligibilityForecast(
-            Long lotId,
             String lotNumber,
             DeliveryEligibilityAssessment currentAssessment,
             LocalDate estimatedEligibilityDate,
@@ -415,7 +411,7 @@ public class DeliveryEligibilityService {
     ) {}
 
     public record QualityRiskAssessment(
-            Long lotId,
+            String lotNumber,
             List<QualityRisk> risks,
             RiskLevel overallRiskLevel,
             List<String> mitigationStrategies

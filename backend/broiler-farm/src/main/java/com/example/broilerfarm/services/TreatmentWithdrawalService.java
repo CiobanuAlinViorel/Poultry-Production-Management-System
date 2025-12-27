@@ -25,19 +25,19 @@ public class TreatmentWithdrawalService {
     /**
      * REGULĂ DE BUSINESS: Verifică dacă un lot are perioadă de retragere activă
      */
-    public boolean hasActiveWithdrawalPeriod(Long lotId) {
-        List<TreatmentSheet> treatments = treatmentSheetRepository.findTreatmentsForWithdrawalCheck(lotId);
+    public boolean hasActiveWithdrawalPeriod(String lotNumber) {
+        List<TreatmentSheet> treatments = treatmentSheetRepository.findTreatmentsForWithdrawalCheck(lotNumber);
 
         return treatments.stream()
                 .flatMap(t -> t.getTreatmentLines().stream())
-                .anyMatch(line -> isWithdrawalActive(line));
+                .anyMatch(this::isWithdrawalActive);
     }
 
     /**
      * REGULĂ DE BUSINESS: Obține data cea mai apropiată pentru tăiere permisă
      */
-    public LocalDate getEarliestSlaughterDate(Long lotId) {
-        List<TreatmentSheet> treatments = treatmentSheetRepository.findTreatmentsForWithdrawalCheck(lotId);
+    public LocalDate getEarliestSlaughterDate(String lotNumber) {
+        List<TreatmentSheet> treatments = treatmentSheetRepository.findTreatmentsForWithdrawalCheck(lotNumber);
 
         return treatments.stream()
                 .flatMap(t -> t.getTreatmentLines().stream())
@@ -49,8 +49,8 @@ public class TreatmentWithdrawalService {
     /**
      * REGULĂ DE BUSINESS: Analiză completă a stării de withdrawal
      */
-    public WithdrawalAnalysis analyzeWithdrawalStatus(Long lotId) {
-        List<TreatmentSheet> treatments = treatmentSheetRepository.findTreatmentsForWithdrawalCheck(lotId);
+    public WithdrawalAnalysis analyzeWithdrawalStatus(String lotNumber) {
+        List<TreatmentSheet> treatments = treatmentSheetRepository.findTreatmentsForWithdrawalCheck(lotNumber);
 
         List<ActiveWithdrawal> activeWithdrawals = treatments.stream()
                 .flatMap(treatment -> treatment.getTreatmentLines().stream())
@@ -59,12 +59,12 @@ public class TreatmentWithdrawalService {
                 .toList();
 
         boolean hasActiveWithdrawal = !activeWithdrawals.isEmpty();
-        LocalDate earliestSlaughterDate = getEarliestSlaughterDate(lotId);
+        LocalDate earliestSlaughterDate = getEarliestSlaughterDate(lotNumber);
         boolean isEligibleForDelivery = !hasActiveWithdrawal;
         int daysUntilEligible = calculateDaysUntilEligible(earliestSlaughterDate);
 
         return new WithdrawalAnalysis(
-                lotId,
+                lotNumber,
                 hasActiveWithdrawal,
                 isEligibleForDelivery,
                 earliestSlaughterDate,
@@ -76,15 +76,15 @@ public class TreatmentWithdrawalService {
     /**
      * REGULĂ DE BUSINESS: Verifică eligibilitatea pentru livrare
      */
-    public boolean isLotEligibleForDelivery(Long lotId) {
-        return !hasActiveWithdrawalPeriod(lotId);
+    public boolean isLotEligibleForDelivery(String lotNumber) {
+        return !hasActiveWithdrawalPeriod(lotNumber);
     }
 
     /**
      * REGULĂ DE BUSINESS: Verifică conflicte potențiale între medicamente
      */
-    public DrugInteractionCheck checkDrugInteractions(Long lotId, Long newMedicationId) {
-        List<TreatmentSheet> currentTreatments = treatmentSheetRepository.findTreatmentsForWithdrawalCheck(lotId);
+    public DrugInteractionCheck checkDrugInteractions(String lotNumber, Long newMedicationId) {
+        List<TreatmentSheet> currentTreatments = treatmentSheetRepository.findTreatmentsForWithdrawalCheck(lotNumber);
 
         List<String> currentMedications = currentTreatments.stream()
                 .flatMap(t -> t.getTreatmentLines().stream())
@@ -99,7 +99,7 @@ public class TreatmentWithdrawalService {
                 "Tratament permis conform bazei de date curente";
 
         return new DrugInteractionCheck(
-                lotId,
+                lotNumber,
                 newMedicationId,
                 !hasKnownInteractions,
                 recommendation,
@@ -110,20 +110,20 @@ public class TreatmentWithdrawalService {
     /**
      * REGULĂ DE BUSINESS: Prognoză disponibilitate livrare
      */
-    public DeliveryEligibilityForecast getDeliveryEligibilityForecast(Long lotId, int forecastDays) {
-        WithdrawalAnalysis currentStatus = analyzeWithdrawalStatus(lotId);
+    public DeliveryEligibilityForecast getDeliveryEligibilityForecast(String lotNumber, int forecastDays) {
+        WithdrawalAnalysis currentStatus = analyzeWithdrawalStatus(lotNumber);
 
         List<DeliveryDateOption> deliveryOptions = LocalDate.now()
                 .datesUntil(LocalDate.now().plusDays(forecastDays + 1))
                 .map(date -> new DeliveryDateOption(
                         date,
-                        isDateEligibleForDelivery(lotId, date),
+                        isDateEligibleForDelivery(lotNumber, date),
                         calculateDaysUntilDate(date)
                 ))
                 .toList();
 
         return new DeliveryEligibilityForecast(
-                lotId,
+                lotNumber,
                 currentStatus,
                 deliveryOptions,
                 forecastDays
@@ -158,8 +158,8 @@ public class TreatmentWithdrawalService {
         return (int) java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), earliestSlaughterDate);
     }
 
-    private boolean isDateEligibleForDelivery(Long lotId, LocalDate date) {
-        LocalDate earliestSlaughterDate = getEarliestSlaughterDate(lotId);
+    private boolean isDateEligibleForDelivery(String lotNumber, LocalDate date) {
+        LocalDate earliestSlaughterDate = getEarliestSlaughterDate(lotNumber);
         return earliestSlaughterDate.isBefore(date) || earliestSlaughterDate.isEqual(date);
     }
 
@@ -175,7 +175,7 @@ public class TreatmentWithdrawalService {
 
     // DTO-uri pentru Domain Service
     public record WithdrawalAnalysis(
-            Long lotId,
+            String lotNumber,
             boolean hasActiveWithdrawal,
             boolean isEligibleForDelivery,
             LocalDate earliestSlaughterDate,
@@ -194,7 +194,7 @@ public class TreatmentWithdrawalService {
     ) {}
 
     public record DrugInteractionCheck(
-            Long lotId,
+            String lotNumber,
             Long newMedicationId,
             boolean isSafeToAdminister,
             String recommendation,
@@ -202,7 +202,7 @@ public class TreatmentWithdrawalService {
     ) {}
 
     public record DeliveryEligibilityForecast(
-            Long lotId,
+            String lotNumber,
             WithdrawalAnalysis currentStatus,
             List<DeliveryDateOption> deliveryOptions,
             int forecastPeriodDays

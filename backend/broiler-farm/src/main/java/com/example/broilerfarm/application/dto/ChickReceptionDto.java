@@ -28,8 +28,6 @@ public class ChickReceptionDto {
     private Integer totalChicksDoa;
     private Integer totalChicksWeak;
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
     private List<ChicksReceptionLineDto> lines = new ArrayList<>();
 
     public void addLines(ChicksReceptionLineDto line){

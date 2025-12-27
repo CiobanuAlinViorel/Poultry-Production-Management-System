@@ -23,7 +23,7 @@ public class DeliveryNoticeLine extends BaseEntity {
     private DeliveryNotice deliveryNotice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lot_id", nullable = false)
+    @JoinColumn(name = "lot_number", nullable = false)
     private ChicksLot lot;
 
     @Column(name = "estimated_quantity", nullable = false)
@@ -56,28 +56,7 @@ public class DeliveryNoticeLine extends BaseEntity {
                 .setScale(2, RoundingMode.HALF_UP);
     }
 
-    // ✅ Populate from ObservationSheet (Option A - UC-10)
-    public void populateFromObservationSheet(ObservationSheet observation) {
-        if (observation == null) {
-            throw new IllegalArgumentException("ObservationSheet cannot be null");
-        }
 
-        if (!observation.getLot().equals(this.lot)) {
-            throw new IllegalStateException("ObservationSheet lot must match delivery line lot");
-        }
-
-        this.estimatedQuantity = observation.getEndingBirdCount();
-        this.averageWeight = observation.getAverageWeight();
-
-        // Determine quality grade based on performance
-        if (observation.getFcr().compareTo(BigDecimal.valueOf(1.6)) <= 0) {
-            this.qualityGrade = QualityGrade.A;
-        } else if (observation.getFcr().compareTo(BigDecimal.valueOf(1.9)) <= 0) {
-            this.qualityGrade = QualityGrade.B;
-        } else {
-            this.qualityGrade = QualityGrade.C;
-        }
-    }
 
     // ✅ Manual entry (Option B - UC-10)
     public void setManualData(Integer quantity, BigDecimal weight, QualityGrade grade) {

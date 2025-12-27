@@ -12,11 +12,13 @@ public class ChicksReceptionLineDto {
      private Long id;
      private Long receptionId;
      private Long poultryHouseId;
-     private Long lotId ;
+     private String lotNumber ;
      private Integer quantity;
      private  Integer chicksAlive;
      private Integer chicksDOA;
      private Integer chicksWeak;
      private QualityGrade qualityGrade;
      private String notes;
+     private String breed;
+     private String hatcherySource;
 }

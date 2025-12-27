@@ -24,8 +24,9 @@ public class PoultryHouse extends BaseEntity {
     @Column(name = "capacity")
     private Integer capacity;
 
-    @Column(name = "current_lot")
-    private Integer currentLot;
+    @ManyToOne
+    @JoinColumn(name = "created_lot_number")
+    private ChicksLot currentLot;
 
     @Column(name = "area")
     private Double area;
@@ -44,7 +45,7 @@ public class PoultryHouse extends BaseEntity {
     @Column(name = "current_occupancy")
     private Integer currentOccupancy;
 
-    public PoultryHouse(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, BroilerFarm farm, Integer capacity, Integer currentLot, Double area, PoultryHouseType type, String equipmentType, PoultryHouseStatus status, Integer currentOccupancy) {
+    public PoultryHouse(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, BroilerFarm farm, Integer capacity, ChicksLot currentLot, Double area, PoultryHouseType type, String equipmentType, PoultryHouseStatus status, Integer currentOccupancy) {
         super(id, createdAt, updatedAt);
         this.farm = farm;
         this.capacity = capacity;

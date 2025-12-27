@@ -2,6 +2,7 @@ package com.example.broilerfarm.domain.entities;
 
 import com.example.broilerfarm.domain.enums.ApprovalStatus;
 import com.example.broilerfarm.domain.enums.DataSource;
+import com.example.broilerfarm.domain.enums.QualityGrade;
 import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -71,6 +72,15 @@ public class DeliveryNotice extends BaseEntity {
     @Builder.Default
     private List<DeliveryNoticeLine> deliveryLines = new ArrayList<>();
 
+    public DeliveryNoticeLine  findLineById(Long id) {
+        return this.deliveryLines.stream()
+                .filter(l -> l.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Treatment line with id " + id + " does not exist in this treatment sheet"
+                ));
+    }
+
     // ✅ Business logic pentru gestionarea liniilor
     public void addDeliveryLine(DeliveryNoticeLine line) {
         if (line == null) {
@@ -83,6 +93,30 @@ public class DeliveryNotice extends BaseEntity {
 
         deliveryLines.add(line);
         line.setDeliveryNotice(this);
+    }
+
+    public void updateDeliveryLine(Long id,
+                                   Integer estimatedQuantity,
+                                   BigDecimal averageWeight,
+                                   QualityGrade qualityGrade,
+                                   String specialInstructions,
+                                   String loadingBay,
+                                   Integer actualQuantityDelivered,
+                                   BigDecimal actualAverageWeight){
+       this.verifyLineItems(id,estimatedQuantity,averageWeight,qualityGrade,specialInstructions,loadingBay,actualQuantityDelivered,actualAverageWeight);
+       DeliveryNoticeLine line = this.findLineById(id);
+
+       if (line == null) {
+           throw new IllegalArgumentException("Delivery line with id " + id + " does not exist");
+       }
+
+       line.setEstimatedQuantity(estimatedQuantity);
+       line.setAverageWeight(averageWeight);
+       line.setQualityGrade(qualityGrade);
+       line.setSpecialInstructions(specialInstructions);
+       line.setLoadingBay(loadingBay);
+       line.setActualQuantityDelivered(actualQuantityDelivered);
+       line.setActualAverageWeight(actualAverageWeight);
     }
 
     public void removeDeliveryLine(DeliveryNoticeLine line) {
@@ -175,6 +209,34 @@ public class DeliveryNotice extends BaseEntity {
 
         if (!allReady) {
             throw new IllegalStateException("Not all lots are ready for delivery");
+        }
+    }
+
+    private void verifyLineItems(Long id,
+                                 Integer estimatedQuantity,
+                                 BigDecimal averageWeight,
+                                 QualityGrade qualityGrade,
+                                 String specialInstructions,
+                                 String loadingBay,
+                                 Integer actualQuantityDelivered,
+                                 BigDecimal actualAverageWeight){
+        if(id == null) {
+            throw new IllegalArgumentException("Delivery id cannot be null");
+        }
+        if(estimatedQuantity == null) {
+            throw new IllegalArgumentException("Estimated quantity cannot be null");
+        }
+        if(estimatedQuantity <= 0) {
+            throw new IllegalArgumentException("Estimated quantity cannot be negative");
+        }
+        if(averageWeight == null) {
+            throw new IllegalArgumentException("Average weight cannot be null");
+        }
+        if(averageWeight.compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalArgumentException("Average weight cannot be negative");
+        }
+        if(qualityGrade == null) {
+            throw new IllegalArgumentException("Quality grade cannot be null");
         }
     }
 

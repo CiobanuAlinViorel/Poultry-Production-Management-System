@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class MortalitySheetDto {
     private Long id;
-    private Long lotId;
+    private String lotNumber;
     private Long reportingEmployeeId;
     private LocalDate sheetDate;
     private Integer totalMortality;

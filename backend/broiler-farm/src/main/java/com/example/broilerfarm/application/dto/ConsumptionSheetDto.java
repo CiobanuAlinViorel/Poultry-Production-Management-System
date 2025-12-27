@@ -14,7 +14,7 @@ import java.util.List;
 public class ConsumptionSheetDto {
     @EqualsAndHashCode.Include
     private Long id;
-    private Long lotId;
+    private String lotNumber;
     private LocalDate sheetDate;
     private Integer birdsAlive;
     private ConsumptionSheetStatus status;

@@ -1,7 +1,7 @@
 package com.example.broilerfarm.domain.entities;
 
+
 import com.example.broilerfarm.domain.enums.StockStatus;
-import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +16,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ConsumableStock extends BaseEntity {
+public class ConsumableStock {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consumable_id", nullable = false)
@@ -66,6 +70,7 @@ public class ConsumableStock extends BaseEntity {
         this.lastRestockDate = LocalDate.now();
         updateStatus();
     }
+
 
     public void consumeStock(BigDecimal quantity) {
         if (quantity.compareTo(BigDecimal.ZERO) <= 0) {
@@ -159,7 +164,6 @@ public class ConsumableStock extends BaseEntity {
     }
 
     public ConsumableStock(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, Consumable consumable, Warehouse warehouse, String batchNumber, BigDecimal quantityOnHand, BigDecimal reservedQuantity, LocalDate manufacturingDate, LocalDate lastRestockDate, LocalDate expirationDate, StockStatus status) {
-        super(id, createdAt, updatedAt);
         this.consumable = consumable;
         this.warehouse = warehouse;
         this.batchNumber = batchNumber;

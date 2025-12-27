@@ -12,7 +12,7 @@ public class PoultryHouseDto {
     private Long id;
     private Long farmId;
     private Integer capacity;
-    private Integer currentLot;
+    private String currentLot;
     private Double area;
     private PoultryHouseType type;
     private String equipmentType;

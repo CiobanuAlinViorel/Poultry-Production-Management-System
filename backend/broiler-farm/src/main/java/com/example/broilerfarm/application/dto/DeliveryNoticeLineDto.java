@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class DeliveryNoticeLineDto {
     private Long id;
     private Long deliveryNoticeId;
-    private Long lotId;
+    private String lotNumber;
     private Integer estimatedQuantity;
     private BigDecimal averageWeight;
     private QualityGrade qualityGrade;

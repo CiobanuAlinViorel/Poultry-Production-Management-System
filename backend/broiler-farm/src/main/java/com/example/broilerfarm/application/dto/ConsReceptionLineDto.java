@@ -21,4 +21,6 @@ public class ConsReceptionLineDto {
     private LocalDate expirationDate;
     private String storageLocation;
     private QualityStatus qualityStatus;
+    private String breed;
+    private String hatcherySource;
 }

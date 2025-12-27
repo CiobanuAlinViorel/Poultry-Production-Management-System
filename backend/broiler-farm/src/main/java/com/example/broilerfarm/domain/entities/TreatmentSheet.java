@@ -1,10 +1,12 @@
 package com.example.broilerfarm.domain.entities;
 
+import com.example.broilerfarm.domain.enums.AdministrationMethod;
 import com.example.broilerfarm.domain.enums.TreatmentStatus;
 import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import java.util.List;
 public class TreatmentSheet extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lot_id", nullable = false)
+    @JoinColumn(name = "lot_number", nullable = false)
     private ChicksLot lot;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,6 +49,14 @@ public class TreatmentSheet extends BaseEntity {
     @Builder.Default
     private List<TreatmentSheetLine> treatmentLines = new ArrayList<>();
 
+    private TreatmentSheetLine findLineById(Long lineId) {
+        return treatmentLines.stream()
+                .filter(l -> l.getId().equals(lineId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Treatment line with id " + lineId + " does not exist in this treatment sheet"
+                ));
+    }
     // ✅ Business logic pentru gestionarea liniilor
     public void addTreatmentLine(TreatmentSheetLine line) {
         if (line == null) {
@@ -60,6 +70,32 @@ public class TreatmentSheet extends BaseEntity {
         treatmentLines.add(line);
         line.setTreatmentSheet(this);
     }
+
+    public void updateTreatmentLine(Long id,
+                                    BigDecimal dosage,
+                                    String dosageUnit,
+                                    AdministrationMethod administrationMethod,
+                                    Integer duration,
+                                    LocalDate startDate,
+                                    Integer withdrawalPeriod,
+                                    BigDecimal quantityUsed){
+      this.validateLineItems(id, dosage, dosageUnit,  administrationMethod, duration, startDate, withdrawalPeriod, quantityUsed);
+
+      TreatmentSheetLine line = this.findLineById(id);
+
+      if(line == null){
+          throw new IllegalArgumentException("Treatment line with id " + id + " does not exist");
+      }
+
+      line.setDosage(dosage);
+      line.setDosageUnit(dosageUnit);
+      line.setAdministrationMethod(administrationMethod);
+      line.setDuration(duration);
+      line.setStartDate(startDate);
+      line.setWithdrawalPeriod(withdrawalPeriod);
+      line.setQuantityUsed(quantityUsed);
+
+     }
 
     public void removeTreatmentLine(TreatmentSheetLine line) {
         if (this.status != TreatmentStatus.DRAFT) {
@@ -93,6 +129,54 @@ public class TreatmentSheet extends BaseEntity {
         }
 
         this.status = TreatmentStatus.COMPLETED;
+    }
+
+    private void validateLineItems(
+            Long id,
+            BigDecimal dosage,
+            String dosageUnit,
+            AdministrationMethod administrationMethod,
+            Integer duration,
+            LocalDate startDate,
+            Integer withdrawalPeriod,
+            BigDecimal quantityUsed
+    ){
+        if(id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+        if(dosage == null) {
+            throw new IllegalArgumentException("Dosage cannot be null");
+        }
+        if(dosage.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Dosage cannot be negative");
+        }
+        if(dosageUnit == null) {
+            throw new IllegalArgumentException("Dosage unit cannot be null");
+        }
+        if(administrationMethod == null) {
+            throw new IllegalArgumentException("Administration method cannot be null");
+        }
+        if(duration == null ) {
+            throw new IllegalArgumentException("Duration cannot be null");
+        }
+        if(duration <= 0) {
+            throw new IllegalArgumentException("Duration cannot be negative");
+        }
+        if(startDate == null) {
+            throw new IllegalArgumentException("Start date cannot be null");
+        }
+        if(withdrawalPeriod == null) {
+            throw new IllegalArgumentException("Withdrawal period cannot be null");
+        }
+        if(withdrawalPeriod <= 0) {
+            throw new IllegalArgumentException("Withdrawal period cannot be negative");
+        }
+        if(quantityUsed == null) {
+            throw new IllegalArgumentException("Quantity used cannot be null");
+        }
+        if(quantityUsed.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Quantity used cannot be negative");
+        }
     }
 
     // ✅ Verifică dacă tratamentul este în perioadă de retragere

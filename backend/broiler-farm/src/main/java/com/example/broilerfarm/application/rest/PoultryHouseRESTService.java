@@ -1,8 +1,10 @@
 package com.example.broilerfarm.application.rest;
 
 import com.example.broilerfarm.application.dto.PoultryHouseDto;
-import com.example.broilerfarm.services.PoultryHouseTransformationService;
+import com.example.broilerfarm.application.transformation.PoultryHouseTransformationService;
+import com.example.broilerfarm.domain.entities.ChicksLot;
 import com.example.broilerfarm.domain.entities.PoultryHouse;
+import com.example.broilerfarm.infrastructure.persistence.repositories.ChicksLotRepository;
 import com.example.broilerfarm.infrastructure.persistence.repositories.PoultryHouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class PoultryHouseRESTService {
 
     @Autowired
     private PoultryHouseRepository poultryHouseRepository;
+
+    @Autowired
+    private ChicksLotRepository chicksLotRepository;
 
     @Autowired
     private PoultryHouseTransformationService transformationService;
@@ -108,7 +113,11 @@ public class PoultryHouseRESTService {
                 house.setCapacity(houseDto.getCapacity());
             }
             if (houseDto.getCurrentLot() != null) {
-                house.setCurrentLot(houseDto.getCurrentLot());
+                ChicksLot lot = chicksLotRepository.findByLotNumber(houseDto.getCurrentLot());
+                if (lot == null) {
+                    return ResponseEntity.badRequest().build();
+                }
+                house.setCurrentLot(lot);
             }
             if (houseDto.getArea() != null) {
                 house.setArea(houseDto.getArea());

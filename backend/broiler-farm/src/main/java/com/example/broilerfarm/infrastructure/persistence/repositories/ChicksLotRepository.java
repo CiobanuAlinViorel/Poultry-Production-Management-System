@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ChicksLotRepository extends JpaRepository<ChicksLot, Long> {
+public interface ChicksLotRepository extends JpaRepository<ChicksLot, String> {
 
-    Optional<ChicksLot> findByLotNumber(String lotNumber);
+    ChicksLot findByLotNumber(String lotNumber);
 
     List<ChicksLot> findByStatus(ChicksLotStatus status);
 

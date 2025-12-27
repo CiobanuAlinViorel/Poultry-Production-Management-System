@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import java.util.List;
 public class ConsumptionSheet extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lot_id", nullable = false)
+    @JoinColumn(name = "lot_number", nullable = false)
     private ChicksLot lot;
 
     @Column(name = "sheet_date", nullable = false)
@@ -55,6 +56,23 @@ public class ConsumptionSheet extends BaseEntity {
         consumptionLines.add(line);
         line.setConsumptionSheet(this);
         line.calculateConsumptionPerBird(this.birdsAlive);
+    }
+
+    public void updateConsumptionLine(Long id, BigDecimal quantityConsumed, LocalTime consumptionMoment, BigDecimal consumptionPerBird, String notes) {
+        this.verifyLinesItems(id, quantityConsumed, consumptionMoment, consumptionPerBird, notes);
+
+        ConsumptionSheetLine consumptionSheetLine = this.consumptionLines.stream().filter(line -> line.getId().equals(id)).findFirst().orElse(null);
+
+        if(consumptionSheetLine == null) {
+            throw new IllegalArgumentException("Consumption line does not exist");
+        }
+
+        consumptionSheetLine.setQuantityConsumed(quantityConsumed);
+        consumptionSheetLine.setConsuptionMoment(consumptionMoment);
+        consumptionSheetLine.setConsumptionPerBird(consumptionPerBird);
+        consumptionSheetLine.setNotes(notes);
+
+        this.recalculateAllLines();
     }
 
     public void removeConsumptionLine(ConsumptionSheetLine line) {
@@ -108,6 +126,33 @@ public class ConsumptionSheet extends BaseEntity {
         this.status = ConsumptionSheetStatus.REJECTED;
     }
 
+    private void verifyLinesItems(Long id, BigDecimal quantityConsumed, LocalTime consumptionMoment, BigDecimal consumptionPerBird, String notes){
+        if(id == null) {
+            throw new IllegalArgumentException("id cannot be null");
+        }
+        if(quantityConsumed == null) {
+            throw new IllegalArgumentException("quantityConsumed cannot be null");
+        }
+        if(quantityConsumed.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("quantityConsumed must be positive");
+        }
+        if(consumptionMoment==null) {
+            throw new IllegalArgumentException("consumptionMoment cannot be null");
+        }
+        if(consumptionMoment.isBefore(LocalTime.from(this.sheetDate))){
+            throw new IllegalArgumentException("consumptionMoment cannot be before the current date");
+        }
+        if(consumptionPerBird==null) {
+            throw new IllegalArgumentException("consumptionPerBird cannot be null");
+        }
+        if(consumptionPerBird.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("consumptionPerBird must be positive");
+        }
+        if(notes == null ||  notes.trim().isEmpty()) {
+            throw new IllegalArgumentException("notes cannot be null");
+        }
+    }
+
     // ✅ Calculated fields - totaluri
     @Transient
     public BigDecimal getTotalFeedConsumed() {
@@ -116,6 +161,7 @@ public class ConsumptionSheet extends BaseEntity {
                 .map(ConsumptionSheetLine::getQuantityConsumed)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
 
     @Transient
     public BigDecimal getTotalWaterConsumed() {

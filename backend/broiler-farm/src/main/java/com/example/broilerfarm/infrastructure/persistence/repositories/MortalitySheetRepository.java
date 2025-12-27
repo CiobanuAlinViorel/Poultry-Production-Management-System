@@ -14,21 +14,25 @@ import java.util.Optional;
 @Repository
 public interface MortalitySheetRepository extends JpaRepository<MortalitySheet, Long> {
 
-    List<MortalitySheet> findByLotId(Long lotId);
-
-    Optional<MortalitySheet> findByLotIdAndSheetDate(Long lotId, LocalDate date);
-
+    // Simple queries
     List<MortalitySheet> findByStatus(MortalitySheetStatus status);
 
-    @Query("SELECT m FROM MortalitySheet m WHERE m.lot.id = :lotId " +
+    // FIXED: Changed lot.lot_number to lot.lotNumber
+    @Query("SELECT m FROM MortalitySheet m WHERE m.lot.lotNumber = :lotNumber " +
             "AND m.sheetDate BETWEEN :startDate AND :endDate " +
             "ORDER BY m.sheetDate ASC")
     List<MortalitySheet> findByLotIdAndDateRange(
-            @Param("lotId") Long lotId,
+            @Param("lotNumber") String lotNumber,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
 
+    // FIXED: Changed lot.lot_number to lot.lotNumber
+    @Query("SELECT m FROM MortalitySheet m WHERE m.lot.lotNumber = :lotNumber " +
+            "ORDER BY m.sheetDate DESC")
+    List<MortalitySheet> findByLotIdOrderByDateDesc(@Param("lotNumber") String lotNumber);
+
+    // Farm queries
     @Query("SELECT m FROM MortalitySheet m WHERE m.lot.house.farm.id = :farmId " +
             "AND m.sheetDate = :date")
     List<MortalitySheet> findByFarmIdAndDate(
@@ -36,14 +40,12 @@ public interface MortalitySheetRepository extends JpaRepository<MortalitySheet, 
             @Param("date") LocalDate date
     );
 
-    @Query("SELECT m FROM MortalitySheet m WHERE m.lot.id = :lotId " +
-            "ORDER BY m.sheetDate DESC")
-    List<MortalitySheet> findByLotIdOrderByDateDesc(@Param("lotId") Long lotId);
-
-    @Query("SELECT SUM(m.totalMortality) FROM MortalitySheet m WHERE m.lot.id = :lotId " +
+    // Statistics
+    @Query("SELECT SUM(m.totalMortality) FROM MortalitySheet m WHERE m.lot.lotNumber = :lotNumber " +
             "AND m.status = 'APPROVED'")
-    Integer getTotalMortalityByLot(@Param("lotId") Long lotId);
+    Integer getTotalMortalityByLot(@Param("lotNumber") String lotNumber);
 
+    // Approval queries
     @Query("SELECT m FROM MortalitySheet m WHERE m.status = 'SUBMITTED'")
     List<MortalitySheet> findPendingApproval();
 
@@ -51,5 +53,11 @@ public interface MortalitySheetRepository extends JpaRepository<MortalitySheet, 
             "AND m.status = 'SUBMITTED'")
     List<MortalitySheet> findPendingApprovalByFarm(@Param("farmId") Long farmId);
 
-    boolean existsByLotIdAndSheetDate(Long lotId, LocalDate date);
+    // Existence check - FIXED: Add @Query since lot doesn't have 'id' property
+    @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true ELSE false END FROM MortalitySheet m " +
+            "WHERE m.lot.lotNumber = :lotNumber AND m.sheetDate = :date")
+    boolean existsByLotIdAndSheetDate(
+            @Param("lotNumber") String lotNumber,
+            @Param("date") LocalDate date
+    );
 }

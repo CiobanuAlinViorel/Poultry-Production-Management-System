@@ -139,10 +139,9 @@ class ChicksLotFactoryTest {
 
         // Create expected lot
         ChicksLot expectedLot = new ChicksLot(
-                1L,
-                dateTime,
-                dateTime,
                 "1-1-" + date.toString(),
+                dateTime,
+                dateTime,
                 poultryHouse,
                 "Premium Hatchery",
                 "Ross 308",
@@ -158,18 +157,17 @@ class ChicksLotFactoryTest {
         when(chicksLotRepository.save(any(ChicksLot.class))).thenReturn(expectedLot);
 
         // Execute
-        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine, "Ross 308", "Premium Hatchery");
+        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine);
 
         // Verify
         assertNotNull(createdLot, "ChicksLot should not be null");
-        assertNotNull(createdLot.getId(), "ChicksLot Id should not be null");
-        assertTrue(createdLot.getId() > 0L, "ChicksLot Id should be greater than 0");
+        assertNotNull(createdLot.getLotNumber(), "ChicksLot Id should not be null");
         assertEquals("1-1-" + date.toString(), createdLot.getLotNumber());
         assertEquals(ChicksLotStatus.GROWING, createdLot.getStatus());
         assertEquals(194, createdLot.getInitialQuantity());
         assertEquals(194, createdLot.getCurrentQuantity());
 
-        logger.info("Created ChicksLot ID: " + createdLot.getId());
+        logger.info("Created ChicksLot ID: " + createdLot.getLotNumber());
 
         // Verify repository interactions
         verify(poultryHouseRepository, times(1)).existsById(1L);
@@ -187,10 +185,9 @@ class ChicksLotFactoryTest {
         when(poultryHouseRepository.save(any(PoultryHouse.class))).thenReturn(poultryHouse);
 
         ChicksLot expectedLot = new ChicksLot(
-                2L,
-                dateTime,
-                dateTime,
                 "1-1-" + date.toString(),
+                dateTime,
+                dateTime,
                 poultryHouse,
                 "Local Hatchery",
                 "Cobb 500",
@@ -206,11 +203,10 @@ class ChicksLotFactoryTest {
         when(chicksLotRepository.save(any(ChicksLot.class))).thenReturn(expectedLot);
 
         // Execute
-        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine, "Cobb 500", "Local Hatchery");
+        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine);
 
         // Verify
         assertNotNull(createdLot);
-        assertEquals(2L, createdLot.getId());
         assertEquals(4.0, createdLot.getExpectedMortalityRate());
 
         // Verify repository interactions
@@ -231,10 +227,9 @@ class ChicksLotFactoryTest {
         when(poultryHouseRepository.save(any(PoultryHouse.class))).thenReturn(poultryHouse);
 
         ChicksLot expectedLot = new ChicksLot(
-                3L,
-                dateTime,
-                dateTime,
                 "1-1-" + date.toString(),
+                dateTime,
+                dateTime,
                 poultryHouse,
                 "New Hatchery",
                 "Arbor Acres",
@@ -250,11 +245,11 @@ class ChicksLotFactoryTest {
         when(chicksLotRepository.save(any(ChicksLot.class))).thenReturn(expectedLot);
 
         // Execute
-        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine, "Arbor Acres", "New Hatchery");
+        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine);
 
         // Verify
         assertNotNull(createdLot);
-        assertEquals(3L, createdLot.getId());
+        //assertEquals(3L, createdLot.getId());
         assertEquals(4.2, createdLot.getExpectedMortalityRate());
 
         // Verify repository interactions
@@ -271,10 +266,9 @@ class ChicksLotFactoryTest {
         when(poultryHouseRepository.existsById(1L)).thenReturn(true);
 
         ChicksLot expectedLot = new ChicksLot(
-                4L,
-                dateTime,
-                dateTime,
                 "1-1-" + date.toString(),
+                dateTime,
+                dateTime,
                 poultryHouse,
                 "Hatchery",
                 "ROSS 308",
@@ -289,7 +283,7 @@ class ChicksLotFactoryTest {
 
         when(chicksLotRepository.save(any(ChicksLot.class))).thenReturn(expectedLot);
 
-        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine, "ROSS 308", "Hatchery");
+        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine);
 
         assertEquals(4.5, createdLot.getExpectedMortalityRate());
     }
@@ -300,10 +294,10 @@ class ChicksLotFactoryTest {
         when(poultryHouseRepository.existsById(1L)).thenReturn(true);
 
         ChicksLot expectedLot = new ChicksLot(
-                5L,
-                dateTime,
-                dateTime,
+
                 "1-1-" + date.toString(),
+                dateTime,
+                dateTime,
                 poultryHouse,
                 "Hatchery",
                 "COBB 500",
@@ -318,7 +312,7 @@ class ChicksLotFactoryTest {
 
         when(chicksLotRepository.save(any(ChicksLot.class))).thenReturn(expectedLot);
 
-        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine, "COBB 500", "Hatchery");
+        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine);
 
         assertEquals(4.0, createdLot.getExpectedMortalityRate());
     }
@@ -329,10 +323,11 @@ class ChicksLotFactoryTest {
         when(poultryHouseRepository.existsById(1L)).thenReturn(true);
 
         ChicksLot expectedLot = new ChicksLot(
-                6L,
-                dateTime,
-                dateTime,
+
+
                 "1-1-" + date.toString(),
+                dateTime,
+                dateTime,
                 poultryHouse,
                 "Hatchery",
                 "Unknown Breed",
@@ -347,7 +342,7 @@ class ChicksLotFactoryTest {
 
         when(chicksLotRepository.save(any(ChicksLot.class))).thenReturn(expectedLot);
 
-        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine, "Unknown Breed", "Hatchery");
+        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine);
 
         assertEquals(5.0, createdLot.getExpectedMortalityRate());
     }
@@ -358,10 +353,11 @@ class ChicksLotFactoryTest {
         when(poultryHouseRepository.existsById(1L)).thenReturn(true);
 
         ChicksLot expectedLot = new ChicksLot(
-                7L,
-                dateTime,
-                dateTime,
+
+
                 "1-1-" + date.toString(),
+                dateTime,
+                dateTime,
                 poultryHouse,
                 "hatchery",
                 "breed",
@@ -376,7 +372,7 @@ class ChicksLotFactoryTest {
 
         when(chicksLotRepository.save(any(ChicksLot.class))).thenReturn(expectedLot);
 
-        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine, "breed", "hatchery");
+        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine);
 
         String expectedLotNumber = "1-1-" + date.toString();
         assertEquals(expectedLotNumber, createdLot.getLotNumber());
@@ -387,7 +383,7 @@ class ChicksLotFactoryTest {
     void testCreateLotWithNullReceptionLine() {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> chicksLotFactory.createLot(null, "breed", "hatchery")
+                () -> chicksLotFactory.createLot(null)
         );
 
         assertEquals("Reception line cannot be null", exception.getMessage());
@@ -403,7 +399,7 @@ class ChicksLotFactoryTest {
 
         IllegalStateException exception = assertThrows(
                 IllegalStateException.class,
-                () -> chicksLotFactory.createLot(chicksReceptionLine, "breed", "hatchery")
+                () -> chicksLotFactory.createLot(chicksReceptionLine)
         );
 
         assertEquals("Poultry house must be assigned before creating lot", exception.getMessage());
@@ -419,7 +415,7 @@ class ChicksLotFactoryTest {
 
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> chicksLotFactory.createLot(chicksReceptionLine, "breed", "hatchery")
+                () -> chicksLotFactory.createLot(chicksReceptionLine)
         );
 
         assertEquals("Chicks alive must be positive", exception.getMessage());
@@ -440,7 +436,7 @@ class ChicksLotFactoryTest {
 
         IllegalStateException exception = assertThrows(
                 IllegalStateException.class,
-                () -> chicksLotFactory.createLot(chicksReceptionLine, "breed", "hatchery")
+                () -> chicksLotFactory.createLot(chicksReceptionLine)
         );
 
         assertTrue(exception.getMessage().contains("is not EMPTY"));
@@ -457,7 +453,7 @@ class ChicksLotFactoryTest {
 
         IllegalStateException exception = assertThrows(
                 IllegalStateException.class,
-                () -> chicksLotFactory.createLot(chicksReceptionLine, "breed", "hatchery")
+                () -> chicksLotFactory.createLot(chicksReceptionLine)
         );
 
         assertTrue(exception.getMessage().contains("exceeds house capacity"));
@@ -471,10 +467,11 @@ class ChicksLotFactoryTest {
         when(poultryHouseRepository.existsById(1L)).thenReturn(true);
 
         ChicksLot expectedLot = new ChicksLot(
-                8L,
-                dateTime,
-                dateTime,
+
+
                 "1-1-" + date.toString(),
+                dateTime,
+                dateTime,
                 poultryHouse,
                 "hatchery",
                 "breed",
@@ -489,7 +486,7 @@ class ChicksLotFactoryTest {
 
         when(chicksLotRepository.save(any(ChicksLot.class))).thenReturn(expectedLot);
 
-        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine, "breed", "hatchery");
+        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine);
 
         assertEquals(194, createdLot.getInitialQuantity());
         assertEquals(194, createdLot.getCurrentQuantity());
@@ -501,10 +498,11 @@ class ChicksLotFactoryTest {
         when(poultryHouseRepository.existsById(1L)).thenReturn(true);
 
         ChicksLot expectedLot = new ChicksLot(
-                9L,
-                dateTime,
-                dateTime,
+
+
                 "1-1-" + date.toString(),
+                dateTime,
+                dateTime,
                 poultryHouse,
                 "hatchery",
                 "breed",
@@ -519,7 +517,7 @@ class ChicksLotFactoryTest {
 
         when(chicksLotRepository.save(any(ChicksLot.class))).thenReturn(expectedLot);
 
-        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine, "breed", "hatchery");
+        ChicksLot createdLot = chicksLotFactory.createLot(chicksReceptionLine);
 
         assertEquals(date, createdLot.getReceptionDate());
     }

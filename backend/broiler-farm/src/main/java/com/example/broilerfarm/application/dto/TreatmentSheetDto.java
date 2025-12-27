@@ -14,7 +14,7 @@ import java.util.List;
 public class TreatmentSheetDto {
     @EqualsAndHashCode.Include
     private Long id;
-    private Long lotId;
+    private String lotNumber;
     private Long veterinarian;
     private String diagnosis;
     private String treatmentReason;

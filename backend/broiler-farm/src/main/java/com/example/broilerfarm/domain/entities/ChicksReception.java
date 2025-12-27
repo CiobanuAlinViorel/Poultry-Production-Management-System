@@ -1,9 +1,11 @@
 package com.example.broilerfarm.domain.entities;
 
+import com.example.broilerfarm.domain.enums.QualityGrade;
 import com.example.broilerfarm.domain.enums.ReceptionStatus;
 import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -62,6 +64,7 @@ public class ChicksReception extends BaseEntity {
 
     // ✅ AGGREGATE: ChicksReception contain its lines
     @OneToMany(mappedBy = "reception", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<ChicksReceptionLine> receptionLines = new ArrayList<>();
 
     public ChicksReception(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime receptionDate, BroilerFarm farm, FarmEmployee receivingEmployee, String transportConditions, String truckInfo, String documentReference, ReceptionStatus status, Integer totalQuantityReceived, Integer totalChicksAlive, Integer totalChicksDOA, Integer totalChicksWeak) {
@@ -79,6 +82,9 @@ public class ChicksReception extends BaseEntity {
         this.totalChicksWeak = totalChicksWeak;
     }
 
+    public ChicksReceptionLine getReceptionLineById(Long id){
+        return this.receptionLines.stream().filter(line -> line.getId().equals(id)).findFirst().orElse(null);
+    }
 
     // ✅ Business logic for lines management
     public void addReceptionLine(ChicksReceptionLine line) {
@@ -92,16 +98,41 @@ public class ChicksReception extends BaseEntity {
 
         receptionLines.add(line);
         line.setReception(this);
+
+
         recalculateTotals();
     }
 
-    public void removeReceptionLine(ChicksReceptionLine line) {
+    public void updateReceptionLine(Long id, Integer totalChicksAlive, Integer totalChicksDOA, Integer totalChicksWeak, QualityGrade qualityGrade, String notes, LocalDateTime updatedAt) {
+        if(this.status != ReceptionStatus.DRAFT) {
+            throw new IllegalStateException("Cannot update lines to a finalized reception");
+        }
+        this.verifyReceptionLineItems(  totalChicksAlive,  totalChicksDOA,  totalChicksWeak,  qualityGrade, notes, updatedAt);
+        ChicksReceptionLine lineToUpdate = getReceptionLineById(id);
+        if (lineToUpdate == null) {
+            throw new IllegalArgumentException("Line with id " + id + " does not exist");
+        }
+
+        lineToUpdate.setChicksDOA(totalChicksDOA);
+        lineToUpdate.setChicksWeak(totalChicksWeak);
+        lineToUpdate.setChicksAlive(totalChicksAlive);
+        lineToUpdate.setQuantity(totalChicksAlive+totalChicksDOA+totalChicksWeak);
+        lineToUpdate.setQualityGrade(qualityGrade);
+        lineToUpdate.setNotes(notes);
+
+        this.recalculateTotals();
+
+    }
+
+    public void removeReceptionLine(Long id) {
         if (this.status != ReceptionStatus.DRAFT) {
             throw new IllegalStateException("Cannot remove lines from a finalized reception");
         }
 
-        receptionLines.remove(line);
-        line.setReception(null);
+        ChicksReceptionLine lineToRemove = getReceptionLineById(id);
+
+        receptionLines.remove(lineToRemove);
+        lineToRemove.setReception(null);
         recalculateTotals();
     }
 
@@ -143,6 +174,24 @@ public class ChicksReception extends BaseEntity {
         }
 
         this.status = ReceptionStatus.CONFIRMED;
+    }
+
+    private void verifyReceptionLineItems( Integer totalChicksAlive, Integer totalChicksDOA, Integer totalChicksWeak, QualityGrade qualityGrade, String notes, LocalDateTime updatedAt){
+        if(totalChicksAlive <= 0){
+            throw new IllegalArgumentException("Total chicks alive must be positive");
+        }
+        if(totalChicksDOA < 0){
+            throw new IllegalArgumentException("Total chicks DOA must be positive or 0");
+        }
+        if(totalChicksWeak < 0){
+            throw new IllegalArgumentException("Total chicks Weak must be positive or 0");
+        }
+        if(qualityGrade == null){
+            throw new IllegalArgumentException("Quality grade cannot be null");
+        }
+        if(notes == null){
+            throw new IllegalArgumentException("Notes cannot be null");
+        }
     }
 
     // ✅ Validates totals

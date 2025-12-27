@@ -27,12 +27,12 @@ public class LotPerformanceCalculatorService {
     /**
      * Calculează statisticile curente pentru un lot
      */
-    public LotStatistics calculateLotStatistics(Long lotId) {
-        ChicksLot lot = chicksLotRepository.findById(lotId)
+    public LotStatistics calculateLotStatistics(String lotNumber) {
+        ChicksLot lot = chicksLotRepository.findById(lotNumber)
                 .orElseThrow(() -> new IllegalArgumentException("Lot not found"));
 
         List<ObservationSheet> observations = observationSheetRepository
-                .findByLotIdOrderByWeekNumberDesc(lotId);
+                .findByLotIdOrderByWeekNumberDesc(lotNumber);
 
         Optional<ObservationSheet> latestObservation = observations.stream()
                 .findFirst();
@@ -76,7 +76,7 @@ public class LotPerformanceCalculatorService {
         }
 
         Optional<ObservationSheet> previousObservation = observationSheetRepository
-                .findPreviousWeekObservation(observation.getLot().getId(), observation.getWeekNumber());
+                .findPreviousWeekObservation(observation.getLot().getLotNumber(), observation.getWeekNumber());
 
         BigDecimal previousWeight = previousObservation
                 .map(ObservationSheet::getAverageWeight)
@@ -107,7 +107,7 @@ public class LotPerformanceCalculatorService {
 
         return activeLots.stream()
                 .map(lot -> {
-                    LotStatistics stats = calculateLotStatistics(lot.getId());
+                    LotStatistics stats = calculateLotStatistics(lot.getLotNumber());
                     return new LotPerformanceSummary(lot, stats);
                 })
                 .toList();
@@ -116,14 +116,14 @@ public class LotPerformanceCalculatorService {
     /**
      * Verifică alerte de performanță pentru un lot
      */
-    public PerformanceAlerts checkPerformanceAlerts(Long lotId,
+    public PerformanceAlerts checkPerformanceAlerts(String lotNumber,
                                                     BigDecimal maxFcrThreshold,
                                                     BigDecimal maxMortalityThreshold) {
-        ChicksLot lot = chicksLotRepository.findById(lotId)
+        ChicksLot lot = chicksLotRepository.findById(lotNumber)
                 .orElseThrow(() -> new IllegalArgumentException("Lot not found"));
 
         Optional<ObservationSheet> latestObservation = observationSheetRepository
-                .findLatestApprovedByLotId(lotId);
+                .findLatestApprovedByLotId(lotNumber);
 
         List<String> alerts = new java.util.ArrayList<>();
 
@@ -142,7 +142,7 @@ public class LotPerformanceCalculatorService {
             }
         });
 
-        return new PerformanceAlerts(lotId, alerts);
+        return new PerformanceAlerts(lotNumber, alerts);
     }
 
     // DTO-uri pentru serviciu
@@ -176,7 +176,7 @@ public class LotPerformanceCalculatorService {
     ) {}
 
     public record PerformanceAlerts(
-            Long lotId,
+            String lotId,
             List<String> alerts
     ) {}
 }

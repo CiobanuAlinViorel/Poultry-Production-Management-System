@@ -36,13 +36,13 @@ public class ObservationDataAggregationService {
             Integer previousWeekBirdCount,
             Integer currentBirdCount) {
 
-        Long lotId = observation.getLot().getId();
+        String lotNumber = observation.getLot().getLotNumber();
         LocalDate startDate = observation.getStartDate();
         LocalDate endDate = observation.getEndDate();
 
         // Agregare mortalitate
         List<MortalitySheet> weeklyMortality =
-                mortalitySheetRepository.findByLotIdAndDateRange(lotId, startDate, endDate);
+                mortalitySheetRepository.findByLotIdAndDateRange(lotNumber, startDate, endDate);
 
         int totalMortality = weeklyMortality.stream()
                 .mapToInt(MortalitySheet::getTotalMortality)
@@ -54,7 +54,7 @@ public class ObservationDataAggregationService {
 
         // Agregare consum
         List<ConsumptionSheet> weeklyConsumption =
-                consumptionSheetRepository.findByLotIdAndDateRange(lotId, startDate, endDate);
+                consumptionSheetRepository.findByLotIdAndDateRange(lotNumber, startDate, endDate);
 
         int totalFeed = weeklyConsumption.stream()
                 .map(ConsumptionSheet::getTotalFeedConsumed)
@@ -79,9 +79,9 @@ public class ObservationDataAggregationService {
     /**
      * Calculează media zilnică de consum de hrană
      */
-    public BigDecimal calculateAverageDailyFeedConsumption(Long lotId, LocalDate startDate, LocalDate endDate) {
+    public BigDecimal calculateAverageDailyFeedConsumption(String lotNumber, LocalDate startDate, LocalDate endDate) {
         List<ConsumptionSheet> sheets =
-                consumptionSheetRepository.findByLotIdAndDateRange(lotId, startDate, endDate);
+                consumptionSheetRepository.findByLotIdAndDateRange(lotNumber, startDate, endDate);
 
         if (sheets.isEmpty()) {
             return BigDecimal.ZERO;
@@ -97,9 +97,9 @@ public class ObservationDataAggregationService {
     /**
      * Calculează rata medie zilnică de mortalitate
      */
-    public BigDecimal calculateAverageDailyMortalityRate(Long lotId, LocalDate startDate, LocalDate endDate) {
+    public BigDecimal calculateAverageDailyMortalityRate(String lotNumber, LocalDate startDate, LocalDate endDate) {
         List<MortalitySheet> sheets =
-                mortalitySheetRepository.findByLotIdAndDateRange(lotId, startDate, endDate);
+                mortalitySheetRepository.findByLotIdAndDateRange(lotNumber, startDate, endDate);
 
         if (sheets.isEmpty()) {
             return BigDecimal.ZERO;
@@ -115,9 +115,9 @@ public class ObservationDataAggregationService {
     /**
      * Identifică zilele lipsă din săptămână (date fără sheets)
      */
-    public List<LocalDate> findMissingDays(Long lotId, LocalDate startDate, LocalDate endDate) {
+    public List<LocalDate> findMissingDays(String lotNumber, LocalDate startDate, LocalDate endDate) {
         List<MortalitySheet> mortalitySheets =
-                mortalitySheetRepository.findByLotIdAndDateRange(lotId, startDate, endDate);
+                mortalitySheetRepository.findByLotIdAndDateRange(lotNumber, startDate, endDate);
 
         List<LocalDate> recordedDates = mortalitySheets.stream()
                 .map(MortalitySheet::getSheetDate)

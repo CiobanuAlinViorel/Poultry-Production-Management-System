@@ -1,17 +1,13 @@
 package com.example.broilerfarm.services;
 
-import com.example.broilerfarm.domain.entities.BroilerFarm;
 import com.example.broilerfarm.domain.entities.ChicksLot;
 import com.example.broilerfarm.domain.entities.ChicksReceptionLine;
 import com.example.broilerfarm.domain.entities.PoultryHouse;
 import com.example.broilerfarm.domain.enums.ChicksLotStatus;
-import com.example.broilerfarm.infrastructure.persistence.repositories.BroilerFarmRepository;
-import com.example.broilerfarm.infrastructure.persistence.repositories.ChicksLotRepository;
-import com.example.broilerfarm.infrastructure.persistence.repositories.PoultryHouseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Factory pentru crearea ChicksLot cu business rules corecte
@@ -24,21 +20,12 @@ public class ChicksLotFactory {
      * Creează un ChicksLot din ChicksReceptionLine
      *
      * @param line Linia de recepție cu datele puilor
-     * @param breed Rasa puilor
-     * @param hatcherySource Sursa incubatorului
+
      * @return ChicksLot creat și validat
      */
 
-    @Autowired
-    private ChicksLotRepository chicksLotRepository;
 
-    @Autowired
-    private PoultryHouseRepository poultryHouseRepository;
-
-    @Autowired
-    private BroilerFarmRepository broilerFarmRepository;
-
-    public ChicksLot createLot(ChicksReceptionLine line, String breed, String hatcherySource) {
+    public ChicksLot createLot(ChicksReceptionLine line) {
         validateReceptionLine(line);
 
         PoultryHouse house = line.getPoultryHouse();
@@ -46,54 +33,25 @@ public class ChicksLotFactory {
 
         String lotNumber = generateLotNumber(house, line.getReception().getReceptionDate());
 
-        if(poultryHouseRepository.existsById(house.getId())) {
-            ChicksLot lot = ChicksLot.builder()
-                    .lotNumber(lotNumber)
-                    .house(house)
-                    .breed(breed)
-                    .hatcherySource(hatcherySource)
-                    .receptionDate(line.getReception().getReceptionDate().toLocalDate())
-                    .initialQuantity(line.getChicksAlive())
-                    .currentQuantity(line.getChicksAlive())
-                    .status(ChicksLotStatus.GROWING)
-                    .expectedMortalityRate(calculateExpectedMortalityRate(breed))
-                    .build();
-            lot = chicksLotRepository.save(lot);
-            return lot;
-        }else{
-            if(broilerFarmRepository.existsById(house.getFarm().getId()) ) {
-                PoultryHouse p = poultryHouseRepository.save(house);
-                ChicksLot lot =  ChicksLot.builder()
-                        .lotNumber(lotNumber)
-                        .house(house)
-                        .breed(breed)
-                        .hatcherySource(hatcherySource)
-                        .receptionDate(line.getReception().getReceptionDate().toLocalDate())
-                        .initialQuantity(line.getChicksAlive())
-                        .currentQuantity(line.getChicksAlive())
-                        .status(ChicksLotStatus.GROWING)
-                        .expectedMortalityRate(calculateExpectedMortalityRate(breed))
-                        .build();
-                lot = chicksLotRepository.save(lot);
-                return lot;
-            } else {
-                broilerFarmRepository.save(house.getFarm());
-                poultryHouseRepository.save(house);
-                ChicksLot lot =  ChicksLot.builder()
-                        .lotNumber(lotNumber)
-                        .house(house)
-                        .breed(breed)
-                        .hatcherySource(hatcherySource)
-                        .receptionDate(line.getReception().getReceptionDate().toLocalDate())
-                        .initialQuantity(line.getChicksAlive())
-                        .currentQuantity(line.getChicksAlive())
-                        .status(ChicksLotStatus.GROWING)
-                        .expectedMortalityRate(calculateExpectedMortalityRate(breed))
-                        .build();
-                lot = chicksLotRepository.save(lot);
-                return lot;
-            }
-        }
+        ChicksLot lot = new ChicksLot();
+
+        lot.setLotNumber(lotNumber);
+        lot.setBreed(line.getBreed());
+        lot.setHatcherySource(line.getHatcherySource());
+        lot.setExpectedSlaughterDate(calculateExpectedSlaughterDate(line.getReception().getReceptionDate().toLocalDate()));
+        lot.setActualSlaughterDate(calculateExpectedSlaughterDate(line.getReception().getReceptionDate().toLocalDate()));
+
+        lot.setCurrentQuantity(line.getQuantity());
+        lot.setHouse(house);
+        lot.setReceptionDate(LocalDate.from(line.getReception().getReceptionDate()));
+        lot.setStatus(ChicksLotStatus.GROWING);
+        lot.setExpectedMortalityRate(this.calculateExpectedMortalityRate(line.getBreed()));
+        lot.setInitialQuantity(line.getQuantity());
+        lot.setCurrentQuantity(line.getQuantity());
+        lot.setUpdatedAt(LocalDateTime.now());
+        lot.setCreatedAt(LocalDateTime.now());
+
+        return lot;
 
     }
 
@@ -147,7 +105,6 @@ public class ChicksLotFactory {
             );
         }
     }
-
     /**
      * Calculează rata așteptată de mortalitate bazată pe rasă
      */
@@ -160,7 +117,6 @@ public class ChicksLotFactory {
             default -> 5.0; // Default conservativ
         };
     }
-
     /**
      * Calculează data estimată pentru tăiere (35-42 zile)
      */

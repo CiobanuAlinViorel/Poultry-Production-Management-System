@@ -1,5 +1,5 @@
 package com.example.broilerfarm.application.rest;
-import com.example.broilerfarm.services.BroilerFarmTransformationService;
+import com.example.broilerfarm.application.transformation.BroilerFarmTransformationService;
 import com.example.broilerfarm.application.dto.BroilerFarmDto;
 import com.example.broilerfarm.domain.entities.BroilerFarm;
 import com.example.broilerfarm.infrastructure.persistence.repositories.BroilerFarmRepository;

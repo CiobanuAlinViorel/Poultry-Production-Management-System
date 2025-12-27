@@ -14,24 +14,24 @@ import java.util.Optional;
 @Repository
 public interface ConsumptionSheetRepository extends JpaRepository<ConsumptionSheet, Long> {
 
-    List<ConsumptionSheet> findByLotId(Long lotId);
-
-    Optional<ConsumptionSheet> findByLotIdAndSheetDate(Long lotId, LocalDate date);
-
+    // Simple queries
     List<ConsumptionSheet> findByStatus(ConsumptionSheetStatus status);
 
+    // Fetch with lines (eager loading)
     @Query("SELECT cs FROM ConsumptionSheet cs LEFT JOIN FETCH cs.consumptionLines WHERE cs.id = :id")
     Optional<ConsumptionSheet> findByIdWithLines(@Param("id") Long id);
 
-    @Query("SELECT cs FROM ConsumptionSheet cs WHERE cs.lot.id = :lotId " +
+    // FIXED: Changed lot.lot_number to lot.lotNumber
+    @Query("SELECT cs FROM ConsumptionSheet cs WHERE cs.lot.lotNumber = :lotNumber " +
             "AND cs.sheetDate BETWEEN :startDate AND :endDate " +
             "ORDER BY cs.sheetDate ASC")
     List<ConsumptionSheet> findByLotIdAndDateRange(
-            @Param("lotId") Long lotId,
+            @Param("lotNumber") String lotNumber,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
 
+    // Farm queries
     @Query("SELECT cs FROM ConsumptionSheet cs WHERE cs.lot.house.farm.id = :farmId " +
             "AND cs.sheetDate = :date")
     List<ConsumptionSheet> findByFarmIdAndDate(
@@ -39,6 +39,7 @@ public interface ConsumptionSheetRepository extends JpaRepository<ConsumptionShe
             @Param("date") LocalDate date
     );
 
+    // Approval queries
     @Query("SELECT cs FROM ConsumptionSheet cs WHERE cs.status = 'SUBMITTED'")
     List<ConsumptionSheet> findPendingApproval();
 
@@ -46,7 +47,11 @@ public interface ConsumptionSheetRepository extends JpaRepository<ConsumptionShe
             "AND cs.status = 'SUBMITTED'")
     List<ConsumptionSheet> findPendingApprovalByFarm(@Param("farmId") Long farmId);
 
-    boolean existsByLotIdAndSheetDate(Long lotId, LocalDate date);
-
-
+    // Existence check - FIXED: Add @Query
+    @Query("SELECT CASE WHEN COUNT(cs) > 0 THEN true ELSE false END FROM ConsumptionSheet cs " +
+            "WHERE cs.lot.lotNumber = :lotNumber AND cs.sheetDate = :date")
+    boolean existsByLotIdAndSheetDate(
+            @Param("lotNumber") String lotNumber,
+            @Param("date") LocalDate date
+    );
 }

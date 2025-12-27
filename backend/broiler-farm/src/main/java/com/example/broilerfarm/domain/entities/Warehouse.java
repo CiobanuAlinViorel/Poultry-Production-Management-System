@@ -1,7 +1,7 @@
 package com.example.broilerfarm.domain.entities;
 
-import com.example.shared.domain.entity.BaseEntity;
 import com.example.shared.domain.entity.BaseWarehouse;
+import com.example.shared.domain.entity.Employee;
 import com.example.shared.domain.enums.WarehouseType;
 import jakarta.persistence.*;
 import lombok.*;

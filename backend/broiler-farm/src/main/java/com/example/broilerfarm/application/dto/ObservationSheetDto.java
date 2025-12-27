@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ObservationSheetDto {
     private Long id;
-    private Long lotId;
+    private String lotNumber;
     private Long observer;
     private Integer weekNumber;
     private LocalDate startDate;

@@ -1,7 +1,6 @@
 package com.example.broilerfarm.domain.entities;
 
 import com.example.broilerfarm.domain.enums.ChicksLotStatus;
-import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,10 +15,17 @@ import java.time.temporal.ChronoUnit;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChicksLot extends BaseEntity {
+public class ChicksLot {
 
+    @Id
     @Column(name = "lot_number", unique = true, nullable = false)
     private String lotNumber;
+
+    @Column
+    private LocalDateTime createdAt;
+
+    @Column
+    private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "house_id", nullable = false)
@@ -79,20 +85,5 @@ public class ChicksLot extends BaseEntity {
     @Transient
     public int getDaysInFarm() {
         return (int) ChronoUnit.DAYS.between(this.receptionDate, LocalDate.now());
-    }
-
-    public ChicksLot(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String lotNumber, PoultryHouse house, String hatcherySource, String breed, LocalDate receptionDate, int initialQuantity, int currentQuantity, LocalDate expectedSlaughterDate, LocalDate actualSlaughterDate, ChicksLotStatus status, double expectedMortalityRate) {
-        super(id, createdAt, updatedAt);
-        this.lotNumber = lotNumber;
-        this.house = house;
-        this.hatcherySource = hatcherySource;
-        this.breed = breed;
-        this.receptionDate = receptionDate;
-        this.initialQuantity = initialQuantity;
-        this.currentQuantity = currentQuantity;
-        this.expectedSlaughterDate = expectedSlaughterDate;
-        this.actualSlaughterDate = actualSlaughterDate;
-        this.status = status;
-        this.expectedMortalityRate = expectedMortalityRate;
     }
 }

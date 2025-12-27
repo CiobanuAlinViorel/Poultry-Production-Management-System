@@ -4,6 +4,7 @@ import com.example.broilerfarm.domain.enums.QualityGrade;
 import com.example.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDateTime;
 
@@ -25,8 +26,10 @@ public class ChicksReceptionLine extends BaseEntity {
     private PoultryHouse poultryHouse;
 
     // ✅ Critical relationship - a line creates a chicks lot
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "created_lot_id", unique = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lot_number", unique = true)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST,
+            org.hibernate.annotations.CascadeType.MERGE})
     private ChicksLot createdLot;
 
     @Column(name = "quantity", nullable = false)
@@ -50,6 +53,11 @@ public class ChicksReceptionLine extends BaseEntity {
 
     @Column(name = "notes", length = 1000)
     private String notes;
+    @Column(name = "breed", length = 1000)
+    private String breed;
+
+    @Column(name = "hatchery_source", length = 1000)
+    private String hatcherySource;
 
     // ✅ Business logic for validation
     public void validateQuantities() {
@@ -59,44 +67,6 @@ public class ChicksReceptionLine extends BaseEntity {
                             "Expected: " + quantity + ", Got: " + (chicksAlive + chicksDOA + chicksWeak)
             );
         }
-    }
-
-    // ✅ Create lot for this line
-    public ChicksLot createLotForHouse(String breed, String hatcherySource) {
-        validateQuantities();
-
-        if (this.poultryHouse == null) {
-            throw new IllegalStateException("Cannot create lot without assigned poultry house");
-        }
-
-        if (this.createdLot != null) {
-            throw new IllegalStateException("Lot already created for this reception line");
-        }
-
-        // Generates lot number: FARM-HOUSE-DATE
-        String lotNumber = String.format("%d-%d-%s",
-                this.poultryHouse.getFarm().getId(),
-                this.poultryHouse.getId(),
-                this.reception.getReceptionDate().toLocalDate().toString()
-        );
-
-        ChicksLot lot = ChicksLot.builder()
-                .lotNumber(lotNumber)
-                .house(this.poultryHouse)
-                .breed(breed)
-                .hatcherySource(hatcherySource)
-                .receptionDate(this.reception.getReceptionDate().toLocalDate())
-                .initialQuantity(this.chicksAlive)
-                .currentQuantity(this.chicksAlive)
-                .build();
-
-        this.createdLot = lot;
-        return lot;
-    }
-
-    @Transient
-    public boolean isLotCreated() {
-        return this.createdLot != null;
     }
 
     @Transient

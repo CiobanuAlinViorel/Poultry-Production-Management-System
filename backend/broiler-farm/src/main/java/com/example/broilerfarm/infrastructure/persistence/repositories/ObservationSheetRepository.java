@@ -14,29 +14,30 @@ import java.util.Optional;
 @Repository
 public interface ObservationSheetRepository extends JpaRepository<ObservationSheet, Long> {
 
-    List<ObservationSheet> findByLotId(Long lotId);
-
+    // Simple query - Spring Data derives the query
     List<ObservationSheet> findByStatus(ObservationSheetStatus status);
 
-    @Query("SELECT o FROM ObservationSheet o WHERE o.lot.id = :lotId " +
+    // FIXED: Changed lot.lot_number to lot.lotNumber
+    @Query("SELECT o FROM ObservationSheet o WHERE o.lot.lotNumber = :lotNumber " +
             "ORDER BY o.weekNumber DESC")
-    List<ObservationSheet> findByLotIdOrderByWeekNumberDesc(@Param("lotId") Long lotId);
+    List<ObservationSheet> findByLotIdOrderByWeekNumberDesc(@Param("lotNumber") String lotNumber);
 
-    Optional<ObservationSheet> findByLotIdAndWeekNumber(Long lotId, Integer weekNumber);
-
-    @Query("SELECT o FROM ObservationSheet o WHERE o.lot.id = :lotId " +
+    // FIXED: Changed lot.lot_number to lot.lotNumber
+    @Query("SELECT o FROM ObservationSheet o WHERE o.lot.lotNumber = :lotNumber " +
             "AND o.status = 'APPROVED' " +
             "ORDER BY o.weekNumber DESC")
-    Optional<ObservationSheet> findLatestApprovedByLotId(@Param("lotId") Long lotId);
+    Optional<ObservationSheet> findLatestApprovedByLotId(@Param("lotNumber") String lotNumber);
 
-    @Query("SELECT o FROM ObservationSheet o WHERE o.lot.id = :lotId " +
+    // FIXED: Changed lot.lot_number to lot.lotNumber
+    @Query("SELECT o FROM ObservationSheet o WHERE o.lot.lotNumber = :lotNumber " +
             "AND o.weekNumber = :weekNumber - 1 " +
             "AND o.status = 'APPROVED'")
     Optional<ObservationSheet> findPreviousWeekObservation(
-            @Param("lotId") Long lotId,
+            @Param("lotNumber") String lotNumber,
             @Param("weekNumber") Integer weekNumber
     );
 
+    // Farm queries
     @Query("SELECT o FROM ObservationSheet o WHERE o.lot.house.farm.id = :farmId " +
             "AND o.endDate BETWEEN :startDate AND :endDate")
     List<ObservationSheet> findByFarmIdAndDateRange(
@@ -45,6 +46,7 @@ public interface ObservationSheetRepository extends JpaRepository<ObservationShe
             @Param("endDate") LocalDate endDate
     );
 
+    // Approval queries
     @Query("SELECT o FROM ObservationSheet o WHERE o.status = 'SUBMITTED'")
     List<ObservationSheet> findPendingApproval();
 
@@ -52,7 +54,7 @@ public interface ObservationSheetRepository extends JpaRepository<ObservationShe
             "AND o.status = 'SUBMITTED'")
     List<ObservationSheet> findPendingApprovalByFarm(@Param("farmId") Long farmId);
 
-    // ✅ Performance analytics queries
+    // Performance analytics queries
     @Query("SELECT o FROM ObservationSheet o WHERE o.status = 'APPROVED' " +
             "AND o.fcr > :threshold")
     List<ObservationSheet> findObservationsWithHighFCR(@Param("threshold") java.math.BigDecimal threshold);
@@ -74,5 +76,11 @@ public interface ObservationSheetRepository extends JpaRepository<ObservationShe
             @Param("weekNumber") Integer weekNumber
     );
 
-    boolean existsByLotIdAndWeekNumber(Long lotId, Integer weekNumber);
+    // Existence check - FIXED: Use correct property name
+    @Query("SELECT CASE WHEN COUNT(o) > 0 THEN true ELSE false END FROM ObservationSheet o " +
+            "WHERE o.lot.lotNumber = :lotNumber AND o.weekNumber = :weekNumber")
+    boolean existsByLotIdAndWeekNumber(
+            @Param("lotNumber") String lotNumber,
+            @Param("weekNumber") Integer weekNumber
+    );
 }

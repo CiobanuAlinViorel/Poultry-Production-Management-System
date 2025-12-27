@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +28,12 @@ public class MortalityAnalysisService {
     /**
      * Analizează pattern-urile de mortalitate pentru un lot
      */
-    public MortalityAnalysis analyzeMortalityPatterns(Long lotId, LocalDate startDate, LocalDate endDate) {
-        ChicksLot lot = chicksLotRepository.findById(lotId)
+    public MortalityAnalysis analyzeMortalityPatterns(String lotNumber, LocalDate startDate, LocalDate endDate) {
+        ChicksLot lot = chicksLotRepository.findById(lotNumber)
                 .orElseThrow(() -> new IllegalArgumentException("Lot not found"));
 
         List<MortalitySheet> mortalitySheets = mortalitySheetRepository
-                .findByLotIdAndDateRange(lotId, startDate, endDate);
+                .findByLotIdAndDateRange(lotNumber, startDate, endDate);
 
         int totalMortality = mortalitySheets.stream()
                 .mapToInt(MortalitySheet::getTotalMortality)
@@ -45,7 +46,7 @@ public class MortalityAnalysisService {
         String trend = analyzeMortalityTrend(mortalitySheets);
 
         return new MortalityAnalysis(
-                lotId,
+                lotNumber,
                 totalMortality,
                 averageDailyMortality,
                 mortalityRate,
@@ -59,12 +60,12 @@ public class MortalityAnalysisService {
     /**
      * Verifică dacă trebuie declanșată alertă de mortalitate
      */
-    public boolean shouldTriggerMortalityAlert(Long lotId, BigDecimal thresholdPercentage) {
-        ChicksLot lot = chicksLotRepository.findById(lotId)
+    public boolean shouldTriggerMortalityAlert(String lotNumber, BigDecimal thresholdPercentage) {
+        ChicksLot lot = chicksLotRepository.findById(lotNumber)
                 .orElseThrow(() -> new IllegalArgumentException("Lot not found"));
 
         List<MortalitySheet> recentSheets = mortalitySheetRepository
-                .findByLotIdOrderByDateDesc(lotId)
+                .findByLotIdOrderByDateDesc(lotNumber)
                 .stream()
                 .limit(7) // Ultimele 7 zile
                 .toList();
@@ -88,7 +89,7 @@ public class MortalityAnalysisService {
         return activeLots.stream()
                 .map(lot -> {
                     List<MortalitySheet> recentSheets = mortalitySheetRepository
-                            .findByLotIdOrderByDateDesc(lot.getId())
+                            .findByLotIdOrderByDateDesc(lot.getLotNumber())
                             .stream()
                             .limit(3) // Ultimele 3 zile
                             .toList();
@@ -108,11 +109,11 @@ public class MortalityAnalysisService {
     /**
      * Agregă date de mortalitate pentru rapoarte săptămânale
      */
-    public WeeklyMortalitySummary getWeeklyMortalitySummary(Long lotId, LocalDate weekStart) {
+    public WeeklyMortalitySummary getWeeklyMortalitySummary(String lotNumber, LocalDate weekStart) {
         LocalDate weekEnd = weekStart.plusDays(6);
 
         List<MortalitySheet> weeklySheets = mortalitySheetRepository
-                .findByLotIdAndDateRange(lotId, weekStart, weekEnd);
+                .findByLotIdAndDateRange(lotNumber, weekStart, weekEnd);
 
         int weeklyTotal = weeklySheets.stream()
                 .mapToInt(MortalitySheet::getTotalMortality)
@@ -127,7 +128,7 @@ public class MortalityAnalysisService {
         Map<String, Long> causeBreakdown = analyzeMortalityCauses(weeklySheets);
 
         return new WeeklyMortalitySummary(
-                lotId,
+                lotNumber,
                 weekStart,
                 weekEnd,
                 weeklyTotal,
@@ -149,7 +150,7 @@ public class MortalityAnalysisService {
                 .sum();
 
         return BigDecimal.valueOf(totalMortality)
-                .divide(BigDecimal.valueOf(daysInPeriod), 2, BigDecimal.ROUND_HALF_UP);
+                .divide(BigDecimal.valueOf(daysInPeriod), 2, RoundingMode.HALF_UP);
     }
 
     private BigDecimal calculateMortalityRate(int mortality, int totalBirds) {
@@ -158,7 +159,7 @@ public class MortalityAnalysisService {
         }
         return BigDecimal.valueOf(mortality)
                 .multiply(BigDecimal.valueOf(100))
-                .divide(BigDecimal.valueOf(totalBirds), 2, BigDecimal.ROUND_HALF_UP);
+                .divide(BigDecimal.valueOf(totalBirds), 2, RoundingMode.HALF_UP);
     }
 
     private Map<String, Long> analyzeMortalityCauses(List<MortalitySheet> sheets) {
@@ -213,7 +214,7 @@ public class MortalityAnalysisService {
 
     // DTO-uri pentru serviciu
     public record MortalityAnalysis(
-            Long lotId,
+            String lotNumber,
             int totalMortality,
             BigDecimal averageDailyMortality,
             BigDecimal mortalityRate,
@@ -230,7 +231,7 @@ public class MortalityAnalysisService {
     ) {}
 
     public record WeeklyMortalitySummary(
-            Long lotId,
+            String lotNumber,
             LocalDate weekStart,
             LocalDate weekEnd,
             int totalMortality,

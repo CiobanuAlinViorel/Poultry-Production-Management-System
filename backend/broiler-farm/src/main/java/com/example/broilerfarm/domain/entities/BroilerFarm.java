@@ -33,40 +33,6 @@ public class BroilerFarm extends BaseEntity {
     @Column(name = "license_number" ,unique = true, nullable = false)
     private String licenseNumber;
 
-    @OneToMany(mappedBy = "broilerFarm", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<FarmEmployee> employees = new ArrayList<>();
-
-    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<Warehouse> warehouses = new ArrayList<>();
-
-
-    public void addEmployee(FarmEmployee employee) {
-        employees.add(employee);
-        employee.setBroilerFarm(this);
-    }
-
-    public void addWarehouse(Warehouse warehouse) {
-        warehouses.add(warehouse);
-        warehouse.setFarm(this);
-    }
-
-
-
-    public void removeEmployee(FarmEmployee employee) {
-        employees.remove(employee);
-        employee.setBroilerFarm(null);
-    }
-
-    // Constructor custom without the employees list
-    public BroilerFarm(String farmName, String location, String address, Integer capacity, String licenseNumber) {
-        this.farmName = farmName;
-        this.location = location;
-        this.address = address;
-        this.capacity = capacity;
-        this.licenseNumber = licenseNumber;
-    }
 
     public BroilerFarm(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String farmName, String location, String address, Integer capacity, String licenseNumber) {
         super(id, createdAt, updatedAt);

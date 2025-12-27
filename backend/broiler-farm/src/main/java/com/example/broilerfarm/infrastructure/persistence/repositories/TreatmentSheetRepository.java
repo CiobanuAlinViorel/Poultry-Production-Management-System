@@ -14,54 +14,64 @@ import java.util.Optional;
 @Repository
 public interface TreatmentSheetRepository extends JpaRepository<TreatmentSheet, Long> {
 
-    List<TreatmentSheet> findByLotId(Long lotId);
-
+    // Simple queries
     List<TreatmentSheet> findByStatus(TreatmentStatus status);
 
+    // Fetch with lines (eager loading)
     @Query("SELECT t FROM TreatmentSheet t LEFT JOIN FETCH t.treatmentLines WHERE t.id = :id")
     Optional<TreatmentSheet> findByIdWithLines(@Param("id") Long id);
 
-    @Query("SELECT t FROM TreatmentSheet t WHERE t.lot.id = :lotId AND t.status IN :statuses")
+    // Find by lot and statuses - FIXED: use t.lot.lotNumber instead of t.lot_number
+    @Query("SELECT t FROM TreatmentSheet t WHERE t.lot.lotNumber = :lotNumber AND t.status IN :statuses")
     List<TreatmentSheet> findByLotIdAndStatusIn(
-            @Param("lotId") Long lotId,
+            @Param("lotNumber") String lotNumber,
             @Param("statuses") List<TreatmentStatus> statuses
     );
 
-    @Query("SELECT t FROM TreatmentSheet t WHERE t.lot.id = :lotId " +
+    // Find active treatments by lot - FIXED
+    @Query("SELECT t FROM TreatmentSheet t WHERE t.lot.lotNumber = :lotNumber " +
             "AND t.status = 'ACTIVE' " +
             "ORDER BY t.treatmentDate DESC")
-    List<TreatmentSheet> findActiveTreatmentsByLot(@Param("lotId") Long lotId);
+    List<TreatmentSheet> findActiveTreatmentsByLot(@Param("lotNumber") String lotNumber);
 
+    // Find active treatments by farm - FIXED
     @Query("SELECT t FROM TreatmentSheet t WHERE t.lot.house.farm.id = :farmId " +
             "AND t.status = 'ACTIVE'")
     List<TreatmentSheet> findActiveTreatmentsByFarm(@Param("farmId") Long farmId);
 
-    @Query("SELECT t FROM TreatmentSheet t WHERE t.lot.id = :lotId " +
+    // Find by lot and date range - FIXED
+    @Query("SELECT t FROM TreatmentSheet t WHERE t.lot.lotNumber = :lotNumber " +
             "AND t.treatmentDate BETWEEN :startDate AND :endDate")
     List<TreatmentSheet> findByLotIdAndDateRange(
-            @Param("lotId") Long lotId,
+            @Param("lotNumber") String lotNumber,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
 
+    // Find by veterinarian
     @Query("SELECT t FROM TreatmentSheet t WHERE t.veterinarian.id = :vetId " +
             "ORDER BY t.treatmentDate DESC")
     List<TreatmentSheet> findByVeterinarianIdOrderByDateDesc(@Param("vetId") Long vetId);
 
+    // Find draft treatments by farm
     @Query("SELECT t FROM TreatmentSheet t WHERE t.lot.house.farm.id = :farmId " +
             "AND t.status = 'DRAFT'")
     List<TreatmentSheet> findDraftTreatmentsByFarm(@Param("farmId") Long farmId);
 
-    // ✅ CORECT: Returnează toate treatment sheets active/completed
-    // Verificarea withdrawal period se face în Domain Service
-    @Query("SELECT t FROM TreatmentSheet t LEFT JOIN FETCH t.treatmentLines tl " +
-            "WHERE t.lot.id = :lotId " +
-            "AND t.status IN ('ACTIVE', 'COMPLETED')")
-    List<TreatmentSheet> findTreatmentsForWithdrawalCheck(@Param("lotId") Long lotId);
+    /**
+     * CRITICAL FOR WITHDRAWAL PERIOD CHECKS
+     * Returns all treatments (ACTIVE or COMPLETED) with lines eagerly fetched
+     * Used by TreatmentWithdrawalService to check withdrawal periods
+     */
+    @Query("SELECT DISTINCT t FROM TreatmentSheet t " +
+            "LEFT JOIN FETCH t.treatmentLines tl " +
+            "WHERE t.lot.lotNumber = :lotNumber " +
+            "AND t.status IN ('ACTIVE', 'COMPLETED') " +
+            "ORDER BY t.treatmentDate DESC")
+    List<TreatmentSheet> findTreatmentsForWithdrawalCheck(@Param("lotNumber") String lotNumber);
 
+    // Search by diagnosis or reason
     @Query("SELECT t FROM TreatmentSheet t WHERE t.diagnosis LIKE %:keyword% " +
             "OR t.treatmentReason LIKE %:keyword%")
     List<TreatmentSheet> searchByDiagnosisOrReason(@Param("keyword") String keyword);
-
-
 }

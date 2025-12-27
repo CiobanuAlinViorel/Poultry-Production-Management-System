@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class MortalitySheet extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lot_id", nullable = false)
+    @JoinColumn(name = "lot_number", nullable = false)
     private ChicksLot lot;
 
     @ManyToOne(fetch = FetchType.LAZY)
