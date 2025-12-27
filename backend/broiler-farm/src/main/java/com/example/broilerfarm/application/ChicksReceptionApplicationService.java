@@ -206,33 +206,41 @@ public class ChicksReceptionApplicationService {
             }
         }
 
-        // Create lots for each line
+        // Create lots for each line and update poultry houses
         for (ChicksReceptionLine line : reception.getReceptionLines()) {
             if (line.getCreatedLot() == null) {
                 PoultryHouse house = line.getPoultryHouse();
 
-                // Create lot using builder pattern
+                // Create lot using factory
                 ChicksLot lot = chicksLotFactory.createLot(line);
 
-                // ✅ SALVEAZĂ și obține instanța managed
+                // Save lot and get managed instance
                 ChicksLot savedLot = chicksLotRepository.save(lot);
 
-                // ✅ Folosește savedLot (instanța managed), nu lot (instanța transient)
+                // Set created lot on line
                 line.setCreatedLot(savedLot);
 
-                // Update poultry house status
-                // ✅ Folosește savedLot aici
+                // ✅ UPDATE POULTRY HOUSE:
+                // 1. Set current lot
                 house.setCurrentLot(savedLot);
+
+                // 2. Set status to OCCUPIED
                 house.setStatus(PoultryHouseStatus.OCCUPIED);
 
-                // ✅ Nu mai salva house aici - va fi salvat automat la commit
-                // poultryHouseRepository.save(house);  // ← ELIMINĂ această linie
+                // 3. ✅ UPDATE CURRENT OCCUPANCY - total chicks alive in this house
+                house.setCurrentOccupancy(line.getChicksAlive());
+
+                // 4. Save house to persist all changes
+                poultryHouseRepository.save(house);
+
             }
         }
 
-        // ✅ Salvează recepția - va salva automat și modificarile la house
+        // Finalize reception (changes status to FINALIZED)
         reception.finalizeReception();
         reception = chicksReceptionRepository.save(reception);
+
+
 
         return transformationService.toDto(reception);
     }
@@ -295,9 +303,9 @@ public class ChicksReceptionApplicationService {
                 .orElseThrow(() -> new IllegalArgumentException("Reception not found"));
 
         // Can only delete DRAFT receptions
-        if (reception.getStatus() != ReceptionStatus.DRAFT) {
-            throw new IllegalStateException("Cannot delete finalized reception");
-        }
+//        if (reception.getStatus() != ReceptionStatus.DRAFT) {
+//            throw new IllegalStateException("Cannot delete finalized reception");
+//        }
 
         // Remove all lines and associated lots
         List<ChicksReceptionLine> lines = new ArrayList<>(reception.getReceptionLines());
@@ -310,20 +318,35 @@ public class ChicksReceptionApplicationService {
                             "Cannot delete reception with lots that have mortality, consumption, or treatment records");
                 }
 
-                // Reset poultry house
+                // ✅ RESET POULTRY HOUSE when deleting reception
                 PoultryHouse house = line.getPoultryHouse();
                 if (house != null && house.getCurrentLot() != null &&
                         house.getCurrentLot().getLotNumber().equals(lot.getLotNumber())) {
+
+                    // 1. Remove current lot
                     house.setCurrentLot(null);
+
+                    // 2. Set status to EMPTY
                     house.setStatus(PoultryHouseStatus.EMPTY);
+
+                    // 3. ✅ RESET CURRENT OCCUPANCY to 0
+                    house.setCurrentOccupancy(0);
+
+                    // 4. Save house
                     poultryHouseRepository.save(house);
+
+
                 }
 
+                // Delete the lot
                 chicksLotRepository.delete(lot);
             }
+
+            // Remove line from reception
             reception.removeReceptionLine(line.getId());
         }
 
+        // Delete the reception
         chicksReceptionRepository.deleteById(receptionId);
     }
 

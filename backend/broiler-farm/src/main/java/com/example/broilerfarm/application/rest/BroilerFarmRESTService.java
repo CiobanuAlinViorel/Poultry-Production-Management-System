@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/broiler-farms")
-@CrossOrigin(origins = "*")
 public class BroilerFarmRESTService {
 
     @Autowired

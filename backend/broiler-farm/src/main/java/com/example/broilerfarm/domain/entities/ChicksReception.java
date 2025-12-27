@@ -125,9 +125,9 @@ public class ChicksReception extends BaseEntity {
     }
 
     public void removeReceptionLine(Long id) {
-        if (this.status != ReceptionStatus.DRAFT) {
-            throw new IllegalStateException("Cannot remove lines from a finalized reception");
-        }
+//        if (this.status != ReceptionStatus.DRAFT) {
+//            throw new IllegalStateException("Cannot remove lines from a finalized reception");
+//        }
 
         ChicksReceptionLine lineToRemove = getReceptionLineById(id);
 

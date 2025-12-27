@@ -18,7 +18,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/chicks-receptions")
-@CrossOrigin(origins = "*")
 public class ChicksReceptionRESTService {
 
     @Autowired

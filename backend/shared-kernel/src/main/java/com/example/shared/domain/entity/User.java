@@ -64,7 +64,7 @@ public abstract class User extends BaseEntity {
     @Column(name = "reset_token_expiry")
     private LocalDateTime resetTokenExpiry;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     private Set<String> roles = new HashSet<>();
