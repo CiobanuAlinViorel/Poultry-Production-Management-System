@@ -1,0 +1,7 @@
+com\example\slaughterhouse\SlaughterLotRESTTest.class
+com\example\slaughterhouse\ProductRESTTest.class
+com\example\slaughterhouse\SlaughterLotMetricsServiceTest.class
+com\example\slaughterhouse\AnteMortemInspectionServiceTest.class
+com\example\slaughterhouse\ChickenReceptionRESTTest.class
+com\example\slaughterhouse\DeliveryNoticeReceiveTest.class
+com\example\slaughterhouse\ProductServiceTest.class

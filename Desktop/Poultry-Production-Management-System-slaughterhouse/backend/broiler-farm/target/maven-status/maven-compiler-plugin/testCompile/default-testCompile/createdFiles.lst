@@ -1,0 +1,3 @@
+com\example\broilerfarm\application\ChicksReceptionApplicationServiceTest.class
+com\example\broilerfarm\application\rest\ChicksReceptionRESTServiceTest.class
+com\example\broilerfarm\services\ChicksLotFactoryTest.class
