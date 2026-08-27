@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+
+  postgres-parent-flock:
+    image: postgres:16
+    container_name: ppms-parent-flock-db
+    environment:
+      POSTGRES_USER: ppms
+      POSTGRES_PASSWORD: ppms_dev
+      POSTGRES_DB: parent_flock_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - parent_flock_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ppms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-hatchery:
+    image: postgres:16
+    container_name: ppms-hatchery-db
+    environment:
+      POSTGRES_USER: ppms
+      POSTGRES_PASSWORD: ppms_dev
+      POSTGRES_DB: hatchery_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - hatchery_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ppms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-farm:
+    image: postgres:16
+    container_name: ppms-farm-db
+    environment:
+      POSTGRES_USER: ppms
+      POSTGRES_PASSWORD: ppms_dev
+      POSTGRES_DB: farm_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - farm_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ppms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-slaughterhouse:
+    image: postgres:16
+    container_name: ppms-slaughterhouse-db
+    environment:
+      POSTGRES_USER: ppms
+      POSTGRES_PASSWORD: ppms_dev
+      POSTGRES_DB: slaughterhouse_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - slaughterhouse_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ppms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  parent_flock_data:
+  hatchery_data:
+  farm_data:
+  slaughterhouse_data:

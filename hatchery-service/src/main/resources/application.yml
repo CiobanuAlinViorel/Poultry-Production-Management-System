@@ -1,0 +1,12 @@
+# hatchery-service
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/hatchery_db
+    username: ppms
+    password: ppms_dev
+  flyway:
+    locations:
+      - classpath:db/migration
+      - classpath:db/shared-migration
+server:
+  port: 8081

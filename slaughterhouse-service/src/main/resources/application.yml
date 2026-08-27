@@ -1,0 +1,12 @@
+# slaughterhouse-service
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5435/slaughterhouse_db
+    username: ppms
+    password: ppms_dev
+  flyway:
+    locations:
+      - classpath:db/migration
+      - classpath:db/shared-migration
+server:
+  port: 8083
