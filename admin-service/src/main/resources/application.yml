@@ -1,0 +1,18 @@
+# admin-service
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5436/ppms_iam
+    username: ppms        # least-privilege DB role, only has access to admin schema
+    password: ppms_dev
+  jpa:
+    properties:
+      hibernate:
+        default_schema: admin  # all JPA queries/DDL go to admin schema
+  flyway:
+    schemas: admin             # Flyway creates/owns this schema
+    default-schema: admin      # Flyway's own metadata table (flyway_schema_history) also lives here
+    locations:
+      - classpath:db/migration
+      - classpath:db/shared-migration
+server:
+  port: 8085

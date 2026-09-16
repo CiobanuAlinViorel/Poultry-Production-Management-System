@@ -888,7 +888,7 @@ Why the explicit scanning config matters: `shared-kernel` entities/beans live un
 - [ ] **Step 1: Delete the skeleton files**
 
 ```bash
-git rm parent-flock-service/src/main/java/com/example/parent_flock_service/ParentFlockServiceApplication.java
+git rm parent-flock-service/src/main/java/com/example/parent_flock_service/AuthenticationApplication.java
 git rm parent-flock-service/src/test/java/com/example/parent_flock_service/ParentFlockServiceApplicationTests.java
 git rm parent-flock-service/src/main/resources/application.properties
 ```

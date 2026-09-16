@@ -69,8 +69,25 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  postgres-identity-admin:
+    image: postgres:16
+    container_name: ppms-iam-db
+    environment:
+      POSTGRES_USER: ppms
+      POSTGRES_PASSWORD: ppms_dev
+      POSTGRES_DB: ppms_iam
+    ports:
+      - "5436:5432"
+    volumes:
+      - iam_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ppms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
+  iam_data:
   parent_flock_data:
   hatchery_data:
   farm_data:

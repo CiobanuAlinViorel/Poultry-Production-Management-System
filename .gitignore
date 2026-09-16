@@ -1,0 +1,50 @@
+# ===========================
+# Maven
+# ===========================
+target/
+*.jar
+*.war
+*.ear
+*.class
+.mvn/timing.properties
+!.mvn/wrapper/maven-wrapper.jar
+
+# ===========================
+# Spring Boot
+# ===========================
+application-local.yml
+application-local.properties
+*.env
+
+# ===========================
+# IntelliJ IDEA
+# ===========================
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# ===========================
+# VS Code
+# ===========================
+.vscode/
+
+# ===========================
+# OS
+# ===========================
+.DS_Store
+Thumbs.db
+
+# ===========================
+# Docker
+# ===========================
+docker-compose.override.yml
+
+# ===========================
+# Logs
+# ===========================
+*.log
+logs/
+# Claude AI working directory
+.claude

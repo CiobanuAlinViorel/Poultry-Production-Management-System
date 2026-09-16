@@ -40,6 +40,8 @@
          their order does not matter after that.
          ===================================================================== -->
     <modules>
+        <module>admin-service</module>
+        <module>identity-service</module>
         <module>shared-kernel</module>
         <module>parent-flock-service</module>
         <module>hatchery-service</module>
