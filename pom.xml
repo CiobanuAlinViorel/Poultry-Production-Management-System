@@ -61,6 +61,11 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <!-- Lombok — spring-boot-dependencies 3.3.4 manages 1.18.34, which
+             predates JDK 25 and crashes the compiler (TypeTag :: UNKNOWN).
+             Override with a version that supports JDK 25. -->
+        <lombok.version>1.18.48</lombok.version>
+
         <!-- Library versions not managed by Spring Boot BOM -->
         <jjwt.version>0.12.5</jjwt.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>

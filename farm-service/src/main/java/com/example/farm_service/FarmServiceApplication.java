@@ -1,13 +1,13 @@
-package com.example.parent_flock_service;
+package com.example.farm_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ParentFlockServiceApplication {
+public class FarmServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ParentFlockServiceApplication.class, args);
+		SpringApplication.run(FarmServiceApplication.class, args);
 	}
 
 }
