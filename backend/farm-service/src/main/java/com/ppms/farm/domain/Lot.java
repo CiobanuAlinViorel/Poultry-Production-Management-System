@@ -4,6 +4,7 @@ import com.ppms.shared.persistence.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -20,4 +21,5 @@ public class Lot extends BaseEntity {
     @Column(name = "male_count", nullable = false) private int maleCount;
     @Enumerated(EnumType.STRING) @Column(nullable = false, length = 20) private Status status = Status.ACTIVE;
     @Column(name = "expected_catch_date") private LocalDate expectedCatchDate;
+    @Column(name = "closed_at") private LocalDateTime closedAt;
 }
