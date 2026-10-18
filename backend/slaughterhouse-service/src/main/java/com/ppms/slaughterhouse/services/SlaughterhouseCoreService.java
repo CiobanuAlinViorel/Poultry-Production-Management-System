@@ -7,9 +7,12 @@ import com.ppms.shared.events.DomainEvent;
 import com.ppms.shared.events.OutboxPublisher;
 import com.ppms.shared.events.SiteDirectoryPayload;
 import com.ppms.shared.events.Topics;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.List;
@@ -67,6 +70,21 @@ public class SlaughterhouseCoreService {
     }
 
     public SlaughterSession createSession(SlaughterSessionRequest request) {
+        Slaughterhouse site = slaughterhouseRepository.findById(request.slaughterhouseId())
+                .orElseThrow(() -> new EntityNotFoundException("Slaughterhouse not found"));
+        if (slaughterSessionRepository.existsBySessionCodeIgnoreCase(request.sessionCode())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Session code already exists");
+        }
+        if (request.lineId() != null) {
+            Line line = lineRepository.findById(request.lineId())
+                    .orElseThrow(() -> new EntityNotFoundException("Line not found"));
+            if (!line.getSlaughterhouseId().equals(request.slaughterhouseId())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Line does not belong to slaughterhouse");
+            }
+        }
+        if (request.birdsPlanned() != null && site.getDailyCapacityBirds() != null && request.birdsPlanned() > site.getDailyCapacityBirds()) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Birds planned exceeds daily capacity");
+        }
         SlaughterSession ss = new SlaughterSession();
         ss.setId(UUID.randomUUID());
         ss.setSlaughterhouseId(request.slaughterhouseId());
@@ -78,7 +96,13 @@ public class SlaughterhouseCoreService {
         ss.setStatus(SlaughterSession.Status.PLANNED);
         ss.setCreatedAt(Instant.now());
         ss.setUpdatedAt(Instant.now());
-        return slaughterSessionRepository.save(ss);
+        SlaughterSession saved = slaughterSessionRepository.save(ss);
+        outboxPublisher.publish(Topics.SLAUGHTERHOUSE_RECEPTION, new DomainEvent<>(UUID.randomUUID(), "slaughterhouse.session.planned", 1, "SlaughterSession", saved.getId(), site.getId(), null,
+                new SlaughterSessionPlannedPayload(saved.getId(), saved.getSessionCode(), saved.getSlaughterhouseId(), saved.getLineId(), saved.getBirdsPlanned(), saved.getStartedAt())));
+        return saved;
+    }
+
+    public record SlaughterSessionPlannedPayload(UUID sessionId, String sessionCode, UUID slaughterhouseId, UUID lineId, Integer birdsPlanned, Instant startedAt) {
     }
 
     public List<SlaughterSession> listSessions(UUID slaughterhouseId) {

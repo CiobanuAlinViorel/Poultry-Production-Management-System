@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface SlaughterSessionRepository extends JpaRepository<SlaughterSession, UUID> {
 
     List<SlaughterSession> findBySlaughterhouseId(UUID slaughterhouseId);
+    boolean existsBySessionCodeIgnoreCase(String sessionCode);
 }
