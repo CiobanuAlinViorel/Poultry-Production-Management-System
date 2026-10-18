@@ -19,6 +19,7 @@ spring:
     schemas: identity
     default-schema: identity
     locations: classpath:db/migration
+    sql-migration-prefix: VID
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:

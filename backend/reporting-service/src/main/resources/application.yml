@@ -14,6 +14,7 @@ spring:
   flyway:
     schemas: reporting
     default-schema: reporting
+    sql-migration-prefix: VRP
   kafka:
     bootstrap-servers: localhost:9092
     consumer:

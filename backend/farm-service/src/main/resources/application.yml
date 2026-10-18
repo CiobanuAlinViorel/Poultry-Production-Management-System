@@ -16,6 +16,7 @@ spring:
     default-schema: fa
     locations:
       - classpath:db/migration
+    sql-migration-prefix: VFA
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
