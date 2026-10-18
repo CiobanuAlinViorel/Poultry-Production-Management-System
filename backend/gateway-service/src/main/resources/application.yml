@@ -8,15 +8,14 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8084/.well-known/jwks.json
-          issuer-uri: http://localhost:8084
+          jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:8084/.well-known/jwks.json}
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8084}
   cloud:
     gateway:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOriginPatterns:
-              - "*"
+            allowedOriginPatterns: ${CORS_ORIGINS:*}
             allowedMethods: "*"
             allowedHeaders: "*"
             allowCredentials: true
@@ -25,49 +24,49 @@ spring:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       routes:
         - id: identity-service
-          uri: http://localhost:8084
+          uri: ${ROUTES_IDENTITY_URL:http://localhost:8084}
           predicates:
             - Path=/api/identity/**
           filters:
             - RewritePath=/api/identity/(?<p>.*), /api/v1/$\{p}
         - id: admin-service
-          uri: http://localhost:8085
+          uri: ${ROUTES_ADMIN_URL:http://localhost:8085}
           predicates:
             - Path=/api/admin/**
           filters:
             - RewritePath=/api/admin/(?<p>.*), /api/v1/$\{p}
         - id: parent-flock-service
-          uri: http://localhost:8081
+          uri: ${ROUTES_PARENT_FLOCK_URL:http://localhost:8081}
           predicates:
             - Path=/api/parent-flock/**
           filters:
             - RewritePath=/api/parent-flock/(?<p>.*), /api/v1/$\{p}
         - id: hatchery-service
-          uri: http://localhost:8082
+          uri: ${ROUTES_HATCHERY_URL:http://localhost:8082}
           predicates:
             - Path=/api/hatchery/**
           filters:
             - RewritePath=/api/hatchery/(?<p>.*), /api/v1/$\{p}
         - id: farm-service
-          uri: http://localhost:8083
+          uri: ${ROUTES_FARM_URL:http://localhost:8083}
           predicates:
             - Path=/api/farm/**
           filters:
             - RewritePath=/api/farm/(?<p>.*), /api/v1/$\{p}
         - id: slaughterhouse-service
-          uri: http://localhost:8086
+          uri: ${ROUTES_SLAUGHTERHOUSE_URL:http://localhost:8086}
           predicates:
             - Path=/api/slaughterhouse/**
           filters:
             - RewritePath=/api/slaughterhouse/(?<p>.*), /api/v1/$\{p}
         - id: notification-service
-          uri: http://localhost:8087
+          uri: ${ROUTES_NOTIFICATION_URL:http://localhost:8087}
           predicates:
             - Path=/api/notification/**
           filters:
             - RewritePath=/api/notification/(?<p>.*), /api/v1/$\{p}
         - id: reporting-service
-          uri: http://localhost:8088
+          uri: ${ROUTES_REPORTING_URL:http://localhost:8088}
           predicates:
             - Path=/api/reporting/**
           filters:
