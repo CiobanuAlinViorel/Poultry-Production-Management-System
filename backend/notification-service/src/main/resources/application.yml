@@ -20,6 +20,16 @@ spring:
     bootstrap-servers: localhost:9092
     consumer:
       group-id: notification-service
+  mail:
+    host: localhost
+    port: 1025
+    username: ""
+    password: ""
+    default-encoding: UTF-8
 
 server:
   port: 8087
+
+ppms:
+  mail:
+    from-name: PPMS
