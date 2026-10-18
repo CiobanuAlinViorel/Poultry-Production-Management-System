@@ -1,22 +1,26 @@
 package com.ppms.admin.domain;
 
-import com.ppms.shared.persistence.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "site_directory_entry", schema = "admin")
-public class SiteDirectoryEntry extends BaseEntity {
+public class SiteDirectoryEntry {
 
-    @Column(name = "site_id", nullable = false, unique = true)
-    private java.util.UUID siteId;
+    @Id
+    @Column(name = "site_id", nullable = false)
+    private UUID siteId;
 
     @Column(name = "site_type", nullable = false)
     private String siteType;
@@ -41,4 +45,29 @@ public class SiteDirectoryEntry extends BaseEntity {
 
     @Column(name = "last_event_at")
     private Instant lastEventAt;
+
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
+
+    @Column(name = "version", nullable = false)
+    private long version;
+
+    @PrePersist
+    public void prePersist() {
+        Instant now = Instant.now();
+        if (createdAt == null) {
+            createdAt = now;
+        }
+        if (updatedAt == null) {
+            updatedAt = now;
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = Instant.now();
+    }
 }

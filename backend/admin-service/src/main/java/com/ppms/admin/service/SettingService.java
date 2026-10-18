@@ -91,7 +91,9 @@ public class SettingService {
         SettingDefinition definition = definitionRepository.findByKey(key)
                 .orElseThrow(() -> new EntityNotFoundException("SettingDefinition", key));
 
-        if (scopeType != ScopeType.GLOBAL) {
+        if (scopeType == ScopeType.GLOBAL) {
+            scopeId = null;
+        } else {
             if (!definition.isScopeable()) {
                 throw new BusinessRuleViolationException("SETTING_NOT_SCOPEABLE",
                         "Setting " + key + " does not support scoped overrides");
