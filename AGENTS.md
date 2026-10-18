@@ -72,7 +72,7 @@ Postgres 16 on `localhost:5432` with one database per service:
 ## Remaining major work
 - Full domain workflows: flocks, daily sheets, hatchery cycle, farm treatments/FCI/dispatch, slaughterhouse sessions/sales/invoicing.
 - Additional reporting projections and dashboards.
-- Frontend domain modules for farm/hatchery/parent-flock/slaughterhouse.
+- More frontend domain modules for hatchery/parent-flock/slaughterhouse/reporting.
 - End-to-end integration tests with Testcontainers.
-- Loki/Promtail logging stack.
 - Full Kubernetes production manifests and runbooks.
+- Runtime integration verification against Docker Compose.
