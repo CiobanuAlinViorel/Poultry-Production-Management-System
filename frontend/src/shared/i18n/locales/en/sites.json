@@ -1,0 +1,28 @@
+{
+  "noSites": "No sites yet.",
+  "code": "Code",
+  "name": "Name",
+  "address": "Address",
+  "county": "County",
+  "active": "Active",
+  "inactive": "Inactive",
+  "createFailed": "Could not save. Check the data and try again.",
+  "capacityHouses": "Capacity (houses)",
+  "weeklySetCapacity": "Weekly set capacity (eggs)",
+  "dailyCapacityBirds": "Daily capacity (birds)",
+  "parent-flock": {
+    "title": "Breeder sites",
+    "subtitle": "Parent flock sites; flocks and production are managed per site",
+    "new": "New breeder site"
+  },
+  "hatchery": {
+    "title": "Hatcheries",
+    "subtitle": "Incubation sites; incubators and batches are managed per site",
+    "new": "New hatchery"
+  },
+  "slaughterhouse": {
+    "title": "Slaughterhouses",
+    "subtitle": "Processing sites; lines, sessions and sales are managed per site",
+    "new": "New slaughterhouse"
+  }
+}

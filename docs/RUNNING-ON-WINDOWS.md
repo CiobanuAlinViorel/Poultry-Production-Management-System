@@ -145,17 +145,37 @@ To run a service from the IDE against the Docker infrastructure, set:
 Service ports: identity 8084, admin 8085, parent-flock 8081, hatchery 8082, farm 8083,
 slaughterhouse 8086, notification 8087, reporting 8088, gateway 8080.
 
-## 9. Smoke test for authorization
+## 9. Smoke tests
 
-With the stack up, `infra\scripts\authz-smoke.ps1` logs in as the admin and a `FARM_MANAGER`
-user and prints the HTTP status matrix across modules (expects a `farm.manager@ppms.local`
-user with password `Admin123!` and a FARM-scoped role assignment; see the script header).
+With the stack up:
+
+- `infra\scripts\authz-smoke.ps1` logs in as the admin and a `FARM_MANAGER` user and prints the
+  HTTP status matrix across modules (expects a `farm.manager@ppms.local` user with password
+  `Admin123!` and a FARM-scoped role assignment; see the script header).
+- `infra\scripts\access-smoke.ps1` exercises user/role/permission/assignment management
+  (`/api/identity/users`, `/api/admin/access/**`). Idempotent.
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File infra\scripts\authz-smoke.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File infra\scripts\access-smoke.ps1
 ```
 
-## 10. Troubleshooting
+## 10. Using the UI as administrator
+
+- **View as role** (top bar, admins only): previews the menu, dashboard tiles and buttons exactly as
+  the selected role would see them. It only changes the display — your administrator rights stay
+  active on the server, and a banner reminds you while the preview is on.
+- **Administration → Users**: search/filter accounts, create users (optionally with an initial
+  password so they can log in immediately), open a user to enable/disable/unlock, reset password or
+  MFA, and assign/revoke roles. Site-scoped roles (e.g. `FARM_MANAGER`) need a site: sites appear in
+  the picker once they are created in their module (farm, hatchery, …) and propagated via Kafka.
+- **Administration → Roles & permissions**: the role catalogue with scopes and permissions; create
+  custom roles and permission keys (`module:resource:action`). `SYSTEM_ADMIN` always has every
+  permission; `MANAGER` is read-only everywhere.
+- **Operations → Farms**: farm cards/table → farm detail (houses, silos, lots) → lot detail (daily
+  sheets, deliveries). Create buttons only appear for roles with write access to the module.
+
+## 11. Troubleshooting
 
 | Symptom | Cause / fix |
 |---|---|

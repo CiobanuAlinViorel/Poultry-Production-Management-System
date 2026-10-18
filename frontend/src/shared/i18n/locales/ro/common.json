@@ -1,1 +1,80 @@
-{"appName":"PPMS","home":"Acasă","dashboard":"Panou de control","profile":"Profil","settings":"Setări","users":"Utilizatori","logout":"Deconectare","logoutAll":"Deconectare de pe toate dispozitivele","save":"Salvează","cancel":"Anulează","edit":"Editează","delete":"Șterge","search":"Caută","loading":"Se încarcă...","back":"Înapoi","next":"Înainte","language":"Limbă","romanian":"Română","english":"Engleză","navigation":"Navigare","menu":"Meniu","close":"Închide","yes":"Da","no":"Nu","farm":{"dashboard":{"title":"Ferme","description":"Gestionează ferme, hale, loturi și fișe zilnice.","sites":"Ferme","houses":"Hale","lots":"Loturi"}}}
+{
+  "appName": "PPMS",
+  "home": {
+    "welcome": "Bine ai venit, {{name}}",
+    "noModules": "Nu ai încă acces la niciun modul. Contactează un administrator.",
+    "manage": "Gestionează",
+    "view": "Vizualizează",
+    "tiles": {
+      "parentFlock": {
+        "title": "Efective reproducție",
+        "description": "Stații reproducție, efective, producție zilnică și loturi de ouă."
+      },
+      "hatchery": {
+        "title": "Incubație",
+        "description": "Stații de incubație, incubatoare, loturi de ouă și pui."
+      },
+      "farm": {
+        "title": "Ferme",
+        "description": "Ferme, hale, silozuri, loturi, fișe zilnice și livrări."
+      },
+      "slaughterhouse": {
+        "title": "Abator",
+        "description": "Abatoare, linii, sesiuni, clienți și comenzi."
+      },
+      "users": {
+        "title": "Utilizatori",
+        "description": "Conturi, stare și atribuiri de roluri."
+      },
+      "roles": {
+        "title": "Roluri și permisiuni",
+        "description": "Catalog de roluri, scopuri și permisiuni."
+      }
+    }
+  },
+  "dashboard": "Panou de control",
+  "profile": "Profil",
+  "settings": "Setări",
+  "users": "Utilizatori",
+  "logout": "Deconectare",
+  "logoutAll": "Deconectare de pe toate dispozitivele",
+  "save": "Salvează",
+  "cancel": "Anulează",
+  "edit": "Editează",
+  "delete": "Șterge",
+  "search": "Caută",
+  "loading": "Se încarcă...",
+  "back": "Înapoi",
+  "next": "Înainte",
+  "language": "Limbă",
+  "romanian": "Română",
+  "english": "Engleză",
+  "navigation": "Navigare",
+  "menu": "Meniu",
+  "close": "Închide",
+  "yes": "Da",
+  "no": "Nu",
+  "farm": {
+    "dashboard": {
+      "title": "Ferme",
+      "description": "Gestionează ferme, hale, loturi și fișe zilnice.",
+      "sites": "Ferme",
+      "houses": "Hale",
+      "lots": "Loturi"
+    }
+  },
+  "nav": {
+    "operations": "Operațiuni",
+    "administration": "Administrare",
+    "parentFlock": "Efective reproducție",
+    "hatchery": "Incubație",
+    "slaughterhouse": "Abator",
+    "roles": "Roluri și permisiuni"
+  },
+  "viewAs": {
+    "tooltip": "Previzualizează interfața așa cum o vede alt rol (doar afișare)",
+    "own": "Vederea mea (administrator)",
+    "exit": "Ieși din previzualizare",
+    "banner": "Previzualizezi interfața ca rolul „{{role}}”. Se schimbă doar afișarea; drepturile de administrator rămân active pe server."
+  }
+}

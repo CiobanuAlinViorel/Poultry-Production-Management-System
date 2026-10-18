@@ -8,6 +8,7 @@ import com.ppms.shared.events.DomainEvent;
 import com.ppms.shared.events.IdentityEventPayload;
 import com.ppms.shared.events.OutboxPublisher;
 import com.ppms.shared.events.Topics;
+import com.ppms.shared.exception.ValidationException;
 import com.ppms.shared.security.UserPrincipal;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,27 +39,31 @@ public class UserService {
     @Audited(action = "USER_CREATE", entity = "User")
     public UserResponse createUser(CreateUserRequest request, UUID createdBy) {
         if (userRepository.existsByEmail(request.email())) {
-            throw new IllegalArgumentException("Email already in use");
+            throw new ValidationException("Email already in use");
         }
         if (request.username() != null && userRepository.existsByUsername(request.username())) {
-            throw new IllegalArgumentException("Username already in use");
+            throw new ValidationException("Username already in use");
         }
         User user = new User();
-        user.setId(UUID.randomUUID());
         user.setEmail(request.email());
         user.setUsername(request.username());
         user.setDisplayName(request.displayName());
         user.setEmployeeId(request.employeeId());
         user.setLocale(request.locale() != null ? request.locale() : "ro");
-        user.setStatus(UserStatus.PENDING_ACTIVATION);
+        boolean hasInitialPassword = request.initialPassword() != null && !request.initialPassword().isBlank();
+        if (hasInitialPassword) {
+            passwordPolicyService.validate(request.initialPassword(), request.username(), request.email(), List.of());
+        }
+        user.setStatus(hasInitialPassword ? UserStatus.ACTIVE : UserStatus.PENDING_ACTIVATION);
         user.setFailedLoginAttempts(0);
         user.setCreatedAt(Instant.now());
         user.setUpdatedAt(Instant.now());
-        userRepository.save(user);
+        user = userRepository.saveAndFlush(user);
 
         Credential credential = new Credential();
         credential.setUserId(user.getId());
-        credential.setPasswordHash(passwordPolicyService.hash(UUID.randomUUID().toString()));
+        credential.setPasswordHash(passwordPolicyService.hash(hasInitialPassword ? request.initialPassword() : UUID.randomUUID().toString()));
+        credential.setPasswordUpdatedAt(Instant.now());
         credential.setMustChangePassword(true);
         credential.setPasswordHistory(new ArrayList<>());
         credential.setMfaRecoveryCodes(new ArrayList<>());
@@ -78,7 +84,8 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Page<UserResponse> listUsers(UserStatus status, String q, Pageable pageable) {
-        return userRepository.findAll(pageable).map(this::toResponse);
+        String pattern = q == null || q.isBlank() ? "%" : "%" + q.trim().toLowerCase() + "%";
+        return userRepository.search(status, pattern, pageable).map(this::toResponse);
     }
 
     @Transactional(readOnly = true)

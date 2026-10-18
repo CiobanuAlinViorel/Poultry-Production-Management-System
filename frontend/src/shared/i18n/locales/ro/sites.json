@@ -1,0 +1,28 @@
+{
+  "noSites": "Nu există încă locații.",
+  "code": "Cod",
+  "name": "Denumire",
+  "address": "Adresă",
+  "county": "Județ",
+  "active": "Activă",
+  "inactive": "Inactivă",
+  "createFailed": "Nu s-a putut salva. Verifică datele și încearcă din nou.",
+  "capacityHouses": "Capacitate (hale)",
+  "weeklySetCapacity": "Capacitate săptămânală de incubare (ouă)",
+  "dailyCapacityBirds": "Capacitate zilnică (păsări)",
+  "parent-flock": {
+    "title": "Stații reproducție",
+    "subtitle": "Stații pentru efective de reproducție; efectivele și producția se gestionează per stație",
+    "new": "Stație nouă"
+  },
+  "hatchery": {
+    "title": "Stații de incubație",
+    "subtitle": "Stații de incubație; incubatoarele și loturile se gestionează per stație",
+    "new": "Stație nouă"
+  },
+  "slaughterhouse": {
+    "title": "Abatoare",
+    "subtitle": "Unități de procesare; liniile, sesiunile și vânzările se gestionează per unitate",
+    "new": "Abator nou"
+  }
+}

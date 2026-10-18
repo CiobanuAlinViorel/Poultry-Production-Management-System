@@ -7,10 +7,15 @@ import { MfaPage } from '../modules/identity/MfaPage';
 import { ProfilePage } from '../modules/identity/ProfilePage';
 import { UsersPage } from '../modules/admin/UsersPage';
 import { UserDetailPage } from '../modules/admin/UserDetailPage';
+import { RolesPage } from '../modules/admin/RolesPage';
 import { SettingsPage } from '../modules/admin/SettingsPage';
-import { FarmDashboardPage } from '../modules/farm/FarmDashboardPage';
+import { FarmsPage } from '../modules/farm/FarmsPage';
+import { FarmDetailPage } from '../modules/farm/FarmDetailPage';
+import { LotDetailPage } from '../modules/farm/LotDetailPage';
+import { ModuleSitesPage } from '../modules/sites/ModuleSitesPage';
 import { HomePage } from '../modules/shared/HomePage';
 import { ForbiddenPage } from '../modules/shared/ForbiddenPage';
+import { NotFoundPage } from '../modules/shared/NotFoundPage';
 import { AppShell } from './AppShell';
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -25,6 +30,8 @@ function RequireRead({ roles, children }: { roles: readonly string[]; children: 
   return canRead(roles) ? children : <Navigate to="/forbidden" replace />;
 }
 
+const guarded = (roles: readonly string[], element: ReactNode) => <RequireRead roles={roles}>{element}</RequireRead>;
+
 export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
   { path: '/mfa', element: <MfaPage /> },
@@ -34,11 +41,17 @@ export const router = createBrowserRouter([
       { path: '/', element: <HomePage /> },
       { path: '/profile', element: <ProfilePage /> },
       { path: '/forbidden', element: <ForbiddenPage /> },
-      { path: '/admin/users', element: <RequireRead roles={ModuleRoles.admin}><UsersPage /></RequireRead> },
-      { path: '/admin/users/:id', element: <RequireRead roles={ModuleRoles.admin}><UserDetailPage /></RequireRead> },
-      { path: '/admin/settings', element: <RequireRead roles={ModuleRoles.admin}><SettingsPage /></RequireRead> },
-      { path: '/farm', element: <RequireRead roles={ModuleRoles.farm}><FarmDashboardPage /></RequireRead> },
+      { path: '/admin/users', element: guarded(ModuleRoles.admin, <UsersPage />) },
+      { path: '/admin/users/:id', element: guarded(ModuleRoles.admin, <UserDetailPage />) },
+      { path: '/admin/roles', element: guarded(ModuleRoles.admin, <RolesPage />) },
+      { path: '/admin/settings', element: guarded(ModuleRoles.admin, <SettingsPage />) },
+      { path: '/farm', element: guarded(ModuleRoles.farm, <FarmsPage />) },
+      { path: '/farm/:farmId', element: guarded(ModuleRoles.farm, <FarmDetailPage />) },
+      { path: '/farm/:farmId/lots/:lotId', element: guarded(ModuleRoles.farm, <LotDetailPage />) },
+      { path: '/parent-flock', element: guarded(ModuleRoles.parentFlock, <ModuleSitesPage module="parent-flock" />) },
+      { path: '/hatchery', element: guarded(ModuleRoles.hatchery, <ModuleSitesPage module="hatchery" />) },
+      { path: '/slaughterhouse', element: guarded(ModuleRoles.slaughterhouse, <ModuleSitesPage module="slaughterhouse" />) },
+      { path: '*', element: <NotFoundPage /> },
     ],
   },
-  { path: '*', element: <Navigate to="/" replace /> },
 ]);
