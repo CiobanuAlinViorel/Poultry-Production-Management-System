@@ -3,19 +3,17 @@ package com.ppms.shared.security;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
+import java.security.MessageDigest;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.Base64;
 
 @Component
 public class InternalCallAuthenticator {
 
     public boolean validate(HttpServletRequest request) {
-        String token = request.getHeader("X-Internal-Token");
-        String timestamp = request.getHeader("X-Internal-Timestamp");
-        String secret = System.getenv("PPMS_INTERNAL_SECRET");
+        String token = request.getHeader(InternalCallSigner.TOKEN_HEADER);
+        String timestamp = request.getHeader(InternalCallSigner.TIMESTAMP_HEADER);
+        String secret = System.getenv(InternalCallSigner.SECRET_ENV);
         if (secret == null || secret.isBlank()) {
             return false;
         }
@@ -27,11 +25,8 @@ public class InternalCallAuthenticator {
             if (Math.abs(Instant.now().getEpochSecond() - ts) > 60) {
                 return false;
             }
-            Mac mac = Mac.getInstance("HmacSHA256");
-            mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
-            byte[] sig = mac.doFinal((timestamp + ":" + secret).getBytes(StandardCharsets.UTF_8));
-            String expected = Base64.getEncoder().encodeToString(sig);
-            return expected.equals(token);
+            String expected = InternalCallSigner.sign(secret, timestamp);
+            return MessageDigest.isEqual(expected.getBytes(StandardCharsets.UTF_8), token.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             return false;
         }

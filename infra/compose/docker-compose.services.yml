@@ -11,6 +11,7 @@ services:
       JWT_PRIVATE_KEY_FILE: /run/secrets/jwt_private
       JWT_PUBLIC_KEY_FILE: /run/secrets/jwt_public
       ADMIN_SERVICE_URL: http://admin-service:8085
+      PPMS_INTERNAL_SECRET: ${PPMS_INTERNAL_SECRET:-ppms_dev_internal_secret}
     secrets: [jwt_private, jwt_public]
     depends_on: { postgres: { condition: service_healthy }, kafka: { condition: service_healthy } }
     healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8084/actuator/health"], interval: 15s, retries: 10 }
@@ -26,6 +27,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
       JWT_PUBLIC_KEY_FILE: /run/secrets/jwt_public
+      PPMS_INTERNAL_SECRET: ${PPMS_INTERNAL_SECRET:-ppms_dev_internal_secret}
     secrets: [jwt_public]
     depends_on: { postgres: { condition: service_healthy }, kafka: { condition: service_healthy } }
     healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8085/actuator/health"], interval: 15s, retries: 10 }

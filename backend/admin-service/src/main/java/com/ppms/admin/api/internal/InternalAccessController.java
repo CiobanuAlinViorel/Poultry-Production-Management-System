@@ -5,6 +5,7 @@ import com.ppms.admin.domain.UserRoleAssignment;
 import com.ppms.admin.repositories.RolePermissionRepository;
 import com.ppms.admin.repositories.UserRoleAssignmentRepository;
 import com.ppms.shared.security.RoleClaim;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,8 @@ public class InternalAccessController {
     }
 
     @GetMapping("/{userId}/effective-access")
-    public EffectiveAccessResponse effectiveAccess(@PathVariable UUID userId) {
+    @Transactional(readOnly = true)
+    public EffectiveAccessResponse effectiveAccess(@PathVariable("userId") UUID userId) {
         Instant now = Instant.now();
         List<UserRoleAssignment> active = assignmentRepository.findByUserId(userId).stream()
                 .filter(a -> a.isActive(now))

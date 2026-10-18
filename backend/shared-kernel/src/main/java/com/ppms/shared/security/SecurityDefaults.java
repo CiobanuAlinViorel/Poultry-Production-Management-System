@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityDefaults {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final InternalCallAuthenticationFilter internalCallAuthenticationFilter;
 
     @Bean
     @ConditionalOnMissingBean(name = "securityFilterChain")
@@ -29,10 +30,11 @@ public class SecurityDefaults {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/actuator/health/**", "/v3/api-docs/**", "/swagger-ui/**", "/.well-known/**").permitAll()
                 .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/internal/**").denyAll()
+                .requestMatchers("/internal/**").hasAuthority(InternalCallAuthenticationFilter.INTERNAL_AUTHORITY)
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(internalCallAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

@@ -9,6 +9,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
+import java.util.Base64;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Testcontainers
@@ -28,5 +30,12 @@ public abstract class AbstractIntegrationTest {
         r.add("spring.datasource.username", pg::getUsername);
         r.add("spring.datasource.password", pg::getPassword);
         r.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
+        r.add("ppms.jwt.public-key", () -> toPem("PUBLIC KEY", JwtTestTokens.publicKey().getEncoded()));
+        r.add("ppms.jwt.private-key", () -> toPem("PRIVATE KEY", JwtTestTokens.privateKey().getEncoded()));
+    }
+
+    private static String toPem(String type, byte[] der) {
+        return "-----BEGIN " + type + "-----\n" + Base64.getMimeEncoder(64, "\n".getBytes()).encodeToString(der)
+                + "\n-----END " + type + "-----\n";
     }
 }

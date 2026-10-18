@@ -31,6 +31,13 @@
             <groupId>com.ppms</groupId>
             <artifactId>shared-kernel</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ppms</groupId>
+            <artifactId>shared-kernel</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Spring Boot starters -->
         <dependency>
@@ -129,6 +136,11 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>kafka</artifactId>
             <scope>test</scope>
         </dependency>
 
