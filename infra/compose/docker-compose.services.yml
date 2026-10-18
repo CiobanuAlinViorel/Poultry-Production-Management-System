@@ -149,5 +149,7 @@ services:
     profiles: [services]
 
 secrets:
-  jwt_private: { file: ${JWT_PRIVATE_KEY_FILE} }
-  jwt_public:  { file: ${JWT_PUBLIC_KEY_FILE} }
+  jwt_private:
+    file: ${JWT_PRIVATE_KEY_FILE}
+  jwt_public:
+    file: ${JWT_PUBLIC_KEY_FILE}
