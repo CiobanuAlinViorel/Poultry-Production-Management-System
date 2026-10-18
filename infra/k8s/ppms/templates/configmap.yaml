@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ppms-config
+  labels:
+    {{- include "ppms.labels" (dict "name" "ppms-config" "Release" .Release) | nindent 4 }}
+data:
+  SPRING_PROFILES_ACTIVE: "docker"
+  SPRING_KAFKA_BOOTSTRAP_SERVERS: {{ .Values.kafka.bootstrapServers | quote }}
+  {{- range $name, $svc := .Values.services }}
+  {{- if $svc.env }}
+  {{- range $key, $value := $svc.env }}
+  {{ $name | upper | replace "-" "_" }}_{{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
+  {{- end }}

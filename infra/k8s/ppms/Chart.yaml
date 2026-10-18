@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ppms
+description: PPMS poultry production management system
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

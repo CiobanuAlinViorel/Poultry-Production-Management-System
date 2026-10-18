@@ -1,0 +1,69 @@
+global:
+  imageRegistry: ""
+  imageTag: dev
+
+postgres:
+  host: postgres
+  port: "5432"
+  user: ppms
+  password: ppms_dev
+
+kafka:
+  bootstrapServers: kafka:9092
+
+jwt:
+  publicKey: ""
+  privateKey: ""
+
+services:
+  identity-service:
+    port: 8084
+    db: ppms_identity
+    env:
+      ADMIN_SERVICE_URL: http://admin-service:8085
+  admin-service:
+    port: 8085
+    db: ppms_admin
+  parent-flock-service:
+    port: 8081
+    db: ppms_parent_flock
+    env:
+      ADMIN_SERVICE_URL: http://admin-service:8085
+  hatchery-service:
+    port: 8082
+    db: ppms_hatchery
+    env:
+      ADMIN_SERVICE_URL: http://admin-service:8085
+  farm-service:
+    port: 8083
+    db: ppms_farm
+    env:
+      ADMIN_SERVICE_URL: http://admin-service:8085
+  slaughterhouse-service:
+    port: 8086
+    db: ppms_slaughterhouse
+    env:
+      ADMIN_SERVICE_URL: http://admin-service:8085
+  notification-service:
+    port: 8087
+    db: ppms_notification
+    env:
+      SPRING_MAIL_HOST: mailpit
+      SPRING_MAIL_PORT: "1025"
+  reporting-service:
+    port: 8088
+    db: ppms_reporting
+    env:
+      S3_ENDPOINT: http://minio:9000
+      S3_BUCKET: ppms-documents
+  gateway-service:
+    port: 8080
+    env:
+      ROUTES_IDENTITY_URL: http://identity-service:8084
+      ROUTES_ADMIN_URL: http://admin-service:8085
+      ROUTES_PARENT_FLOCK_URL: http://parent-flock-service:8081
+      ROUTES_HATCHERY_URL: http://hatchery-service:8082
+      ROUTES_FARM_URL: http://farm-service:8083
+      ROUTES_SLAUGHTERHOUSE_URL: http://slaughterhouse-service:8086
+      ROUTES_NOTIFICATION_URL: http://notification-service:8087
+      ROUTES_REPORTING_URL: http://reporting-service:8088
