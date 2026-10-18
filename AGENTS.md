@@ -50,3 +50,29 @@ Postgres 16 on `localhost:5432` with one database per service:
 - JWT RS256 keys in `infra/compose/secrets/` (gitignored); generate with `make keys`.
 - Never commit `.env`, `application-local.yml`, or `*.pem`.
 - Gateway is the single origin for the SPA at `http://localhost:8080`.
+
+## Implementation status snapshot
+- Backend reactor compiles and packages (`./mvnw -T1C clean package -DskipTests`).
+- Identity, admin, parent-flock, hatchery, farm, slaughterhouse, notification, reporting, gateway all package.
+- Identity has JWT, sessions, MFA/PIN, lockout, password policy + tests.
+- Admin has roles/permissions, settings, catalogues, site-directory consumer, workforce core.
+- Domain services publish `ppms.site.directory` events on site creation.
+- Notification has email outbox (Thymeleaf + Mailpit), SSE stream, and identity event consumer.
+- Reporting has SiteOverview/LotFact/KpiDaily read models and site-directory consumer.
+- Gateway has OAuth2 JWT resource-server, CORS, and env-var based routes.
+- Frontend foundation (React 18, Vite, MUI, i18n, auth, offline queue, PWA) builds and tests pass.
+- CI workflow and basic Helm chart added.
+- Prometheus + Grafana provisioning added.
+
+## Kafka topics
+- `ppms.site.directory` — site creation/updates (consumed by admin, reporting).
+- `ppms.identity.user` — identity events (consumed by notification).
+- `ppms.alerts` — operational alerts (consumed by notification).
+
+## Remaining major work
+- Full domain workflows: flocks, daily sheets, hatchery cycle, farm treatments/FCI/dispatch, slaughterhouse sessions/sales/invoicing.
+- Additional reporting projections and dashboards.
+- Frontend domain modules for farm/hatchery/parent-flock/slaughterhouse.
+- End-to-end integration tests with Testcontainers.
+- Loki/Promtail logging stack.
+- Full Kubernetes production manifests and runbooks.
