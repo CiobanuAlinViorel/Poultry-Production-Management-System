@@ -7,10 +7,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
-    // primary login lookup
     Optional<User> findByEmail(String email);
 
-    // uniqueness check when creating a user
+    Optional<User> findByUsername(String username);
+
     boolean existsByEmail(String email);
+
     boolean existsByUsername(String username);
 }

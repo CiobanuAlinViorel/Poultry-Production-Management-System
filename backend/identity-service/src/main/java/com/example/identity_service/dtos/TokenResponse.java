@@ -3,11 +3,16 @@ package com.example.identity_service.dtos;
 public record TokenResponse(
         String accessToken,
         String refreshToken,
-        String tokenType,      // always "Bearer"
-        long expiresIn         // access token TTL in seconds — always 900 (15 min)
+        boolean mfaRequired,
+        String mfaToken,
+        String tokenType,
+        long expiresIn
 ) {
-    // convenience constructor with defaults
+    public TokenResponse(String accessToken, String refreshToken, boolean mfaRequired, String mfaToken) {
+        this(accessToken, refreshToken, mfaRequired, mfaToken, "Bearer", 900L);
+    }
+
     public TokenResponse(String accessToken, String refreshToken) {
-        this(accessToken, refreshToken, "Bearer", 900L);
+        this(accessToken, refreshToken, false, null, "Bearer", 900L);
     }
 }

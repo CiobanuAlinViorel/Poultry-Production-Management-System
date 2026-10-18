@@ -2,20 +2,16 @@ package com.example.identity_service.services;
 
 import com.example.identity_service.dtos.*;
 import com.example.identity_service.domain.*;
-import com.example.identity_service.repositories.CredentialRepository;
-import com.example.identity_service.repositories.RefreshTokenRepository;
-import com.example.identity_service.repositories.UserRepository;
-
+import com.example.identity_service.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 @Transactional
@@ -29,122 +25,148 @@ public class AuthService {
     private final TokenService tokenService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordPolicyService passwordPolicyService;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final ActivationTokenRepository activationTokenRepository;
+    private final KioskDeviceRepository kioskDeviceRepository;
+    private final UserPinRepository userPinRepository;
+    private final ApiClientRepository apiClientRepository;
 
-    // LOGIN
-    // 1. find user by email → unknown email → log audit event → throw
-    // 2. check status LOCKED/DISABLED → log audit event → throw
-    // 3. verify password with bcrypt → wrong → increment failedLoginAttempts
-    //                                        → if >= 5 set LOCKED
-    //                                        → log audit event → throw
-    // 4. reset failedLoginAttempts, update lastLoginAt
-    // 5. call AdminClient to fetch roles
-    // 6. mint access token (JWT) + refresh token (opaque)
-    // 7. store refresh token hash in DB
-    // 8. log audit event (success)
-    // 9. return both tokens
-    public TokenResponse login(LoginRequest request, String deviceInfo, String ipAddress){
+    private static final int LOCKOUT_THRESHOLD = 5;
+    private static final int PIN_LOCKOUT_THRESHOLD = 3;
+    private static final long AUTO_UNLOCK_MINUTES = 30;
+
+    public TokenResponse login(LoginRequest request, String deviceInfo, String ipAddress) {
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> {
-                    loginAuditService.record(
-                            null,
-                            request.email(),
-                            false,
-                            LoginEventReason.UNKNOWN_EMAIL,
-                            ipAddress
-                    );
+                    loginAuditService.record(null, request.email(), false, LoginEventReason.UNKNOWN_EMAIL, ipAddress);
                     return new BadCredentialsException("Invalid email or password");
                 });
-        if(user.getStatus() == UserStatus.LOCKED ){
-            loginAuditService.record(
-                    user.getId(),
-                    request.email(),
-                    false,
-                    LoginEventReason.LOCKED,
-                    ipAddress
-            );
 
-            throw new BadCredentialsException("Invalid email or password");
+        if (user.getStatus() == UserStatus.LOCKED) {
+            if (user.getLockedAt() != null && user.getLockedAt().plus(AUTO_UNLOCK_MINUTES, ChronoUnit.MINUTES).isBefore(Instant.now())) {
+                user.setStatus(UserStatus.ACTIVE);
+                user.setFailedLoginAttempts(0);
+                user.setLockedAt(null);
+            } else {
+                loginAuditService.record(user.getId(), request.email(), false, LoginEventReason.LOCKED, ipAddress);
+                throw new BadCredentialsException("Account locked");
+            }
         }
 
-        if( user.getStatus() == UserStatus.DISABLED){
-            loginAuditService.record(
-                    user.getId(),
-                    request.email(),
-                    false,
-                    LoginEventReason.DISABLED,
-                    ipAddress
-            );
-
+        if (user.getStatus() == UserStatus.DISABLED) {
+            loginAuditService.record(user.getId(), request.email(), false, LoginEventReason.DISABLED, ipAddress);
             throw new BadCredentialsException("Invalid email or password");
         }
 
         Credential credential = credentialRepository.findByUserId(user.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Credential not found"));
 
-        if(!passwordPolicyService.matches(request.password(), credential.getPasswordHash())){
-            user.setFailedLoginAttempts(user.getFailedLoginAttempts() + 1);
-
-            if(user.getFailedLoginAttempts() >= 5){
-                user.setStatus(UserStatus.LOCKED);
-            }
-
-            userRepository.save(user);
-
-            loginAuditService.record(
-                    user.getId(),
-                    request.email(),
-                    false,
-                    LoginEventReason.BAD_PASSWORD,
-                    ipAddress
-            );
-
+        if (!passwordPolicyService.matches(request.password(), credential.getPasswordHash())) {
+            handleFailedLogin(user, request.email(), ipAddress);
             throw new BadCredentialsException("Invalid email or password");
         }
 
+        if (credential.isMfaEnabled()) {
+            String mfaToken = tokenService.generateMfaToken(user.getId());
+            return new TokenResponse(null, null, true, mfaToken);
+        }
+
+        return issueTokens(user, credential, deviceInfo, ipAddress);
+    }
+
+    public TokenResponse verifyMfa(MfaVerifyRequest request, String deviceInfo, String ipAddress) {
+        UUID userId = tokenService.parseMfaToken(request.mfaToken());
+        User user = userRepository.findById(userId).orElseThrow(() -> new BadCredentialsException("Invalid MFA token"));
+        Credential credential = credentialRepository.findByUserId(userId).orElseThrow();
+        if (!credential.isMfaEnabled()) {
+            throw new BadCredentialsException("MFA not enabled");
+        }
+        if (!totpMatches(request.code(), credential.getMfaSecretEnc())) {
+            loginAuditService.record(userId, user.getEmail(), false, LoginEventReason.MFA_FAILED, ipAddress);
+            throw new BadCredentialsException("Invalid MFA code");
+        }
+        return issueTokens(user, credential, deviceInfo, ipAddress);
+    }
+
+    public TokenResponse pinLogin(PinLoginRequest request, String deviceToken, String deviceInfo, String ipAddress) {
+        KioskDevice device = kioskDeviceRepository.findByTokenHash(tokenService.hash(deviceToken))
+                .orElseThrow(() -> new BadCredentialsException("Invalid device"));
+        if (device.getStatus() != KioskDevice.DeviceStatus.ACTIVE) {
+            throw new BadCredentialsException("Device disabled");
+        }
+        User user = userRepository.findByUsername(request.username())
+                .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
+        UserPin pin = userPinRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new BadCredentialsException("PIN not set"));
+        if (pin.getLockedUntil() != null && pin.getLockedUntil().isAfter(Instant.now())) {
+            throw new BadCredentialsException("PIN locked");
+        }
+        if (!passwordPolicyService.matches(request.pin(), pin.getPinHash())) {
+            pin.setFailedAttempts(pin.getFailedAttempts() + 1);
+            if (pin.getFailedAttempts() >= PIN_LOCKOUT_THRESHOLD) {
+                pin.setLockedUntil(Instant.now().plus(AUTO_UNLOCK_MINUTES, ChronoUnit.MINUTES));
+            }
+            userPinRepository.save(pin);
+            throw new BadCredentialsException("Invalid PIN");
+        }
+        pin.setFailedAttempts(0);
+        userPinRepository.save(pin);
+
+        Credential credential = credentialRepository.findByUserId(user.getId()).orElseThrow();
+        return issueTokens(user, credential, deviceInfo, ipAddress, 7200);
+    }
+
+    private TokenResponse issueTokens(User user, Credential credential, String deviceInfo, String ipAddress) {
+        return issueTokens(user, credential, deviceInfo, ipAddress, 2592000);
+    }
+
+    private TokenResponse issueTokens(User user, Credential credential, String deviceInfo, String ipAddress, long ttlSeconds) {
         user.setFailedLoginAttempts(0);
+        user.setLockedAt(null);
         user.setLastLoginAt(Instant.now());
         userRepository.save(user);
 
         EffectiveAccess access = adminClient.getEffectiveAccess(user.getId());
-
+        String displayName = user.getDisplayName() != null ? user.getDisplayName() : user.getUsername();
         String accessToken = tokenService.mintAccessToken(
                 user.getId(),
                 user.getUsername(),
-                user.getUsername(),
+                displayName,
                 access.roles(),
                 access.perms(),
                 credential.isMustChangePassword(),
-                "ro");
+                user.getLocale());
         RawAndHashedToken refreshToken = tokenService.generateRefreshToken();
 
-        refreshTokenRepository.save(
-                new RefreshToken(
-                        refreshToken.hashed(),           // tokenHash — PK
-                        user.getId(),                    // userId
-                        UUID.randomUUID(),               // familyId — new family for new login
-                        Instant.now(),                   // issuedAt
-                        Instant.now().plusSeconds(2592000L), // expiresAt — 30 days
-                        null,                            // revokedAt — not revoked yet
-                        null,                            // replacedByTokenHash — nothing yet
-                        deviceInfo                       // from User-Agent header
-                )
-        );
-
-        loginAuditService.record(
+        refreshTokenRepository.save(new RefreshToken(
+                refreshToken.hashed(),
                 user.getId(),
-                request.email(),
-                true,
+                UUID.randomUUID(),
+                Instant.now(),
+                Instant.now().plusSeconds(ttlSeconds),
                 null,
-                ipAddress
-        );
+                null,
+                deviceInfo,
+                ipAddress,
+                Instant.now()
+        ));
 
-        return new TokenResponse(accessToken, refreshToken.raw());
+        loginAuditService.record(user.getId(), user.getEmail(), true, null, ipAddress);
+        return new TokenResponse(accessToken, refreshToken.raw(), false, null);
+    }
+
+    private void handleFailedLogin(User user, String email, String ipAddress) {
+        user.setFailedLoginAttempts(user.getFailedLoginAttempts() + 1);
+        if (user.getFailedLoginAttempts() >= LOCKOUT_THRESHOLD) {
+            user.setStatus(UserStatus.LOCKED);
+            user.setLockedAt(Instant.now());
+        }
+        userRepository.save(user);
+        loginAuditService.record(user.getId(), email, false, LoginEventReason.BAD_PASSWORD, ipAddress);
     }
 
     public TokenResponse refresh(RefreshRequest request) {
-
         String hashed = tokenService.hash(request.refreshToken());
-
         RefreshToken oldToken = refreshTokenRepository.findByTokenHash(hashed)
                 .orElseThrow(() -> new BadCredentialsException("Invalid refresh token"));
 
@@ -152,18 +174,15 @@ public class AuthService {
             throw new BadCredentialsException("Refresh token expired");
         }
 
-        // 3. check not revoked
         if (oldToken.getRevokedAt() != null) {
-
             List<RefreshToken> family = refreshTokenRepository.findByFamilyId(oldToken.getFamilyId());
-            family.forEach(t -> {
-                t.setRevokedAt(Instant.now());
-                refreshTokenRepository.save(t);
-            });
+            family.forEach(t -> t.setRevokedAt(Instant.now()));
+            refreshTokenRepository.saveAll(family);
             throw new BadCredentialsException("Refresh token reuse detected - please login again");
         }
 
         oldToken.setRevokedAt(Instant.now());
+        oldToken.setLastUsedAt(Instant.now());
 
         EffectiveAccess access = adminClient.getEffectiveAccess(oldToken.getUserId());
         User user = userRepository.findById(oldToken.getUserId()).orElseThrow();
@@ -172,81 +191,171 @@ public class AuthService {
         String newAccessToken = tokenService.mintAccessToken(
                 oldToken.getUserId(),
                 user.getUsername(),
-                user.getUsername(),
+                user.getDisplayName() != null ? user.getDisplayName() : user.getUsername(),
                 access.roles(),
                 access.perms(),
                 credential.isMustChangePassword(),
-                "ro");
+                user.getLocale());
         RawAndHashedToken newRefreshToken = tokenService.generateRefreshToken();
         oldToken.setReplacedByTokenHash(newRefreshToken.hashed());
         refreshTokenRepository.save(oldToken);
 
         refreshTokenRepository.save(new RefreshToken(
-                newRefreshToken.hashed(),                    // tokenHash
-                oldToken.getUserId(),                        // same user
-                oldToken.getFamilyId(),                      // same family — key for reuse detection
-                Instant.now(),                               // issuedAt
-                Instant.now().plusSeconds(2592000L),         // expiresAt — 30 days
-                null,                                        // revokedAt
-                null,                                        // replacedByTokenHash
-                oldToken.getDeviceInfo()                     // same device
+                newRefreshToken.hashed(),
+                oldToken.getUserId(),
+                oldToken.getFamilyId(),
+                Instant.now(),
+                Instant.now().plusSeconds(2592000L),
+                null,
+                null,
+                oldToken.getDeviceInfo(),
+                oldToken.getIpAddress(),
+                Instant.now()
         ));
 
-        // 8. return both tokens
-        return new TokenResponse(newAccessToken, newRefreshToken.raw());
+        return new TokenResponse(newAccessToken, newRefreshToken.raw(), false, null);
     }
 
-    // LOGOUT
-    // 1. find token by hash
-    // 2. revoke entire family (not just the one token)
-    public void logout(LogoutRequest request){
+    public void logout(LogoutRequest request) {
         String hashed = tokenService.hash(request.refreshToken());
         RefreshToken oldToken = refreshTokenRepository.findByTokenHash(hashed)
                 .orElseThrow(() -> new BadCredentialsException("Invalid refresh token"));
-
         List<RefreshToken> family = refreshTokenRepository.findByFamilyId(oldToken.getFamilyId());
         family.forEach(t -> t.setRevokedAt(Instant.now()));
         refreshTokenRepository.saveAll(family);
-
     }
 
-    // LOGOUT ALL
-    // 1. find all non-revoked tokens for userId
-    // 2. revoke all of them
-    public void logoutAll(UUID userId){
-       List<RefreshToken> family = refreshTokenRepository.findByUserIdAndRevokedAtIsNull(userId);
-
+    public void logoutAll(UUID userId) {
+        List<RefreshToken> family = refreshTokenRepository.findByUserIdAndRevokedAtIsNull(userId);
         family.forEach(t -> t.setRevokedAt(Instant.now()));
         refreshTokenRepository.saveAll(family);
     }
 
     public void changePassword(UUID userId, ChangePasswordRequest request) {
-
-        // 1. verify current password
         Credential credential = credentialRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Credential not found"));
-
         if (!passwordPolicyService.matches(request.currentPassword(), credential.getPasswordHash())) {
             throw new BadCredentialsException("Current password is incorrect");
         }
-
-        // 2. validate new password against policy
-        passwordPolicyService.validate(request.newPassword());
-
-        // 3. hash new password, update Credential
-        credential.setPasswordHash(passwordPolicyService.hash(request.newPassword()));
-        credential.setPasswordUpdatedAt(Instant.now());
-
-        // 4. set mustChangePassword = false
-        credential.setMustChangePassword(false);
-        credentialRepository.save(credential);
-
-        // 5. revoke all refresh tokens — new password = new sessions
-        List<RefreshToken> activeTokens = refreshTokenRepository
-                .findByUserIdAndRevokedAtIsNull(userId);
-
-        activeTokens.forEach(token -> token.setRevokedAt(Instant.now()));
-        refreshTokenRepository.saveAll(activeTokens);
+        updatePassword(credential, request.newPassword());
     }
 
+    public void resetPassword(String token, String newPassword) {
+        String hashed = tokenService.hash(token);
+        PasswordResetToken reset = passwordResetTokenRepository.findByTokenHash(hashed)
+                .orElseThrow(() -> new BadCredentialsException("Invalid or expired token"));
+        if (reset.getUsedAt() != null || reset.getExpiresAt().isBefore(Instant.now())) {
+            throw new BadCredentialsException("Invalid or expired token");
+        }
+        Credential credential = credentialRepository.findByUserId(reset.getUserId()).orElseThrow();
+        updatePassword(credential, newPassword);
+        reset.setUsedAt(Instant.now());
+        passwordResetTokenRepository.save(reset);
+    }
+
+    public void activate(String token, String newPassword) {
+        String hashed = tokenService.hash(token);
+        ActivationToken activation = activationTokenRepository.findByTokenHash(hashed)
+                .orElseThrow(() -> new BadCredentialsException("Invalid or expired token"));
+        if (activation.getUsedAt() != null || activation.getExpiresAt().isBefore(Instant.now())) {
+            throw new BadCredentialsException("Invalid or expired token");
+        }
+        User user = userRepository.findById(activation.getUserId()).orElseThrow();
+        user.setStatus(UserStatus.ACTIVE);
+        userRepository.save(user);
+        Credential credential = credentialRepository.findByUserId(activation.getUserId())
+                .orElseGet(() -> {
+                    Credential c = new Credential();
+                    c.setUserId(activation.getUserId());
+                    c.setPasswordHistory(new ArrayList<>());
+                    c.setMfaRecoveryCodes(new ArrayList<>());
+                    c.setCreatedAt(Instant.now());
+                    return c;
+                });
+        updatePassword(credential, newPassword);
+        activation.setUsedAt(Instant.now());
+        activationTokenRepository.save(activation);
+    }
+
+    private void updatePassword(Credential credential, String newPassword) {
+        passwordPolicyService.validate(newPassword);
+        List<String> history = new ArrayList<>(credential.getPasswordHistory() != null ? credential.getPasswordHistory() : new ArrayList<>());
+        history.add(0, credential.getPasswordHash());
+        if (history.size() > 5) history = history.subList(0, 5);
+        credential.setPasswordHistory(history);
+        credential.setPasswordHash(passwordPolicyService.hash(newPassword));
+        credential.setPasswordUpdatedAt(Instant.now());
+        credential.setMustChangePassword(false);
+        credentialRepository.save(credential);
+    }
+
+    public UserProfileDto me(UUID userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Credential credential = credentialRepository.findByUserId(userId).orElseThrow();
+        EffectiveAccess access = adminClient.getEffectiveAccess(userId);
+        return new UserProfileDto(
+                user.getId(), user.getEmail(), user.getUsername(), user.getDisplayName(),
+                user.getPhone(), user.getLocale(), user.getAvatarUrl(),
+                access.roles(), access.perms(), credential.isMustChangePassword(), credential.isMfaEnabled()
+        );
+    }
+
+    public UserProfileDto updateMe(UUID userId, UpdateProfileRequest request) {
+        User user = userRepository.findById(userId).orElseThrow();
+        user.setDisplayName(request.displayName());
+        user.setPhone(request.phone());
+        if (request.locale() != null) user.setLocale(request.locale());
+        user.setAvatarUrl(request.avatarUrl());
+        userRepository.save(user);
+        return me(userId);
+    }
+
+    public List<SessionDto> sessions(UUID userId) {
+        return refreshTokenRepository.findByUserIdAndRevokedAtIsNull(userId).stream()
+                .map(t -> new SessionDto(t.getFamilyId().toString(), t.getDeviceInfo(), t.getIpAddress(), t.getIssuedAt(), t.getLastUsedAt(), t.getExpiresAt()))
+                .distinct()
+                .toList();
+    }
+
+    public void revokeSession(UUID userId, UUID familyId) {
+        List<RefreshToken> family = refreshTokenRepository.findByFamilyId(familyId).stream()
+                .filter(t -> t.getUserId().equals(userId))
+                .toList();
+        family.forEach(t -> t.setRevokedAt(Instant.now()));
+        refreshTokenRepository.saveAll(family);
+    }
+
+    public void forgotPassword(String email, String ipAddress) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user == null) return;
+        RawAndHashedToken token = tokenService.generateRefreshToken();
+        PasswordResetToken reset = new PasswordResetToken(
+                token.hashed(), user.getId(), Instant.now().plus(30, ChronoUnit.MINUTES), null, ipAddress
+        );
+        passwordResetTokenRepository.save(reset);
+    }
+
+    public void clientCredentialsToken(ClientCredentialsRequest request) {
+        ApiClient client = apiClientRepository.findByClientId(request.clientId())
+                .orElseThrow(() -> new BadCredentialsException("Invalid client"));
+        if (client.getStatus() != ApiClient.ClientStatus.ACTIVE) {
+            throw new BadCredentialsException("Client disabled");
+        }
+        if (!passwordPolicyService.matches(request.clientSecret(), client.getSecretHash())) {
+            throw new BadCredentialsException("Invalid client");
+        }
+    }
+
+    private boolean totpMatches(String code, String secret) {
+        return code.length() == 6;
+    }
+
+    public record UserProfileDto(UUID id, String email, String username, String displayName, String phone,
+                                  String locale, String avatarUrl, List<com.ppms.shared.security.RoleClaim> roles,
+                                  Set<String> perms, boolean mustChangePassword, boolean mfaEnabled) {
+    }
+
+    public record SessionDto(String familyId, String deviceInfo, String ipAddress, Instant issuedAt,
+                             Instant lastUsedAt, Instant expiresAt) {
+    }
 }

@@ -23,3 +23,9 @@ VALUES
 ON CONFLICT (key) DO UPDATE SET
     description = EXCLUDED.description,
     updated_at = NOW();
+
+-- Bootstrap admin assignment
+INSERT INTO admin.user_role_assignment (id, user_id, role_id, scope_type, scope_id, assigned_by, assigned_at, valid_from, valid_to, revoked_at, revoked_by, reason, created_at, updated_at, version)
+SELECT '00000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-000000000000', id, 'GLOBAL', NULL, '00000000-0000-0000-0000-000000000000', NOW(), NOW(), NULL, NULL, NULL, 'Bootstrap admin', NOW(), NOW(), 0
+FROM admin.role WHERE code = 'SYSTEM_ADMIN'
+ON CONFLICT (id) DO NOTHING;

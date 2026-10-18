@@ -5,6 +5,7 @@ import com.ppms.shared.security.JwtKeyProvider;
 import com.ppms.shared.security.RoleClaim;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -17,17 +18,16 @@ import java.util.*;
 @Service
 public class TokenService {
 
-    private final JwtKeyProvider jwtKeyProvider;  // from shared-kernel — holds RSA key pair
+    private final JwtKeyProvider jwtKeyProvider;
 
     public TokenService(JwtKeyProvider jwtKeyProvider) {
         this.jwtKeyProvider = jwtKeyProvider;
     }
-    // 1. MINT ACCESS TOKEN
-    // builds JWT with all claims, signs with RSA private key
+
     public String mintAccessToken(UUID userId, String username, String displayName, List<RoleClaim> roles,
                                   Set<String> perms, boolean mustChangePassword, String locale) {
         Instant now = Instant.now();
-        Instant expiry = now.plusSeconds(900); // 15 min
+        Instant expiry = now.plusSeconds(900);
 
         return Jwts.builder()
                 .subject(userId.toString())
@@ -46,17 +46,12 @@ public class TokenService {
                 .compact();
     }
 
-    // 2. GENERATE REFRESH TOKEN
-    // opaque random value — nothing encoded inside it
-    // returns both raw (send to client) and hash (store in DB)
     public RawAndHashedToken generateRefreshToken() {
-        String raw = UUID.randomUUID().toString() +
-                UUID.randomUUID().toString(); // extra entropy
+        String raw = UUID.randomUUID().toString() + UUID.randomUUID().toString();
         String hashed = hash(raw);
         return new RawAndHashedToken(raw, hashed);
     }
 
-    // 3. HASH — SHA-256, used for refresh tokens
     public String hash(String raw) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -67,9 +62,6 @@ public class TokenService {
         }
     }
 
-    // 4. VALIDATE ACCESS TOKEN
-    // verifies signature + expiry using RSA public key
-    // returns claims if valid, throws if not
     public Claims validateAccessToken(String token) {
         return Jwts.parser()
                 .verifyWith(jwtKeyProvider.getPublicKey())
@@ -78,9 +70,6 @@ public class TokenService {
                 .getPayload();
     }
 
-    // 5. GET JWK SET
-    // returns RSA public key as JWK — served at /.well-known/jwks.json
-    // other services use this to validate tokens without calling identity-service
     public Map<String, Object> getJwkSet() {
         RSAPublicKey publicKey = jwtKeyProvider.getPublicKey();
         return Map.of(
@@ -88,11 +77,34 @@ public class TokenService {
                         "kty", "RSA",
                         "use", "sig",
                         "alg", "RS256",
+                        "kid", jwtKeyProvider.getKid(),
                         "n", Base64.getUrlEncoder().encodeToString(
                                 publicKey.getModulus().toByteArray()),
                         "e", Base64.getUrlEncoder().encodeToString(
                                 publicKey.getPublicExponent().toByteArray())
                 ))
         );
+    }
+
+    public String generateMfaToken(UUID userId) {
+        return Jwts.builder()
+                .subject(userId.toString())
+                .claim("type", "mfa")
+                .issuedAt(Date.from(Instant.now()))
+                .expiration(Date.from(Instant.now().plusSeconds(300)))
+                .signWith(jwtKeyProvider.getPrivateKey())
+                .compact();
+    }
+
+    public UUID parseMfaToken(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(jwtKeyProvider.getPublicKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        if (!"mfa".equals(claims.get("type"))) {
+            throw new BadCredentialsException("Invalid MFA token");
+        }
+        return UUID.fromString(claims.getSubject());
     }
 }
