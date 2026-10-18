@@ -3,7 +3,8 @@ import { AppBar, BottomNavigation, BottomNavigationAction, Box, Button, Divider,
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { apiClient } from '../shared/api/client';
-import { useAuthStore } from '../shared/auth/store';
+import { ModuleRoles } from '../shared/auth/access';
+import { useAccess, useAuthStore } from '../shared/auth/store';
 
 const drawerWidth = 240;
 export function AppShell() {
@@ -13,13 +14,14 @@ export function AppShell() {
   const navigate = useNavigate();
   const location = useLocation();
   const clearSession = useAuthStore((state) => state.clearSession);
+  const { canRead } = useAccess();
   const items = [
     { path: '/', label: t('dashboard'), icon: <Home /> },
-    { path: '/farm', label: t('farm.dashboard.title'), icon: <Agriculture /> },
-    { path: '/admin/users', label: t('users'), icon: <AdminPanelSettings /> },
-    { path: '/admin/settings', label: t('settings'), icon: <Settings /> },
+    { path: '/farm', label: t('farm.dashboard.title'), icon: <Agriculture />, roles: ModuleRoles.farm },
+    { path: '/admin/users', label: t('users'), icon: <AdminPanelSettings />, roles: ModuleRoles.admin },
+    { path: '/admin/settings', label: t('settings'), icon: <Settings />, roles: ModuleRoles.admin },
     { path: '/profile', label: t('profile'), icon: <Person /> },
-  ];
+  ].filter((item) => !item.roles || canRead(item.roles));
   const logout = async () => {
     try { await apiClient.post('/api/identity/auth/logout'); } finally { clearSession(); navigate('/login', { replace: true }); }
   };

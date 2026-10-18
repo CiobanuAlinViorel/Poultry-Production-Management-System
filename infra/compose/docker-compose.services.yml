@@ -138,6 +138,8 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      JWT_JWK_SET_URI: http://identity-service:8084/.well-known/jwks.json
+      JWT_ISSUER_URI: ppms-identity
       ROUTES_IDENTITY_URL: http://identity-service:8084
       ROUTES_ADMIN_URL: http://admin-service:8085
       ROUTES_PARENT_FLOCK_URL: http://parent-flock-service:8081

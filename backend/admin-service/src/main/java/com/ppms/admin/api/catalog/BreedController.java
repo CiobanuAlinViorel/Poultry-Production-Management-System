@@ -1,5 +1,6 @@
 package com.ppms.admin.api.catalog;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.ppms.admin.service.BreedService;
 import com.ppms.shared.web.PageResponse;
 import jakarta.validation.Valid;
@@ -28,6 +29,7 @@ public class BreedController {
         return ResponseEntity.ok(breedService.list(page, size, sort, activeOnly));
     }
 
+    @PreAuthorize("@scope.canWrite()")
     @PostMapping
     public ResponseEntity<BreedDto> create(@Valid @RequestBody BreedRequest request) {
         BreedDto created = breedService.create(request);
@@ -39,11 +41,13 @@ public class BreedController {
         return ResponseEntity.ok(breedService.get(id));
     }
 
+    @PreAuthorize("@scope.canWrite()")
     @PutMapping("/{id}")
     public ResponseEntity<BreedDto> update(@PathVariable UUID id, @Valid @RequestBody BreedRequest request) {
         return ResponseEntity.ok(breedService.update(id, request));
     }
 
+    @PreAuthorize("@scope.canWrite()")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         breedService.delete(id);

@@ -1,5 +1,6 @@
 package com.ppms.hatchery.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.ppms.hatchery.domain.*;
 import com.ppms.hatchery.dtos.*;
 import com.ppms.hatchery.services.EggReceptionService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@PreAuthorize("@scope.canRead('HATCHERY_SUPERVISOR')")
 @RestController
 @RequestMapping("/api/v1/hatchery")
 @RequiredArgsConstructor
@@ -20,6 +22,7 @@ public class HatcheryController {
     private final HatcheryCoreService hatcheryCoreService;
     private final EggReceptionService eggReceptionService;
 
+    @PreAuthorize("@scope.canWrite('HATCHERY_SUPERVISOR')")
     @PostMapping("/sites")
     public ResponseEntity<Hatchery> createHatchery(@RequestBody @Valid HatcheryRequest request) {
         return ResponseEntity.ok(hatcheryCoreService.createHatchery(request));
@@ -30,6 +33,7 @@ public class HatcheryController {
         return ResponseEntity.ok(hatcheryCoreService.listHatcheries());
     }
 
+    @PreAuthorize("@scope.canWrite('HATCHERY_SUPERVISOR')")
     @PostMapping("/sites/{hatcheryId}/incubators")
     public ResponseEntity<Incubator> createIncubator(@PathVariable UUID hatcheryId, @RequestBody @Valid IncubatorRequest request) {
         return ResponseEntity.ok(hatcheryCoreService.createIncubator(request));
@@ -40,6 +44,7 @@ public class HatcheryController {
         return ResponseEntity.ok(hatcheryCoreService.listIncubators(hatcheryId));
     }
 
+    @PreAuthorize("@scope.canWrite('HATCHERY_SUPERVISOR')")
     @PostMapping("/egg-batches")
     public ResponseEntity<EggBatch> createEggBatch(@RequestBody @Valid EggBatchRequest request) {
         return ResponseEntity.ok(eggReceptionService.receive(request));
@@ -50,6 +55,7 @@ public class HatcheryController {
         return ResponseEntity.ok(hatcheryCoreService.listEggBatches(hatcheryId));
     }
 
+    @PreAuthorize("@scope.canWrite('HATCHERY_SUPERVISOR')")
     @PostMapping("/incubation-batches")
     public ResponseEntity<IncubationBatch> createIncubationBatch(@RequestBody @Valid IncubationBatchRequest request) {
         return ResponseEntity.ok(hatcheryCoreService.createIncubationBatch(request));
@@ -60,6 +66,7 @@ public class HatcheryController {
         return ResponseEntity.ok(hatcheryCoreService.listIncubationBatches(hatcheryId));
     }
 
+    @PreAuthorize("@scope.canWrite('HATCHERY_SUPERVISOR')")
     @PostMapping("/chick-batches")
     public ResponseEntity<ChickBatch> createChickBatch(@RequestBody @Valid ChickBatchRequest request) {
         return ResponseEntity.ok(hatcheryCoreService.createChickBatch(request));

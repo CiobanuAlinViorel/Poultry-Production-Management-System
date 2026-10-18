@@ -1,5 +1,6 @@
 package com.ppms.parentflock.web;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.ppms.parentflock.dtos.BreederSiteResponse;
 import com.ppms.parentflock.dtos.CreateBreederSiteRequest;
 import com.ppms.parentflock.dtos.CreateDailySheetRequest;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
+@PreAuthorize("@scope.canRead('FLOCK_SUPERVISOR')")
 @RestController
 @RequestMapping("/api/v1/parent-flock")
 public class ParentFlockController {
@@ -52,6 +54,7 @@ public class ParentFlockController {
         this.eggBatchService = eggBatchService;
     }
 
+    @PreAuthorize("@scope.canWrite('FLOCK_SUPERVISOR')")
     @PostMapping("/sites")
     @ResponseStatus(HttpStatus.CREATED)
     public BreederSiteResponse createSite(@Valid @RequestBody CreateBreederSiteRequest request) {
@@ -68,12 +71,14 @@ public class ParentFlockController {
         return breederSiteService.get(siteId);
     }
 
+    @PreAuthorize("@scope.canWrite('FLOCK_SUPERVISOR')")
     @PutMapping("/sites/{siteId}")
     public BreederSiteResponse updateSite(@PathVariable UUID siteId,
                                           @Valid @RequestBody CreateBreederSiteRequest request) {
         return breederSiteService.update(siteId, request);
     }
 
+    @PreAuthorize("@scope.canWrite('FLOCK_SUPERVISOR')")
     @PostMapping("/sites/{siteId}/houses")
     @ResponseStatus(HttpStatus.CREATED)
     public HouseResponse createHouse(@PathVariable UUID siteId,
@@ -86,6 +91,7 @@ public class ParentFlockController {
         return houseService.listBySite(siteId);
     }
 
+    @PreAuthorize("@scope.canWrite('FLOCK_SUPERVISOR')")
     @PostMapping("/sites/{siteId}/flocks")
     @ResponseStatus(HttpStatus.CREATED)
     public FlockResponse createFlock(@PathVariable UUID siteId,
@@ -102,6 +108,7 @@ public class ParentFlockController {
         return flockService.listBySite(siteId);
     }
 
+    @PreAuthorize("@scope.canWrite('FLOCK_SUPERVISOR')")
     @PostMapping("/flocks/{flockId}/daily-sheets")
     @ResponseStatus(HttpStatus.CREATED)
     public DailyProductionSheetResponse recordDailySheet(@PathVariable UUID flockId,
@@ -114,6 +121,7 @@ public class ParentFlockController {
         return dailyProductionService.listByFlock(flockId);
     }
 
+    @PreAuthorize("@scope.canWrite('FLOCK_SUPERVISOR')")
     @PostMapping("/egg-batches")
     @ResponseStatus(HttpStatus.CREATED)
     public EggBatchResponse createEggBatch(@Valid @RequestBody CreateEggBatchRequest request) {

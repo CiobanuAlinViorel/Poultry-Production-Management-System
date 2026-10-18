@@ -1,5 +1,6 @@
 package com.ppms.admin.api.catalog;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.ppms.admin.service.UnitOfMeasureService;
 import com.ppms.shared.web.PageResponse;
 import jakarta.validation.Valid;
@@ -28,6 +29,7 @@ public class UnitOfMeasureController {
         return ResponseEntity.ok(unitService.list(page, size, sort, activeOnly));
     }
 
+    @PreAuthorize("@scope.canWrite()")
     @PostMapping
     public ResponseEntity<UnitOfMeasureDto> create(@Valid @RequestBody UnitOfMeasureRequest request) {
         UnitOfMeasureDto created = unitService.create(request);
@@ -39,11 +41,13 @@ public class UnitOfMeasureController {
         return ResponseEntity.ok(unitService.get(id));
     }
 
+    @PreAuthorize("@scope.canWrite()")
     @PutMapping("/{id}")
     public ResponseEntity<UnitOfMeasureDto> update(@PathVariable UUID id, @Valid @RequestBody UnitOfMeasureRequest request) {
         return ResponseEntity.ok(unitService.update(id, request));
     }
 
+    @PreAuthorize("@scope.canWrite()")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         unitService.delete(id);

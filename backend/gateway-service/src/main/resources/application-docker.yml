@@ -4,7 +4,7 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: ${JWT_JWK_SET_URI:http://identity-service:8084/.well-known/jwks.json}
-          issuer-uri: ${JWT_ISSUER_URI:http://identity-service:8084}
+          issuer-uri: ${JWT_ISSUER_URI:ppms-identity}
   cloud:
     gateway:
       globalcors:
@@ -33,34 +33,34 @@ spring:
           predicates:
             - Path=/api/parent-flock/**
           filters:
-            - RewritePath=/api/parent-flock/(?<p>.*), /api/v1/$\{p}
+            - RewritePath=/api/parent-flock/(?<p>.*), /api/v1/parent-flock/$\{p}
         - id: hatchery-service
           uri: ${ROUTES_HATCHERY_URL:http://hatchery-service:8082}
           predicates:
             - Path=/api/hatchery/**
           filters:
-            - RewritePath=/api/hatchery/(?<p>.*), /api/v1/$\{p}
+            - RewritePath=/api/hatchery/(?<p>.*), /api/v1/hatchery/$\{p}
         - id: farm-service
           uri: ${ROUTES_FARM_URL:http://farm-service:8083}
           predicates:
             - Path=/api/farm/**
           filters:
-            - RewritePath=/api/farm/(?<p>.*), /api/v1/$\{p}
+            - RewritePath=/api/farm/(?<p>.*), /api/v1/farm/$\{p}
         - id: slaughterhouse-service
           uri: ${ROUTES_SLAUGHTERHOUSE_URL:http://slaughterhouse-service:8086}
           predicates:
             - Path=/api/slaughterhouse/**
           filters:
-            - RewritePath=/api/slaughterhouse/(?<p>.*), /api/v1/$\{p}
+            - RewritePath=/api/slaughterhouse/(?<p>.*), /api/v1/slaughterhouse/$\{p}
         - id: notification-service
           uri: ${ROUTES_NOTIFICATION_URL:http://notification-service:8087}
           predicates:
             - Path=/api/notification/**
           filters:
-            - RewritePath=/api/notification/(?<p>.*), /api/v1/$\{p}
+            - RewritePath=/api/notification/(?<p>.*), /api/v1/notification/$\{p}
         - id: reporting-service
           uri: ${ROUTES_REPORTING_URL:http://reporting-service:8088}
           predicates:
             - Path=/api/reporting/**
           filters:
-            - RewritePath=/api/reporting/(?<p>.*), /api/v1/$\{p}
+            - RewritePath=/api/reporting/(?<p>.*), /api/v1/reporting/$\{p}

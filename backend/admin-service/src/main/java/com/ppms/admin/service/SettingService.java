@@ -19,6 +19,7 @@ import com.ppms.shared.exception.EntityNotFoundException;
 import com.ppms.shared.exception.ValidationException;
 import com.ppms.shared.persistence.UuidV7Generator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,6 +88,7 @@ public class SettingService {
     }
 
     @Transactional
+    @PreAuthorize("@scope.canManageScope(#scopeType, #scopeId)")
     public void setValue(String key, ScopeType scopeType, UUID scopeId, String value, UUID changedBy, String reason) {
         SettingDefinition definition = definitionRepository.findByKey(key)
                 .orElseThrow(() -> new EntityNotFoundException("SettingDefinition", key));
@@ -119,6 +121,7 @@ public class SettingService {
         publishChangedEvent(key, scopeType, scopeId, value, reason, changedBy, now);
     }
 
+    @PreAuthorize("@scope.canManageScope(#scopeType, #scopeId)")
     public void setValue(String key, ScopeType scopeType, UUID scopeId, SettingUpdateRequest request, UUID changedBy) {
         setValue(key, scopeType, scopeId, request.value(), changedBy, request.reason());
     }

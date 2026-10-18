@@ -5,6 +5,7 @@ import com.ppms.reporting.domain.LotFact;
 import com.ppms.reporting.domain.SiteOverview;
 import com.ppms.reporting.services.ReportingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+@PreAuthorize("@scope.canRead('HR_ADMIN','FLOCK_SUPERVISOR','FARM_MANAGER','HATCHERY_SUPERVISOR','SLAUGHTER_MANAGER')")
 @RestController
 @RequestMapping("/api/v1/reporting")
 @RequiredArgsConstructor

@@ -1,5 +1,6 @@
 package com.ppms.slaughterhouse.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.ppms.slaughterhouse.domain.*;
 import com.ppms.slaughterhouse.dtos.CoreDtos.*;
 import com.ppms.slaughterhouse.services.SlaughterhouseCoreService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@PreAuthorize("@scope.canRead('SLAUGHTER_MANAGER')")
 @RestController
 @RequestMapping("/api/v1/slaughterhouse")
 @RequiredArgsConstructor
@@ -18,6 +20,7 @@ public class SlaughterhouseController {
 
     private final SlaughterhouseCoreService service;
 
+    @PreAuthorize("@scope.canWrite('SLAUGHTER_MANAGER')")
     @PostMapping("/sites")
     public ResponseEntity<Slaughterhouse> createSite(@RequestBody @Valid SlaughterhouseRequest request) {
         return ResponseEntity.ok(service.createSlaughterhouse(request));
@@ -28,6 +31,7 @@ public class SlaughterhouseController {
         return ResponseEntity.ok(service.listSlaughterhouses());
     }
 
+    @PreAuthorize("@scope.canWrite('SLAUGHTER_MANAGER')")
     @PostMapping("/sites/{id}/lines")
     public ResponseEntity<Line> createLine(@PathVariable UUID id, @RequestBody @Valid LineRequest request) {
         return ResponseEntity.ok(service.createLine(request));
@@ -38,6 +42,7 @@ public class SlaughterhouseController {
         return ResponseEntity.ok(service.listLines(id));
     }
 
+    @PreAuthorize("@scope.canWrite('SLAUGHTER_MANAGER')")
     @PostMapping("/sessions")
     public ResponseEntity<SlaughterSession> createSession(@RequestBody @Valid SlaughterSessionRequest request) {
         return ResponseEntity.ok(service.createSession(request));
@@ -48,6 +53,7 @@ public class SlaughterhouseController {
         return ResponseEntity.ok(service.listSessions(id));
     }
 
+    @PreAuthorize("@scope.canWrite('SLAUGHTER_MANAGER')")
     @PostMapping("/customers")
     public ResponseEntity<Customer> createCustomer(@RequestBody @Valid CustomerRequest request) {
         return ResponseEntity.ok(service.createCustomer(request));
@@ -58,6 +64,7 @@ public class SlaughterhouseController {
         return ResponseEntity.ok(service.listCustomers());
     }
 
+    @PreAuthorize("@scope.canWrite('SLAUGHTER_MANAGER')")
     @PostMapping("/sales-orders")
     public ResponseEntity<SalesOrder> createSalesOrder(@RequestBody @Valid SalesOrderRequest request) {
         return ResponseEntity.ok(service.createSalesOrder(request));
@@ -68,6 +75,7 @@ public class SlaughterhouseController {
         return ResponseEntity.ok(service.listSalesOrders());
     }
 
+    @PreAuthorize("@scope.canWrite('SLAUGHTER_MANAGER')")
     @PostMapping("/dispatch-orders")
     public ResponseEntity<DispatchOrder> createDispatchOrder(@RequestBody @Valid DispatchOrderRequest request) {
         return ResponseEntity.ok(service.createDispatchOrder(request));

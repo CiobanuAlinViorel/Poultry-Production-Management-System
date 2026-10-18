@@ -13,10 +13,48 @@ import java.util.UUID;
 @Component("scope")
 public class ScopeGuard {
 
-    public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
+    public static final String SYSTEM_ADMIN = Roles.SYSTEM_ADMIN;
 
     public boolean isSystemAdmin() {
         return isSystemAdmin(getPrincipal());
+    }
+
+    /**
+     * Module-level read gate: SYSTEM_ADMIN, the read-only MANAGER role, or any of the
+     * given module roles (in any scope). Scope-specific checks belong in the services.
+     */
+    public boolean canRead(String... roles) {
+        UserPrincipal p = getPrincipal();
+        return isSystemAdmin(p) || hasAnyRole(p, Roles.MANAGER) || hasAnyRole(p, roles);
+    }
+
+    /** Module-level write gate: SYSTEM_ADMIN or any of the given module roles (in any scope). */
+    public boolean canWrite(String... roles) {
+        UserPrincipal p = getPrincipal();
+        return isSystemAdmin(p) || hasAnyRole(p, roles);
+    }
+
+    /**
+     * Whether the caller may manage configuration for the given scope: SYSTEM_ADMIN for
+     * anything, otherwise a role held in exactly that scope (e.g. FARM_MANAGER for FARM/{id}).
+     * GLOBAL scope is reserved for SYSTEM_ADMIN.
+     */
+    public boolean canManageScope(ScopeType scopeType, UUID scopeId) {
+        UserPrincipal p = getPrincipal();
+        if (isSystemAdmin(p)) {
+            return true;
+        }
+        if (scopeType == null || scopeType == ScopeType.GLOBAL) {
+            return false;
+        }
+        return p.getRoles().stream().anyMatch(r -> !Roles.MANAGER.equals(r.role())
+                && scopeType.equals(r.scopeType())
+                && (r.scopeId() == null || r.scopeId().equals(scopeId)));
+    }
+
+    private static boolean hasAnyRole(UserPrincipal p, String... roles) {
+        Set<String> set = Set.of(roles);
+        return p.getRoles().stream().anyMatch(r -> set.contains(r.role()));
     }
 
     public boolean has(String role, ScopeType scopeType, UUID scopeId) {

@@ -36,10 +36,9 @@ public class AuthService {
     private final UserPinRepository userPinRepository;
     private final ApiClientRepository apiClientRepository;
     private final OutboxPublisher outboxPublisher;
+    private final LoginAttemptService loginAttemptService;
 
-    private static final int LOCKOUT_THRESHOLD = 5;
-    private static final int PIN_LOCKOUT_THRESHOLD = 3;
-    private static final long AUTO_UNLOCK_MINUTES = 30;
+    private static final long AUTO_UNLOCK_MINUTES = LoginAttemptService.AUTO_UNLOCK_MINUTES;
 
     public TokenResponse login(LoginRequest request, String deviceInfo, String ipAddress) {
         User user = userRepository.findByEmail(request.email())
@@ -108,11 +107,7 @@ public class AuthService {
             throw new BadCredentialsException("PIN locked");
         }
         if (!passwordPolicyService.matches(request.pin(), pin.getPinHash())) {
-            pin.setFailedAttempts(pin.getFailedAttempts() + 1);
-            if (pin.getFailedAttempts() >= PIN_LOCKOUT_THRESHOLD) {
-                pin.setLockedUntil(Instant.now().plus(AUTO_UNLOCK_MINUTES, ChronoUnit.MINUTES));
-            }
-            userPinRepository.save(pin);
+            loginAttemptService.recordFailedPin(user.getId());
             throw new BadCredentialsException("Invalid PIN");
         }
         pin.setFailedAttempts(0);
@@ -167,12 +162,7 @@ public class AuthService {
     }
 
     private void handleFailedLogin(User user, String email, String ipAddress) {
-        user.setFailedLoginAttempts(user.getFailedLoginAttempts() + 1);
-        if (user.getFailedLoginAttempts() >= LOCKOUT_THRESHOLD) {
-            user.setStatus(UserStatus.LOCKED);
-            user.setLockedAt(Instant.now());
-        }
-        userRepository.save(user);
+        loginAttemptService.recordFailedPassword(user.getId());
         loginAuditService.record(user.getId(), email, false, LoginEventReason.BAD_PASSWORD, ipAddress);
     }
 
