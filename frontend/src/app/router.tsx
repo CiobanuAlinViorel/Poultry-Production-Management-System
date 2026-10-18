@@ -7,6 +7,7 @@ import { ProfilePage } from '../modules/identity/ProfilePage';
 import { UsersPage } from '../modules/admin/UsersPage';
 import { UserDetailPage } from '../modules/admin/UserDetailPage';
 import { SettingsPage } from '../modules/admin/SettingsPage';
+import { FarmDashboardPage } from '../modules/farm/FarmDashboardPage';
 import { HomePage } from '../modules/shared/HomePage';
 import { AppShell } from './AppShell';
 
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
       { path: '/admin/users', element: <UsersPage /> },
       { path: '/admin/users/:id', element: <UserDetailPage /> },
       { path: '/admin/settings', element: <SettingsPage /> },
+      { path: '/farm', element: <FarmDashboardPage /> },
     ],
   },
   { path: '*', element: <Navigate to="/" replace /> },
