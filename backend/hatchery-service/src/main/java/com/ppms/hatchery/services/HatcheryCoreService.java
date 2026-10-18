@@ -3,6 +3,10 @@ package com.ppms.hatchery.services;
 import com.ppms.hatchery.domain.*;
 import com.ppms.hatchery.dtos.*;
 import com.ppms.hatchery.repositories.*;
+import com.ppms.shared.events.DomainEvent;
+import com.ppms.shared.events.OutboxPublisher;
+import com.ppms.shared.events.SiteDirectoryPayload;
+import com.ppms.shared.events.Topics;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,7 @@ public class HatcheryCoreService {
     private final EggBatchRepository eggBatchRepository;
     private final IncubationBatchRepository incubationBatchRepository;
     private final ChickBatchRepository chickBatchRepository;
+    private final OutboxPublisher outboxPublisher;
 
     public Hatchery createHatchery(HatcheryRequest request) {
         Hatchery h = new Hatchery();
@@ -34,7 +39,10 @@ public class HatcheryCoreService {
         h.setActive(true);
         h.setCreatedAt(Instant.now());
         h.setUpdatedAt(Instant.now());
-        return hatcheryRepository.save(h);
+        Hatchery saved = hatcheryRepository.save(h);
+        outboxPublisher.publish(Topics.SITE_DIRECTORY, new DomainEvent<>(UUID.randomUUID(), "site.directory.upserted", 1, "SiteDirectory", saved.getId(), saved.getId(), null,
+                new SiteDirectoryPayload(saved.getId(), "HATCHERY", saved.getCode(), saved.getName(), saved.getAddress(), saved.getCounty(), saved.isActive(), "hatchery-service", Instant.now())));
+        return saved;
     }
 
     public List<Hatchery> listHatcheries() {

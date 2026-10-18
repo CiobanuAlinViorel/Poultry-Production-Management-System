@@ -3,6 +3,10 @@ package com.ppms.slaughterhouse.services;
 import com.ppms.slaughterhouse.domain.*;
 import com.ppms.slaughterhouse.dtos.CoreDtos.*;
 import com.ppms.slaughterhouse.repositories.*;
+import com.ppms.shared.events.DomainEvent;
+import com.ppms.shared.events.OutboxPublisher;
+import com.ppms.shared.events.SiteDirectoryPayload;
+import com.ppms.shared.events.Topics;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +26,7 @@ public class SlaughterhouseCoreService {
     private final CustomerRepository customerRepository;
     private final SalesOrderRepository salesOrderRepository;
     private final DispatchOrderRepository dispatchOrderRepository;
+    private final OutboxPublisher outboxPublisher;
 
     public Slaughterhouse createSlaughterhouse(SlaughterhouseRequest request) {
         Slaughterhouse s = new Slaughterhouse();
@@ -34,7 +39,10 @@ public class SlaughterhouseCoreService {
         s.setActive(true);
         s.setCreatedAt(Instant.now());
         s.setUpdatedAt(Instant.now());
-        return slaughterhouseRepository.save(s);
+        Slaughterhouse saved = slaughterhouseRepository.save(s);
+        outboxPublisher.publish(Topics.SITE_DIRECTORY, new DomainEvent<>(UUID.randomUUID(), "site.directory.upserted", 1, "SiteDirectory", saved.getId(), saved.getId(), null,
+                new SiteDirectoryPayload(saved.getId(), "SLAUGHTERHOUSE", saved.getCode(), saved.getName(), saved.getAddress(), saved.getCounty(), saved.isActive(), "slaughterhouse-service", Instant.now())));
+        return saved;
     }
 
     public List<Slaughterhouse> listSlaughterhouses() {
