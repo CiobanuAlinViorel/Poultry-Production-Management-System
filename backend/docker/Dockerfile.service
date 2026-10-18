@@ -1,15 +1,9 @@
 # syntax=docker/dockerfile:1.7
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM maven:3.9.10-eclipse-temurin-21-alpine AS build
 ARG MODULE
 WORKDIR /src
-COPY pom.xml mvnw ./
-COPY .mvn .mvn
-COPY shared-kernel/pom.xml shared-kernel/pom.xml
-COPY ${MODULE}/pom.xml ${MODULE}/pom.xml
-RUN --mount=type=cache,target=/root/.m2 ./mvnw -q -pl ${MODULE} -am dependency:go-offline
-COPY shared-kernel shared-kernel
-COPY ${MODULE} ${MODULE}
-RUN --mount=type=cache,target=/root/.m2 ./mvnw -q -pl ${MODULE} -am -DskipTests package \
+COPY . /src
+RUN --mount=type=cache,target=/root/.m2 mvn -q -pl ${MODULE} -am -DskipTests package \
  && java -Djarmode=layertools -jar ${MODULE}/target/*.jar extract --destination /layers
 
 FROM eclipse-temurin:21-jre-alpine
