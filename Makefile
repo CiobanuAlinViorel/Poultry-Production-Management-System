@@ -4,13 +4,13 @@ infra-up:
 	cd infra/compose && docker compose -f docker-compose.yml up -d
 
 up:
-	cd infra/compose && docker compose -f docker-compose.yml -f docker-compose.services.yml up -d
+	cd infra/compose && docker compose -f docker-compose.yml -f docker-compose.services.yml --profile services up -d
 
 obs-up:
 	cd infra/compose && docker compose -f docker-compose.yml --profile observability up -d
 
 down:
-	cd infra/compose && docker compose -f docker-compose.yml -f docker-compose.services.yml --profile observability --profile backup down
+	cd infra/compose && docker compose -f docker-compose.yml -f docker-compose.services.yml --profile services --profile observability --profile backup down
 
 build:
 	cd backend && ./mvnw -T1C verify
@@ -28,4 +28,4 @@ keys:
 	infra/scripts/gen-jwt-keys.sh
 
 logs:
-	cd infra/compose && docker compose -f docker-compose.yml -f docker-compose.services.yml logs -f
+	cd infra/compose && docker compose -f docker-compose.yml -f docker-compose.services.yml --profile services logs -f
