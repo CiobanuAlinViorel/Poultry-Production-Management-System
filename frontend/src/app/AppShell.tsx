@@ -1,4 +1,4 @@
-import { AdminPanelSettings, Home, Logout, Person, Settings } from '@mui/icons-material';
+import { AdminPanelSettings, Agriculture, Home, Logout, Person, Settings } from '@mui/icons-material';
 import { AppBar, BottomNavigation, BottomNavigationAction, Box, Button, Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -15,6 +15,7 @@ export function AppShell() {
   const clearSession = useAuthStore((state) => state.clearSession);
   const items = [
     { path: '/', label: t('dashboard'), icon: <Home /> },
+    { path: '/farm', label: t('farm.dashboard.title'), icon: <Agriculture /> },
     { path: '/admin/users', label: t('users'), icon: <AdminPanelSettings /> },
     { path: '/admin/settings', label: t('settings'), icon: <Settings /> },
     { path: '/profile', label: t('profile'), icon: <Person /> },
