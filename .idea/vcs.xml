@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/../GestionareAngajati/frontend" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../GrileApp/grid-app" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../JavaProject" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../Next.js/todo-app" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../PortfolioPlatformFrontend/PortfolioPlatform" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../PortfolioPlatformFrontend/PortfolioPlatform/frontend" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../PortofolioPlatform/MyWebsite" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../PortofolioPlatform/PortofolioFullStack" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../React/my-react-app" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../admin-app" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../habit-builder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../learning-project" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../mern-bookstore" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../roomie-finder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../time-tracker" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../work-tracker" vcs="Git" />
   </component>
 </project>

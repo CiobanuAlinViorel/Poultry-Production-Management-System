@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: slaughterhouse-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ppms_slaughterhouse
+    username: ppms
+    password: ppms_dev
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: sl
+  flyway:
+    schemas: sl
+    default-schema: sl
+    locations:
+      - classpath:db/migration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: slaughterhouse-service
+
+server:
+  port: 8086
+
+ppms:
+  admin-service:
+    url: http://localhost:8085

@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/ppms_identity
+  kafka:
+    bootstrap-servers: kafka:19092
+ppms:
+  admin-service:
+    url: http://admin-service:8085

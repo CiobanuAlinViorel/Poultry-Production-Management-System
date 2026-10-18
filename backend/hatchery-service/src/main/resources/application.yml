@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: hatchery-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ppms_hatchery
+    username: ppms
+    password: ppms_dev
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: ha
+  flyway:
+    schemas: ha
+    default-schema: ha
+    locations:
+      - classpath:db/migration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: hatchery-service
+
+server:
+  port: 8082
+
+ppms:
+  admin-service:
+    url: http://localhost:8085

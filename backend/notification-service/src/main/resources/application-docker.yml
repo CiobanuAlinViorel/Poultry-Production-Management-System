@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres-notification:5432/ppms_notification
+    username: ppms
+    password: ppms_dev
+  kafka:
+    bootstrap-servers: kafka:9092
+
+server:
+  port: 8087

@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: farm-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ppms_farm
+    username: ppms
+    password: ppms_dev
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: fa
+  flyway:
+    schemas: fa
+    default-schema: fa
+    locations:
+      - classpath:db/migration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: farm-service
+
+server:
+  port: 8083
+
+ppms:
+  admin-service:
+    url: http://localhost:8085

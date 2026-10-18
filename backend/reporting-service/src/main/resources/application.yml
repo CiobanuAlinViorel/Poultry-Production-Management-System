@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: reporting-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ppms_reporting
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: reporting
+  flyway:
+    schemas: reporting
+    default-schema: reporting
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: reporting-service
+
+server:
+  port: 8088

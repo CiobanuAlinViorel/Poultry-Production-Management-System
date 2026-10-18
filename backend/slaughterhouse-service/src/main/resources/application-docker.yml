@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/ppms_slaughterhouse
+    username: ppms
+    password: ppms_dev
+  kafka:
+    bootstrap-servers: kafka:9092
+
+ppms:
+  admin-service:
+    url: http://admin-service:8085

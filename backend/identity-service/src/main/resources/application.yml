@@ -1,0 +1,53 @@
+# identity-service
+spring:
+  application:
+    name: identity-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ppms_identity
+    username: ppms
+    password: ppms_dev
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: identity
+        jdbc.time_zone: UTC
+        jdbc.batch_size: 50
+  flyway:
+    schemas: identity
+    default-schema: identity
+    locations: classpath:db/migration
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: identity-service
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    producer:
+      acks: all
+      properties:
+        enable.idempotence: true
+    listener:
+      ack-mode: record
+server:
+  port: 8084
+
+management:
+  endpoints.web.exposure.include: health,info,prometheus,metrics
+  endpoint.health.probes.enabled: true
+  tracing.sampling.probability: 0.1
+
+ppms:
+  site-timezone: Europe/Bucharest
+  jwt:
+    public-key-file: ${JWT_PUBLIC_KEY_FILE:}
+    public-key: ${JWT_PUBLIC_KEY:}
+    private-key-file: ${JWT_PRIVATE_KEY_FILE:}
+    private-key: ${JWT_PRIVATE_KEY:}
+  admin-service:
+    url: ${ADMIN_SERVICE_URL:http://localhost:8085}
+  outbox:
+    poll-interval-ms: 500
+    batch-size: 100

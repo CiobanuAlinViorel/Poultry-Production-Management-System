@@ -1,0 +1,49 @@
+# admin-service
+spring:
+  application:
+    name: admin-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ppms_admin
+    username: ppms
+    password: ppms_dev
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: admin
+        jdbc.time_zone: UTC
+        jdbc.batch_size: 50
+  flyway:
+    schemas: admin
+    default-schema: admin
+    locations: classpath:db/migration
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: admin-service
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    producer:
+      acks: all
+      properties:
+        enable.idempotence: true
+    listener:
+      ack-mode: record
+server:
+  port: 8085
+
+management:
+  endpoints.web.exposure.include: health,info,prometheus,metrics
+  endpoint.health.probes.enabled: true
+  tracing.sampling.probability: 0.1
+
+ppms:
+  site-timezone: Europe/Bucharest
+  jwt:
+    public-key-file: ${JWT_PUBLIC_KEY_FILE:}
+    public-key: ${JWT_PUBLIC_KEY:}
+  outbox:
+    poll-interval-ms: 500
+    batch-size: 100

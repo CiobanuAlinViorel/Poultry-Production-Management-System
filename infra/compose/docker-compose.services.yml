@@ -1,0 +1,153 @@
+services:
+  identity-service:
+    build: { context: ../../backend, dockerfile: docker/Dockerfile.service, args: { MODULE: identity-service } }
+    image: ppms/identity-service:${TAG:-dev}
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ppms_identity
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      JWT_PRIVATE_KEY_FILE: /run/secrets/jwt_private
+      JWT_PUBLIC_KEY_FILE: /run/secrets/jwt_public
+      ADMIN_SERVICE_URL: http://admin-service:8085
+    secrets: [jwt_private, jwt_public]
+    depends_on: { postgres: { condition: service_healthy }, kafka: { condition: service_healthy } }
+    healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8084/actuator/health"], interval: 15s, retries: 10 }
+    profiles: [services]
+
+  admin-service:
+    build: { context: ../../backend, dockerfile: docker/Dockerfile.service, args: { MODULE: admin-service } }
+    image: ppms/admin-service:${TAG:-dev}
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ppms_admin
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      JWT_PUBLIC_KEY_FILE: /run/secrets/jwt_public
+    secrets: [jwt_public]
+    depends_on: { postgres: { condition: service_healthy }, kafka: { condition: service_healthy } }
+    healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8085/actuator/health"], interval: 15s, retries: 10 }
+    profiles: [services]
+
+  parent-flock-service:
+    build: { context: ../../backend, dockerfile: docker/Dockerfile.service, args: { MODULE: parent-flock-service } }
+    image: ppms/parent-flock-service:${TAG:-dev}
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ppms_parent_flock
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      JWT_PUBLIC_KEY_FILE: /run/secrets/jwt_public
+      ADMIN_SERVICE_URL: http://admin-service:8085
+    secrets: [jwt_public]
+    depends_on: { postgres: { condition: service_healthy }, kafka: { condition: service_healthy } }
+    healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8081/actuator/health"], interval: 15s, retries: 10 }
+    profiles: [services]
+
+  hatchery-service:
+    build: { context: ../../backend, dockerfile: docker/Dockerfile.service, args: { MODULE: hatchery-service } }
+    image: ppms/hatchery-service:${TAG:-dev}
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ppms_hatchery
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      JWT_PUBLIC_KEY_FILE: /run/secrets/jwt_public
+      ADMIN_SERVICE_URL: http://admin-service:8085
+    secrets: [jwt_public]
+    depends_on: { postgres: { condition: service_healthy }, kafka: { condition: service_healthy } }
+    healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8082/actuator/health"], interval: 15s, retries: 10 }
+    profiles: [services]
+
+  farm-service:
+    build: { context: ../../backend, dockerfile: docker/Dockerfile.service, args: { MODULE: farm-service } }
+    image: ppms/farm-service:${TAG:-dev}
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ppms_farm
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      JWT_PUBLIC_KEY_FILE: /run/secrets/jwt_public
+      ADMIN_SERVICE_URL: http://admin-service:8085
+    secrets: [jwt_public]
+    depends_on: { postgres: { condition: service_healthy }, kafka: { condition: service_healthy } }
+    healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8083/actuator/health"], interval: 15s, retries: 10 }
+    profiles: [services]
+
+  slaughterhouse-service:
+    build: { context: ../../backend, dockerfile: docker/Dockerfile.service, args: { MODULE: slaughterhouse-service } }
+    image: ppms/slaughterhouse-service:${TAG:-dev}
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ppms_slaughterhouse
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      JWT_PUBLIC_KEY_FILE: /run/secrets/jwt_public
+      ADMIN_SERVICE_URL: http://admin-service:8085
+    secrets: [jwt_public]
+    depends_on: { postgres: { condition: service_healthy }, kafka: { condition: service_healthy } }
+    healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8086/actuator/health"], interval: 15s, retries: 10 }
+    profiles: [services]
+
+  notification-service:
+    build: { context: ../../backend, dockerfile: docker/Dockerfile.service, args: { MODULE: notification-service } }
+    image: ppms/notification-service:${TAG:-dev}
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ppms_notification
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      SPRING_MAIL_HOST: mailpit
+      SPRING_MAIL_PORT: 1025
+      JWT_PUBLIC_KEY_FILE: /run/secrets/jwt_public
+    secrets: [jwt_public]
+    depends_on: { postgres: { condition: service_healthy }, kafka: { condition: service_healthy }, mailpit: { condition: service_started } }
+    healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8087/actuator/health"], interval: 15s, retries: 10 }
+    profiles: [services]
+
+  reporting-service:
+    build: { context: ../../backend, dockerfile: docker/Dockerfile.service, args: { MODULE: reporting-service } }
+    image: ppms/reporting-service:${TAG:-dev}
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ppms_reporting
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      S3_ENDPOINT: http://minio:9000
+      S3_BUCKET: ppms-documents
+      JWT_PUBLIC_KEY_FILE: /run/secrets/jwt_public
+    secrets: [jwt_public]
+    depends_on: { postgres: { condition: service_healthy }, kafka: { condition: service_healthy }, minio: { condition: service_healthy } }
+    healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8088/actuator/health"], interval: 15s, retries: 10 }
+    profiles: [services]
+
+  gateway-service:
+    build: { context: ../../backend, dockerfile: docker/Dockerfile.service, args: { MODULE: gateway-service } }
+    image: ppms/gateway-service:${TAG:-dev}
+    ports: ["8080:8080"]
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      ROUTES_IDENTITY_URL: http://identity-service:8084
+      ROUTES_ADMIN_URL: http://admin-service:8085
+      ROUTES_PARENT_FLOCK_URL: http://parent-flock-service:8081
+      ROUTES_HATCHERY_URL: http://hatchery-service:8082
+      ROUTES_FARM_URL: http://farm-service:8083
+      ROUTES_SLAUGHTERHOUSE_URL: http://slaughterhouse-service:8086
+      ROUTES_NOTIFICATION_URL: http://notification-service:8087
+      ROUTES_REPORTING_URL: http://reporting-service:8088
+    depends_on: [identity-service, admin-service]
+    healthcheck: { test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"], interval: 15s, retries: 10 }
+    profiles: [services]
+
+secrets:
+  jwt_private: { file: ${JWT_PRIVATE_KEY_FILE} }
+  jwt_public:  { file: ${JWT_PUBLIC_KEY_FILE} }

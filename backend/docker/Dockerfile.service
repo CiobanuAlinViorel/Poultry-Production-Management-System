@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:1.7
+FROM eclipse-temurin:21-jdk-alpine AS build
+ARG MODULE
+WORKDIR /src
+COPY pom.xml mvnw ./
+COPY .mvn .mvn
+COPY shared-kernel/pom.xml shared-kernel/pom.xml
+COPY ${MODULE}/pom.xml ${MODULE}/pom.xml
+RUN --mount=type=cache,target=/root/.m2 ./mvnw -q -pl ${MODULE} -am dependency:go-offline
+COPY shared-kernel shared-kernel
+COPY ${MODULE} ${MODULE}
+RUN --mount=type=cache,target=/root/.m2 ./mvnw -q -pl ${MODULE} -am -DskipTests package \
+ && java -Djarmode=layertools -jar ${MODULE}/target/*.jar extract --destination /layers
+
+FROM eclipse-temurin:21-jre-alpine
+RUN addgroup -S ppms && adduser -S ppms -G ppms && apk add --no-cache wget tzdata
+ENV TZ=Europe/Bucharest JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75 -XX:+UseG1GC -Djava.security.egd=file:/dev/./urandom"
+WORKDIR /app
+COPY --from=build /layers/dependencies/ ./
+COPY --from=build /layers/spring-boot-loader/ ./
+COPY --from=build /layers/snapshot-dependencies/ ./
+COPY --from=build /layers/application/ ./
+USER ppms
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]

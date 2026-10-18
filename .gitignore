@@ -1,58 +1,85 @@
-# ===========================
-# Maven
-# ===========================
+# ===== Build output =====
 target/
+build/
+out/
+dist/
 *.jar
 *.war
 *.ear
 *.class
-.mvn/timing.properties
 !.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
 
-# ===========================
-# Spring Boot
-# ===========================
+# ===== Node / frontend =====
+node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/.vite/
+frontend/storybook-static/
+frontend/playwright-report/
+frontend/test-results/
+*.tsbuildinfo
+.eslintcache
+
+# ===== Spring / config with secrets =====
 application-local.yml
+application-local.yaml
 application-local.properties
-*.env
+**/src/main/resources/application-*-secret.yml
+.env
+.env.*
+!.env.example
+!infra/compose/.env.example
 
-# ===========================
-# Secrets / keys
-# ===========================
+# ===== Secrets / keys =====
 *.pem
 *.key
 *.p12
 *.jks
+*.pfx
+!infra/k8s/**/ca-bundle.pem
 
-# ===========================
-# IntelliJ IDEA
-# ===========================
+# ===== IDEs =====
 .idea/
 *.iml
 *.iws
 *.ipr
-out/
-
-# ===========================
-# VS Code
-# ===========================
 .vscode/
+!.vscode/extensions.json
+!.vscode/settings.shared.json
+.project
+.classpath
+.settings/
+.factorypath
 
-# ===========================
-# OS
-# ===========================
+# ===== OS =====
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# ===========================
-# Docker
-# ===========================
+# ===== Docker / infra =====
 docker-compose.override.yml
+infra/compose/volumes/
+infra/compose/backups/
+*.dump
+*.sql.gz
 
-# ===========================
-# Logs
-# ===========================
+# ===== Logs / tmp =====
 *.log
 logs/
-# Claude AI working directory
-.claude
+tmp/
+.tmp/
+hs_err_pid*
+replay_pid*
+
+# ===== Test / coverage =====
+jacoco.exec
+**/jacoco/
+**/surefire-reports/
+**/failsafe-reports/
+.testcontainers*
+
+# ===== Agent working dirs =====
+.claude/
+.cursor/
+.devin/cache/

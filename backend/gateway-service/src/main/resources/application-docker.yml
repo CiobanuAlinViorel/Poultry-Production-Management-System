@@ -1,0 +1,52 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: identity-service
+          uri: http://identity-service:8084
+          predicates:
+            - Path=/api/identity/**
+          filters:
+            - RewritePath=/api/identity/(?<p>.*), /api/v1/$\{p}
+        - id: admin-service
+          uri: http://admin-service:8085
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - RewritePath=/api/admin/(?<p>.*), /api/v1/$\{p}
+        - id: parent-flock-service
+          uri: http://parent-flock-service:8080
+          predicates:
+            - Path=/api/parent-flock/**
+          filters:
+            - RewritePath=/api/parent-flock/(?<p>.*), /api/v1/$\{p}
+        - id: hatchery-service
+          uri: http://hatchery-service:8081
+          predicates:
+            - Path=/api/hatchery/**
+          filters:
+            - RewritePath=/api/hatchery/(?<p>.*), /api/v1/$\{p}
+        - id: farm-service
+          uri: http://farm-service:8082
+          predicates:
+            - Path=/api/farm/**
+          filters:
+            - RewritePath=/api/farm/(?<p>.*), /api/v1/$\{p}
+        - id: slaughterhouse-service
+          uri: http://slaughterhouse-service:8083
+          predicates:
+            - Path=/api/slaughterhouse/**
+          filters:
+            - RewritePath=/api/slaughterhouse/(?<p>.*), /api/v1/$\{p}
+        - id: notification-service
+          uri: http://notification-service:8086
+          predicates:
+            - Path=/api/notification/**
+          filters:
+            - RewritePath=/api/notification/(?<p>.*), /api/v1/$\{p}
+        - id: reporting-service
+          uri: http://reporting-service:8087
+          predicates:
+            - Path=/api/reporting/**
+          filters:
+            - RewritePath=/api/reporting/(?<p>.*), /api/v1/$\{p}

@@ -1,0 +1,7 @@
+com.ppms.shared.persistence.JpaConfig
+com.ppms.shared.security.JwtSecurityAutoConfiguration
+com.ppms.shared.security.SecurityDefaults
+com.ppms.shared.web.WebConfig
+com.ppms.shared.web.GlobalExceptionHandler
+com.ppms.shared.web.RequestContextFilter
+com.ppms.shared.events.KafkaConfig

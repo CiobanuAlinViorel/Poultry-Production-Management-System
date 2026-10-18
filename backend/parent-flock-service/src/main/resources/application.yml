@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: parent-flock-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ppms_parent_flock
+    username: ppms
+    password: ppms_dev
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: pf
+  flyway:
+    schemas: pf
+    default-schema: pf
+    locations:
+      - classpath:db/migration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: parent-flock-service
+
+server:
+  port: 8081
+
+ppms:
+  admin-service:
+    url: http://localhost:8085
