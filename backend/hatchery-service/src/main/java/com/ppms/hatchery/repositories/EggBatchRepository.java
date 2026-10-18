@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface EggBatchRepository extends JpaRepository<EggBatch, UUID> {
 
     List<EggBatch> findByHatcheryId(UUID hatcheryId);
+    boolean existsByBatchCodeIgnoreCase(String batchCode);
 }

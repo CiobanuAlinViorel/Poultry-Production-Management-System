@@ -2,6 +2,7 @@ package com.ppms.hatchery.controllers;
 
 import com.ppms.hatchery.domain.*;
 import com.ppms.hatchery.dtos.*;
+import com.ppms.hatchery.services.EggReceptionService;
 import com.ppms.hatchery.services.HatcheryCoreService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class HatcheryController {
 
     private final HatcheryCoreService hatcheryCoreService;
+    private final EggReceptionService eggReceptionService;
 
     @PostMapping("/sites")
     public ResponseEntity<Hatchery> createHatchery(@RequestBody @Valid HatcheryRequest request) {
@@ -40,7 +42,7 @@ public class HatcheryController {
 
     @PostMapping("/egg-batches")
     public ResponseEntity<EggBatch> createEggBatch(@RequestBody @Valid EggBatchRequest request) {
-        return ResponseEntity.ok(hatcheryCoreService.createEggBatch(request));
+        return ResponseEntity.ok(eggReceptionService.receive(request));
     }
 
     @GetMapping("/sites/{hatcheryId}/egg-batches")
