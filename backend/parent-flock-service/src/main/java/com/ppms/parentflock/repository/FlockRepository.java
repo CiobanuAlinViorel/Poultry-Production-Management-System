@@ -13,4 +13,6 @@ public interface FlockRepository extends JpaRepository<Flock, UUID> {
     List<Flock> findBySiteId(UUID siteId);
 
     List<Flock> findBySiteIdAndHouseId(UUID siteId, UUID houseId);
+
+    boolean existsByHouseIdAndStatus(UUID houseId, Flock.FlockStatus status);
 }
