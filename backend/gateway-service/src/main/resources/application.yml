@@ -4,8 +4,25 @@ server:
 spring:
   application:
     name: gateway-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8084/.well-known/jwks.json
+          issuer-uri: http://localhost:8084
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns:
+              - "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       routes:
         - id: identity-service
           uri: http://localhost:8084
@@ -20,37 +37,37 @@ spring:
           filters:
             - RewritePath=/api/admin/(?<p>.*), /api/v1/$\{p}
         - id: parent-flock-service
-          uri: http://localhost:8080
+          uri: http://localhost:8081
           predicates:
             - Path=/api/parent-flock/**
           filters:
             - RewritePath=/api/parent-flock/(?<p>.*), /api/v1/$\{p}
         - id: hatchery-service
-          uri: http://localhost:8081
+          uri: http://localhost:8082
           predicates:
             - Path=/api/hatchery/**
           filters:
             - RewritePath=/api/hatchery/(?<p>.*), /api/v1/$\{p}
         - id: farm-service
-          uri: http://localhost:8082
+          uri: http://localhost:8083
           predicates:
             - Path=/api/farm/**
           filters:
             - RewritePath=/api/farm/(?<p>.*), /api/v1/$\{p}
         - id: slaughterhouse-service
-          uri: http://localhost:8083
+          uri: http://localhost:8086
           predicates:
             - Path=/api/slaughterhouse/**
           filters:
             - RewritePath=/api/slaughterhouse/(?<p>.*), /api/v1/$\{p}
         - id: notification-service
-          uri: http://localhost:8086
+          uri: http://localhost:8087
           predicates:
             - Path=/api/notification/**
           filters:
             - RewritePath=/api/notification/(?<p>.*), /api/v1/$\{p}
         - id: reporting-service
-          uri: http://localhost:8087
+          uri: http://localhost:8088
           predicates:
             - Path=/api/reporting/**
           filters:
@@ -61,3 +78,8 @@ management:
     web:
       exposure:
         include: health,info,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      probes:
+        enabled: true
