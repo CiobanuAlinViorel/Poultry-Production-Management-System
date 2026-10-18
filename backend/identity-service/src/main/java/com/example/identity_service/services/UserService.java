@@ -4,6 +4,10 @@ import com.example.identity_service.domain.*;
 import com.example.identity_service.dtos.*;
 import com.example.identity_service.repositories.*;
 import com.ppms.shared.audit.Audited;
+import com.ppms.shared.events.DomainEvent;
+import com.ppms.shared.events.IdentityEventPayload;
+import com.ppms.shared.events.OutboxPublisher;
+import com.ppms.shared.events.Topics;
 import com.ppms.shared.security.UserPrincipal;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +32,7 @@ public class UserService {
     private final ActivationTokenRepository activationTokenRepository;
     private final PasswordPolicyService passwordPolicyService;
     private final TokenService tokenService;
+    private final OutboxPublisher outboxPublisher;
 
     @Audited(action = "USER_CREATE", entity = "User")
     public UserResponse createUser(CreateUserRequest request, UUID createdBy) {
@@ -61,9 +66,11 @@ public class UserService {
         credentialRepository.save(credential);
 
         if (request.sendActivationEmail()) {
-            String raw = tokenService.generateRefreshToken().raw();
-            ActivationToken activation = new ActivationToken(tokenService.hash(raw), user.getId(), Instant.now().plus(7, ChronoUnit.DAYS), null);
+            RawAndHashedToken token = tokenService.generateRefreshToken();
+            ActivationToken activation = new ActivationToken(token.hashed(), user.getId(), Instant.now().plus(7, ChronoUnit.DAYS), null);
             activationTokenRepository.save(activation);
+            outboxPublisher.publish(Topics.IDENTITY_USER, new DomainEvent<>(UUID.randomUUID(), "identity.user.activation-requested", 1, "User", user.getId(), null, createdBy,
+                    new IdentityEventPayload(user.getId(), user.getEmail(), user.getUsername(), user.getDisplayName(), token.raw(), "activation")));
         }
 
         return toResponse(user);

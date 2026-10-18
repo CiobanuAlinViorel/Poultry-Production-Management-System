@@ -3,6 +3,10 @@ package com.example.identity_service.services;
 import com.example.identity_service.dtos.*;
 import com.example.identity_service.domain.*;
 import com.example.identity_service.repositories.*;
+import com.ppms.shared.events.DomainEvent;
+import com.ppms.shared.events.IdentityEventPayload;
+import com.ppms.shared.events.OutboxPublisher;
+import com.ppms.shared.events.Topics;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,6 +34,7 @@ public class AuthService {
     private final KioskDeviceRepository kioskDeviceRepository;
     private final UserPinRepository userPinRepository;
     private final ApiClientRepository apiClientRepository;
+    private final OutboxPublisher outboxPublisher;
 
     private static final int LOCKOUT_THRESHOLD = 5;
     private static final int PIN_LOCKOUT_THRESHOLD = 3;
@@ -333,6 +338,8 @@ public class AuthService {
                 token.hashed(), user.getId(), Instant.now().plus(30, ChronoUnit.MINUTES), null, ipAddress
         );
         passwordResetTokenRepository.save(reset);
+        outboxPublisher.publish(Topics.IDENTITY_USER, new DomainEvent<>(UUID.randomUUID(), "identity.user.password-reset-requested", 1, "User", user.getId(), null, user.getId(),
+                new IdentityEventPayload(user.getId(), user.getEmail(), user.getUsername(), user.getDisplayName(), token.raw(), "password-reset")));
     }
 
     public void clientCredentialsToken(ClientCredentialsRequest request) {
