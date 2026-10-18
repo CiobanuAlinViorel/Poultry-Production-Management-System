@@ -41,7 +41,8 @@ public class PasswordPolicyService {
         if (password.equalsIgnoreCase(username) || password.equalsIgnoreCase(localPart) || password.equalsIgnoreCase(email)) {
             throw new ValidationException("Password cannot be the same as username or email");
         }
-        if (COMMON_PASSWORDS.contains(password.toLowerCase())) {
+        String lower = password.toLowerCase();
+        if (COMMON_PASSWORDS.stream().anyMatch(lower::contains)) {
             throw new ValidationException("Password is too common");
         }
         if (history != null && history.stream().anyMatch(h -> passwordEncoder.matches(password, h))) {
