@@ -7,6 +7,7 @@ import com.ppms.shared.events.DomainEvent;
 import com.ppms.shared.events.IdentityEventPayload;
 import com.ppms.shared.events.OutboxPublisher;
 import com.ppms.shared.events.Topics;
+import com.ppms.shared.security.RoleClaim;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -157,7 +158,12 @@ public class AuthService {
         ));
 
         loginAuditService.record(user.getId(), user.getEmail(), true, null, ipAddress);
-        return new TokenResponse(accessToken, refreshToken.raw(), false, null);
+        return new TokenResponse(accessToken, refreshToken.raw(), toAuthUser(user, displayName, access));
+    }
+
+    private static TokenResponse.AuthUser toAuthUser(User user, String displayName, EffectiveAccess access) {
+        List<String> roleCodes = access.roles().stream().map(RoleClaim::role).distinct().toList();
+        return new TokenResponse.AuthUser(user.getId(), user.getEmail(), displayName, roleCodes);
     }
 
     private void handleFailedLogin(User user, String email, String ipAddress) {
@@ -193,10 +199,11 @@ public class AuthService {
         User user = userRepository.findById(oldToken.getUserId()).orElseThrow();
         Credential credential = credentialRepository.findByUserId(oldToken.getUserId()).orElseThrow();
 
+        String displayName = user.getDisplayName() != null ? user.getDisplayName() : user.getUsername();
         String newAccessToken = tokenService.mintAccessToken(
                 oldToken.getUserId(),
                 user.getUsername(),
-                user.getDisplayName() != null ? user.getDisplayName() : user.getUsername(),
+                displayName,
                 access.roles(),
                 access.perms(),
                 credential.isMustChangePassword(),
@@ -218,7 +225,7 @@ public class AuthService {
                 Instant.now()
         ));
 
-        return new TokenResponse(newAccessToken, newRefreshToken.raw(), false, null);
+        return new TokenResponse(newAccessToken, newRefreshToken.raw(), toAuthUser(user, displayName, access));
     }
 
     public void logout(LogoutRequest request) {

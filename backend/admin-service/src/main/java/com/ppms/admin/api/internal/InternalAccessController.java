@@ -1,10 +1,14 @@
 package com.ppms.admin.api.internal;
 
+import com.ppms.admin.domain.Permission;
 import com.ppms.admin.domain.RolePermission;
 import com.ppms.admin.domain.UserRoleAssignment;
+import com.ppms.admin.repositories.PermissionRepository;
 import com.ppms.admin.repositories.RolePermissionRepository;
 import com.ppms.admin.repositories.UserRoleAssignmentRepository;
+import com.ppms.shared.domain.ScopeType;
 import com.ppms.shared.security.RoleClaim;
+import com.ppms.shared.security.ScopeGuard;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,11 +27,14 @@ public class InternalAccessController {
 
     private final UserRoleAssignmentRepository assignmentRepository;
     private final RolePermissionRepository rolePermissionRepository;
+    private final PermissionRepository permissionRepository;
 
     public InternalAccessController(UserRoleAssignmentRepository assignmentRepository,
-                                    RolePermissionRepository rolePermissionRepository) {
+                                    RolePermissionRepository rolePermissionRepository,
+                                    PermissionRepository permissionRepository) {
         this.assignmentRepository = assignmentRepository;
         this.rolePermissionRepository = rolePermissionRepository;
+        this.permissionRepository = permissionRepository;
     }
 
     @GetMapping("/{userId}/effective-access")
@@ -42,10 +49,15 @@ public class InternalAccessController {
                 .map(a -> new RoleClaim(a.getRole().getCode(), a.getScopeType(), a.getScopeId()))
                 .toList();
 
-        Set<String> perms = active.stream()
+        boolean systemAdmin = roles.stream()
+                .anyMatch(r -> ScopeGuard.SYSTEM_ADMIN.equals(r.role()) && ScopeType.GLOBAL.equals(r.scopeType()));
+
+        Set<String> perms = systemAdmin
+                ? permissionRepository.findAll().stream().map(Permission::getKey).collect(Collectors.toSet())
+                : active.stream()
                 .flatMap(a -> rolePermissionRepository.findByRoleId(a.getRole().getId()).stream())
                 .map(RolePermission::getPermission)
-                .map(com.ppms.admin.domain.Permission::getKey)
+                .map(Permission::getKey)
                 .collect(Collectors.toSet());
 
         return new EffectiveAccessResponse(roles, perms);

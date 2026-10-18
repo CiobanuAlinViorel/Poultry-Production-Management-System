@@ -13,16 +13,24 @@ import java.util.UUID;
 @Component("scope")
 public class ScopeGuard {
 
+    public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
+
+    public boolean isSystemAdmin() {
+        return isSystemAdmin(getPrincipal());
+    }
+
     public boolean has(String role, ScopeType scopeType, UUID scopeId) {
-        return getPrincipal().getRoles().stream()
+        UserPrincipal p = getPrincipal();
+        return isSystemAdmin(p) || p.getRoles().stream()
                 .anyMatch(r -> r.role().equals(role)
                         && r.scopeType().equals(scopeType)
                         && (scopeId == null || scopeId.equals(r.scopeId())));
     }
 
     public boolean anyRoleIn(ScopeType scopeType, UUID scopeId, String... roles) {
+        UserPrincipal p = getPrincipal();
         Set<String> set = Set.of(roles);
-        return getPrincipal().getRoles().stream()
+        return isSystemAdmin(p) || p.getRoles().stream()
                 .anyMatch(r -> set.contains(r.role())
                         && r.scopeType().equals(scopeType)
                         && (scopeId == null || scopeId.equals(r.scopeId())));
@@ -30,17 +38,24 @@ public class ScopeGuard {
 
     public boolean hasPerm(String perm, ScopeType scopeType, UUID scopeId) {
         UserPrincipal p = getPrincipal();
+        if (isSystemAdmin(p)) {
+            return true;
+        }
         if (p.getPerms().contains(perm) && matchesScope(p, scopeType, scopeId)) {
             return true;
         }
-        return p.getRoles().stream()
-                .anyMatch(r -> r.role().equals("SYSTEM_ADMIN") || r.role().equals("MANAGER"));
+        return p.getRoles().stream().anyMatch(r -> r.role().equals("MANAGER"));
     }
 
     public void require(String role, ScopeType scopeType, UUID scopeId) {
         if (!has(role, scopeType, scopeId)) {
             throw new ForbiddenScopeException("Required role " + role + " for scope " + scopeType + "/" + scopeId);
         }
+    }
+
+    private static boolean isSystemAdmin(UserPrincipal p) {
+        return p.getRoles().stream()
+                .anyMatch(r -> SYSTEM_ADMIN.equals(r.role()) && ScopeType.GLOBAL.equals(r.scopeType()));
     }
 
     private boolean matchesScope(UserPrincipal p, ScopeType scopeType, UUID scopeId) {
