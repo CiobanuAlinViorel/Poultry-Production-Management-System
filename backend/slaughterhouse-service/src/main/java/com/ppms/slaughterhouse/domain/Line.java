@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "line", schema = "slaughterhouse")
+@Table(name = "line", schema = "sl")
 public class Line extends BaseEntity {
 
     @Column(name = "slaughterhouse_id", nullable = false)

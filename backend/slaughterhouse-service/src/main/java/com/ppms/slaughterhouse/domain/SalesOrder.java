@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "sales_order", schema = "slaughterhouse")
+@Table(name = "sales_order", schema = "sl")
 public class SalesOrder extends BaseEntity {
 
     @Column(name = "order_no", nullable = false, unique = true)

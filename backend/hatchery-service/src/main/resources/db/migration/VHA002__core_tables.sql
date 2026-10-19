@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS hatchery.hatchery (
+CREATE TABLE IF NOT EXISTS ha.hatchery (
     id UUID PRIMARY KEY,
     code VARCHAR(32) NOT NULL UNIQUE,
     name VARCHAR(255),
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS hatchery.hatchery (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS hatchery.incubator (
+CREATE TABLE IF NOT EXISTS ha.incubator (
     id UUID PRIMARY KEY,
     hatchery_id UUID NOT NULL,
     code VARCHAR(32) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS hatchery.incubator (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS hatchery.egg_batch (
+CREATE TABLE IF NOT EXISTS ha.egg_batch (
     id UUID PRIMARY KEY,
     batch_code VARCHAR(64) NOT NULL UNIQUE,
     hatchery_id UUID NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS hatchery.egg_batch (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS hatchery.incubation_batch (
+CREATE TABLE IF NOT EXISTS ha.incubation_batch (
     id UUID PRIMARY KEY,
     batch_code VARCHAR(64) NOT NULL UNIQUE,
     hatchery_id UUID NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS hatchery.incubation_batch (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS hatchery.chick_batch (
+CREATE TABLE IF NOT EXISTS ha.chick_batch (
     id UUID PRIMARY KEY,
     batch_code VARCHAR(64) NOT NULL UNIQUE,
     hatchery_id UUID NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS hatchery.chick_batch (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE INDEX IF NOT EXISTS idx_incubator_hatchery ON hatchery.incubator (hatchery_id);
-CREATE INDEX IF NOT EXISTS idx_egg_batch_hatchery ON hatchery.egg_batch (hatchery_id);
-CREATE INDEX IF NOT EXISTS idx_incubation_batch_hatchery ON hatchery.incubation_batch (hatchery_id);
-CREATE INDEX IF NOT EXISTS idx_chick_batch_hatchery ON hatchery.chick_batch (hatchery_id);
+CREATE INDEX IF NOT EXISTS idx_incubator_hatchery ON ha.incubator (hatchery_id);
+CREATE INDEX IF NOT EXISTS idx_egg_batch_hatchery ON ha.egg_batch (hatchery_id);
+CREATE INDEX IF NOT EXISTS idx_incubation_batch_hatchery ON ha.incubation_batch (hatchery_id);
+CREATE INDEX IF NOT EXISTS idx_chick_batch_hatchery ON ha.chick_batch (hatchery_id);

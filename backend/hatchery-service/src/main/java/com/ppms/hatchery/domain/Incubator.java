@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "incubator", schema = "hatchery")
+@Table(name = "incubator", schema = "ha")
 public class Incubator extends BaseEntity {
 
     @Column(name = "hatchery_id", nullable = false)

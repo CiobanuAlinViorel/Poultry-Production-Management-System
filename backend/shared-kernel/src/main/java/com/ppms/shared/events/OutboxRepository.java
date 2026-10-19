@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository
 public interface OutboxRepository extends JpaRepository<OutboxEntity, UUID> {
 
-    @Query(value = "SELECT * FROM outbox_event WHERE published_at IS NULL ORDER BY created_at LIMIT :limit FOR UPDATE SKIP LOCKED", nativeQuery = true)
+    @Query(value = "SELECT * FROM {h-schema}outbox_event WHERE published_at IS NULL ORDER BY created_at LIMIT :limit FOR UPDATE SKIP LOCKED", nativeQuery = true)
     List<OutboxEntity> findPending(@Param("limit") int limit);
 
     @Modifying

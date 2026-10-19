@@ -10,6 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@IdClass(RolePermissionId.class)
 @Table(name = "role_permission", schema = "admin")
 public class RolePermission implements Serializable {
 

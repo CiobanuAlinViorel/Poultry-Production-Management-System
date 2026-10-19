@@ -32,7 +32,19 @@ make keys
 
 # Seed demo data (after services are up)
 make seed
+
+# Verify every service boots (Flyway + Hibernate ddl-auto=validate) against scratch DBs
+# on the Docker Postgres (needs `make infra-up`, `make keys`, and packaged jars)
+bash infra/scripts/validate-service-startup.sh            # all services
+bash infra/scripts/validate-service-startup.sh admin farm # subset
 ```
+
+Build caveats:
+- Use a sequential `./mvnw clean install -DskipTests` whenever `shared-kernel` changed. A parallel
+  `-T1C` build has been observed to compile services against a stale `~/.m2` shared-kernel and emit
+  broken bytecode (`NoClassDefFoundError: OutboxPublisher` at runtime).
+- All services run `spring.jpa.hibernate.ddl-auto=validate`; any entity/migration drift fails startup.
+  Never edit an already-applied Flyway migration — add a new `V<prefix>NNN__*.sql` instead.
 
 ## Key conventions
 - Package layout per service: `domain/`, `application/`, `infrastructure/`, `api/`, `config/`.

@@ -7,14 +7,6 @@ spring:
           issuer-uri: ${JWT_ISSUER_URI:ppms-identity}
   cloud:
     gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOriginPatterns: ${CORS_ORIGINS:"http://localhost*","http://frontend*"}
-            allowedMethods: "*"
-            allowedHeaders: "*"
-            allowCredentials: true
-            maxAge: 3600
       routes:
         - id: identity-service
           uri: ${ROUTES_IDENTITY_URL:http://identity-service:8084}

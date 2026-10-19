@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "slaughter_session", schema = "slaughterhouse")
+@Table(name = "slaughter_session", schema = "sl")
 public class SlaughterSession extends BaseEntity {
 
     @Column(name = "slaughterhouse_id", nullable = false)

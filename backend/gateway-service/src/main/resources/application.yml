@@ -12,16 +12,6 @@ spring:
           issuer-uri: ${JWT_ISSUER_URI:ppms-identity}
   cloud:
     gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOriginPatterns: ${CORS_ORIGINS:*}
-            allowedMethods: "*"
-            allowedHeaders: "*"
-            allowCredentials: true
-            maxAge: 3600
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       routes:
         - id: identity-service
           uri: ${ROUTES_IDENTITY_URL:http://localhost:8084}
@@ -71,6 +61,10 @@ spring:
             - Path=/api/reporting/**
           filters:
             - RewritePath=/api/reporting/(?<p>.*), /api/v1/reporting/$\{p}
+
+ppms:
+  cors:
+    allowed-origin-patterns: ${CORS_ORIGINS:http://localhost:*,http://127.0.0.1:*}
 
 management:
   endpoints:

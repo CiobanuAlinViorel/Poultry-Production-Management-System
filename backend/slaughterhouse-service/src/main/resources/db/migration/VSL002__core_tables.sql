@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS slaughterhouse.slaughterhouse (
+CREATE TABLE IF NOT EXISTS sl.slaughterhouse (
     id UUID PRIMARY KEY,
     code VARCHAR(32) NOT NULL UNIQUE,
     name VARCHAR(255),
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS slaughterhouse.slaughterhouse (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS slaughterhouse.line (
+CREATE TABLE IF NOT EXISTS sl.line (
     id UUID PRIMARY KEY,
     slaughterhouse_id UUID NOT NULL,
     code VARCHAR(32) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS slaughterhouse.line (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS slaughterhouse.slaughter_session (
+CREATE TABLE IF NOT EXISTS sl.slaughter_session (
     id UUID PRIMARY KEY,
     slaughterhouse_id UUID NOT NULL,
     line_id UUID,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS slaughterhouse.slaughter_session (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS slaughterhouse.customer (
+CREATE TABLE IF NOT EXISTS sl.customer (
     id UUID PRIMARY KEY,
     code VARCHAR(32) NOT NULL UNIQUE,
     name VARCHAR(255),
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS slaughterhouse.customer (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS slaughterhouse.sales_order (
+CREATE TABLE IF NOT EXISTS sl.sales_order (
     id UUID PRIMARY KEY,
     order_no VARCHAR(64) NOT NULL UNIQUE,
     customer_id UUID NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS slaughterhouse.sales_order (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS slaughterhouse.dispatch_order (
+CREATE TABLE IF NOT EXISTS sl.dispatch_order (
     id UUID PRIMARY KEY,
     order_no VARCHAR(64) NOT NULL UNIQUE,
     sales_order_id UUID,
@@ -87,5 +87,5 @@ CREATE TABLE IF NOT EXISTS slaughterhouse.dispatch_order (
     version BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE INDEX IF NOT EXISTS idx_line_slaughterhouse ON slaughterhouse.line (slaughterhouse_id);
-CREATE INDEX IF NOT EXISTS idx_session_slaughterhouse ON slaughterhouse.slaughter_session (slaughterhouse_id);
+CREATE INDEX IF NOT EXISTS idx_line_slaughterhouse ON sl.line (slaughterhouse_id);
+CREATE INDEX IF NOT EXISTS idx_session_slaughterhouse ON sl.slaughter_session (slaughterhouse_id);
